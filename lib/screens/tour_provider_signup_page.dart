@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../api.dart';
 
 class TourProviderSignupPage extends StatefulWidget {
   @override
@@ -7,28 +8,38 @@ class TourProviderSignupPage extends StatefulWidget {
 
 class _TourProviderSignupPageState extends State<TourProviderSignupPage> {
   final _companyNameController = TextEditingController();
+  final _websiteController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
-  void _signUp() {
-    if (_formKey.currentState!.validate()) {
-      final companyName = _companyNameController.text;
-      final email = _emailController.text;
-      final password = _passwordController.text;
+void _signUp() async {
+  if (_formKey.currentState!.validate()) {
+    final companyName = _companyNameController.text;
+    final website = _websiteController.text;
+    final email = _emailController.text;
+    final password = _passwordController.text;
 
-      // Placeholder for sign-up logic
+    final success = await signUp(companyName, website, email, password);
+    if (success) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Signed up as: $companyName')),
+        SnackBar(content: Text('Sign-up successful')),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Sign-up failed')),
       );
     }
   }
+}
+
 
   @override
   void dispose() {
     _companyNameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+    _websiteController.dispose();
     super.dispose();
   }
 
@@ -64,6 +75,23 @@ class _TourProviderSignupPageState extends State<TourProviderSignupPage> {
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter your company name';
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(height: 20),
+                    TextFormField(
+                      controller: _websiteController,
+                      decoration: InputDecoration(
+                        labelText: 'Your website (if any)',
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your website';
+                        }
+                        if (!RegExp(r'^[^@]+\.[^@]+').hasMatch(value)) {
+                          return 'Enter a valid email';
                         }
                         return null;
                       },

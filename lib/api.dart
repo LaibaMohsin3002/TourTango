@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 // Define a base URL for your API (make sure it has the correct protocol)
-const String baseUrl = 'https://tt-api-one.vercel.app'; // Include the full URL with https
+const String baseUrl = 'https://tt-api-one.vercel.app';
 
 // Function to fetch home page data
 Future<Map<String, dynamic>> fetchHomePageDataFromAPI() async {
@@ -62,3 +62,24 @@ Future<Map<String, dynamic>> fetchHomePageDataFromAPI() async {
     return false; // Error
   }
 }
+
+Future<bool> signUp(String companyName, String website, String email, String password) async {
+    final url = Uri.parse("$baseUrl/company_signup");
+    final response = await http.post(
+      url,
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode({
+        "companyName": companyName,
+        "website": website,
+        "email": email,
+        "password": password,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      return true; // Sign-up successful
+    } else {
+      print('Error: ${response.body}');
+      return false; // Sign-up failed
+    }
+  }
