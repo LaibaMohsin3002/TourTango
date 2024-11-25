@@ -22,6 +22,7 @@ class _AddPackagePageState extends State<AddPackagePage> {
   final TextEditingController _guideIDController = TextEditingController();
   final TextEditingController _countryController = TextEditingController();
 
+//NEEDS FIXING
   void _submitForm() async {
     if (_formKey.currentState!.validate()) {
       // Call the API
