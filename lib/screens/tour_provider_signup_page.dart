@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../api.dart';
+import 'tour_provider_home_page.dart';
 
 class TourProviderSignupPage extends StatefulWidget {
   @override
@@ -25,6 +26,10 @@ void _signUp() async {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Sign-up successful')),
       );
+       Navigator.pushReplacement(
+    context,
+    MaterialPageRoute(builder: (context) => TourProviderHomePage()),
+  );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Sign-up failed')),

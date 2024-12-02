@@ -15,14 +15,17 @@ class _AddPackagePageState extends State<AddPackagePage> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _availabilityController = TextEditingController();
-  final TextEditingController _tourCompanyIDController = TextEditingController();
   final TextEditingController _startDateController = TextEditingController();
   final TextEditingController _endDateController = TextEditingController();
-  final TextEditingController _transportIDController = TextEditingController();
-  final TextEditingController _guideIDController = TextEditingController();
+  final TextEditingController _vehicleTypeController = TextEditingController();
+  final TextEditingController _driverNameController = TextEditingController();
+  final TextEditingController _pickupLocationController = TextEditingController();
+  final TextEditingController _companyNameController = TextEditingController();
+  final TextEditingController _websiteController = TextEditingController();
+  final TextEditingController _guideNameController = TextEditingController();
   final TextEditingController _countryController = TextEditingController();
 
-//NEEDS FIXING
+
   void _submitForm() async {
     if (_formKey.currentState!.validate()) {
       // Call the API
@@ -30,11 +33,14 @@ class _AddPackagePageState extends State<AddPackagePage> {
         name: _nameController.text,
         price: double.parse(_priceController.text),
         availability: _availabilityController.text,
-        tourCompanyID: int.parse(_tourCompanyIDController.text),
         startDate: _startDateController.text,
         endDate: _endDateController.text,
-        transportID: int.parse(_transportIDController.text),
-        guideID: int.parse(_guideIDController.text),
+        vehicleType: _vehicleTypeController.text,
+        driverName: _driverNameController.text,
+        pickupLocation:_pickupLocationController.text,
+        companyName:_companyNameController.text,
+        website:_websiteController.text,
+        guideName:_guideNameController.text,
         country: _countryController.text,
       );
 
@@ -80,12 +86,7 @@ class _AddPackagePageState extends State<AddPackagePage> {
                 validator: (value) =>
                     (value != 'Y' && value != 'N') ? 'Enter Y or N' : null,
               ),
-              TextFormField(
-                controller: _tourCompanyIDController,
-                decoration: InputDecoration(labelText: 'Tour Company ID'),
-                keyboardType: TextInputType.number,
-                validator: (value) => value!.isEmpty ? 'Enter Tour Company ID' : null,
-              ),
+
               TextFormField(
                 controller: _startDateController,
                 decoration: InputDecoration(labelText: 'Start Date (YYYY-MM-DD)'),
@@ -97,16 +98,40 @@ class _AddPackagePageState extends State<AddPackagePage> {
                 validator: (value) => value!.isEmpty ? 'Enter end date' : null,
               ),
               TextFormField(
-                controller: _transportIDController,
-                decoration: InputDecoration(labelText: 'Transport ID'),
+                controller: _vehicleTypeController,
+                decoration: InputDecoration(labelText: 'Vehicle Type'),
                 keyboardType: TextInputType.number,
-                validator: (value) => value!.isEmpty ? 'Enter Transport ID' : null,
+                validator: (value) => value!.isEmpty ? 'Enter vehicle type' : null,
               ),
               TextFormField(
-                controller: _guideIDController,
-                decoration: InputDecoration(labelText: 'Guide ID'),
+                controller: _driverNameController,
+                decoration: InputDecoration(labelText: 'Driver Name'),
                 keyboardType: TextInputType.number,
-                validator: (value) => value!.isEmpty ? 'Enter Guide ID' : null,
+                validator: (value) => value!.isEmpty ? 'Enter driver name' : null,
+              ),
+              TextFormField(
+                controller: _pickupLocationController,
+                decoration: InputDecoration(labelText: 'Pickup Location'),
+                keyboardType: TextInputType.number,
+                validator: (value) => value!.isEmpty ? 'Enter pickup location' : null,
+              ),
+              TextFormField(
+                controller: _companyNameController,
+                decoration: InputDecoration(labelText: 'Company name'),
+                keyboardType: TextInputType.number,
+                validator: (value) => value!.isEmpty ? 'Enter company name' : null,
+              ),
+              TextFormField(
+                controller: _websiteController,
+                decoration: InputDecoration(labelText: 'website'),
+                keyboardType: TextInputType.number,
+                validator: (value) => value!.isEmpty ? 'Enter company website' : null,
+              ),
+              TextFormField(
+                controller: _guideNameController,
+                decoration: InputDecoration(labelText: 'Guide name'),
+                keyboardType: TextInputType.number,
+                validator: (value) => value!.isEmpty ? 'Enter guide name' : null,
               ),
               TextFormField(
                 controller: _countryController,

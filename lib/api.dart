@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 // Define a base URL for your API (make sure it has the correct protocol)
-const String baseUrl = 'https://tt-api-one.vercel.app';
+const String baseUrl = 'http://10.0.2.2:3000';
 
 // Function to fetch home page data
 Future<Map<String, dynamic>> fetchHomePageDataFromAPI() async {
