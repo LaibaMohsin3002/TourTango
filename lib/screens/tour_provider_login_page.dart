@@ -243,7 +243,7 @@ class _TourProviderLoginPageState extends State<TourProviderLoginPage> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => TourProviderHomePage(),
+          builder: (context) => TourProviderHomePage(companyEmail: email),
         ),
       );
     }

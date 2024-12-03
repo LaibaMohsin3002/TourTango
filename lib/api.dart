@@ -197,6 +197,14 @@ Future<String> deletePackage(int packageId) async {
   }
 }
 
+Future<void> deleteItem(String endpoint, int id) async {
+  final url = '$baseUrl/$endpoint/$id';
+  final response = await http.delete(Uri.parse(url));
+  if (response.statusCode != 200) {
+    throw Exception('Failed to delete item');
+  }
+}
+
 // Add a new guide
 Future<bool> addGuide({
   required String name,
@@ -220,5 +228,15 @@ Future<bool> addGuide({
   } catch (e) {
     print('Exception: $e');
     return false; // Error
+  }
+}
+
+Future<Map<String, dynamic>> fetchCompanyDetails(String companyEmail) async {
+  final url = '$baseUrl/$companyEmail/details';
+  final response = await http.get(Uri.parse(url));
+  if (response.statusCode == 200) {
+    return json.decode(response.body);
+  } else {
+    throw Exception('Failed to load company details');
   }
 }

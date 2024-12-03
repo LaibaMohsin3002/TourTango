@@ -28,7 +28,7 @@ void _signUp() async {
       );
        Navigator.pushReplacement(
     context,
-    MaterialPageRoute(builder: (context) => TourProviderHomePage()),
+    MaterialPageRoute(builder: (context) => TourProviderHomePage(companyEmail: email)),
   );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
