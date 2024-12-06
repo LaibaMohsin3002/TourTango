@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "358524396809",
+    "project_id": "tourtango-e6192",
+    "storage_bucket": "tourtango-e6192.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:358524396809:android:7567767706ded6cef41fd8",
+        "android_client_info": {
+          "package_name": "com.example.tourtango"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDCFFlTdTojkQTdldJkJZBrAC0ZeQW0BJU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -6,7 +6,8 @@ class BookingConfirmationPage extends StatelessWidget {
   final String phone;
   final String packageName;
 
-  BookingConfirmationPage({
+  const BookingConfirmationPage({
+    super.key,
     required this.name,
     required this.email,
     required this.phone,
@@ -17,32 +18,32 @@ class BookingConfirmationPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Booking Confirmation'),
+        title: const Text('Booking Confirmation'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               'Booking Confirmed!',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Text('Name: $name'),
             Text('Email: $email'),
             Text('Phone: $phone'),
             Text('Package: $packageName'),
-            Spacer(),
+            const Spacer(),
             ElevatedButton(
               onPressed: () {
                 // Navigate back to home
                 Navigator.popUntil(context, (route) => route.isFirst);
               },
-              child: Text('Go to Home'),
               style: ElevatedButton.styleFrom(
-                minimumSize: Size(double.infinity, 50),
+                minimumSize: const Size(double.infinity, 50),
               ),
+              child: const Text('Go to Home'),
             ),
           ],
         ),

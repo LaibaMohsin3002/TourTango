@@ -5,7 +5,7 @@ import 'booking_confirmation_page.dart'; // Import Booking Confirmation Page
 class BookingFormPage extends StatefulWidget {
   final String packageName;
 
-  BookingFormPage({required this.packageName});
+  const BookingFormPage({super.key, required this.packageName});
 
   @override
   _BookingFormPageState createState() => _BookingFormPageState();
@@ -31,14 +31,14 @@ class _BookingFormPageState extends State<BookingFormPage> {
             children: [
               TextFormField(
                 controller: _nameController,
-                decoration: InputDecoration(labelText: 'Name'),
+                decoration: const InputDecoration(labelText: 'Name'),
                 validator: (value) =>
                     value!.isEmpty ? 'Please enter your name' : null,
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextFormField(
                 controller: _emailController,
-                decoration: InputDecoration(labelText: 'Email'),
+                decoration: const InputDecoration(labelText: 'Email'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter your email';
@@ -51,16 +51,16 @@ class _BookingFormPageState extends State<BookingFormPage> {
                   return null;
                 },
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextFormField(
                 controller: _phoneController,
-                decoration: InputDecoration(labelText: 'Phone Number'),
+                decoration: const InputDecoration(labelText: 'Phone Number'),
                 keyboardType: TextInputType.phone,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 validator: (value) =>
                     value!.isEmpty ? 'Please enter your phone number' : null,
               ),
-              Spacer(),
+              const Spacer(),
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState?.validate() ?? false) {
@@ -77,10 +77,10 @@ class _BookingFormPageState extends State<BookingFormPage> {
                     );
                   }
                 },
-                child: Text('Confirm Booking'),
                 style: ElevatedButton.styleFrom(
-                  minimumSize: Size(double.infinity, 50),
+                  minimumSize: const Size(double.infinity, 50),
                 ),
+                child: const Text('Confirm Booking'),
               ),
             ],
           ),

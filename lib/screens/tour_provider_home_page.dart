@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package_details_page.dart';
-import 'guides_page.dart';
-import 'add_package_page.dart';
 import 'package:tourtango/api.dart';
 
 // class TourProviderHomePage extends StatelessWidget {
@@ -87,11 +84,10 @@ import 'package:tourtango/api.dart';
 //   }
 // }
 
-
 class TourProviderHomePage extends StatefulWidget {
   final String companyEmail;
 
-  TourProviderHomePage({required this.companyEmail});
+  const TourProviderHomePage({super.key, required this.companyEmail});
 
   @override
   _TourProviderHomePageState createState() => _TourProviderHomePageState();
@@ -111,8 +107,8 @@ class _TourProviderHomePageState extends State<TourProviderHomePage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Update Item'),
-          content: TextField(
+          title: const Text('Update Item'),
+          content: const TextField(
             decoration: InputDecoration(hintText: 'Enter new details'),
           ),
           actions: [
@@ -121,7 +117,7 @@ class _TourProviderHomePageState extends State<TourProviderHomePage> {
                 // Call update function here
                 Navigator.pop(context);
               },
-              child: Text('Update'),
+              child: const Text('Update'),
             ),
           ],
         );
@@ -137,7 +133,7 @@ class _TourProviderHomePageState extends State<TourProviderHomePage> {
       });
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to delete item')),
+        const SnackBar(content: Text('Failed to delete item')),
       );
     }
   }
@@ -146,17 +142,17 @@ class _TourProviderHomePageState extends State<TourProviderHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Your Packages, Guides, and Transportation'),
+        title: const Text('Your Packages, Guides, and Transportation'),
       ),
       body: FutureBuilder<Map<String, dynamic>>(
         future: companyDetails,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text('No data found'));
+            return const Center(child: Text('No data found'));
           }
 
           final packages = snapshot.data!['packages'];
@@ -166,7 +162,8 @@ class _TourProviderHomePageState extends State<TourProviderHomePage> {
           return ListView(
             padding: const EdgeInsets.all(16.0),
             children: [
-              Text('Packages:', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              const Text('Packages:',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               ...packages.map((pkg) => ListTile(
                     title: Text(pkg['name']),
                     subtitle: Text('Price: ${pkg['price']}'),
@@ -174,35 +171,41 @@ class _TourProviderHomePageState extends State<TourProviderHomePage> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         IconButton(
-                          icon: Icon(Icons.edit),
-                          onPressed: () => _showUpdateDialog('packages', pkg['packageID']),
+                          icon: const Icon(Icons.edit),
+                          onPressed: () =>
+                              _showUpdateDialog('packages', pkg['packageID']),
                         ),
                         IconButton(
-                          icon: Icon(Icons.delete),
-                          onPressed: () => _deleteItem('packages', pkg['packageID']),
+                          icon: const Icon(Icons.delete),
+                          onPressed: () =>
+                              _deleteItem('packages', pkg['packageID']),
                         ),
                       ],
                     ),
                   )),
-              SizedBox(height: 20),
-              Text('Guides:', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 20),
+              const Text('Guides:',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               ...guides.map((guide) => ListTile(
                     title: Text(guide['name']),
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         IconButton(
-                          icon: Icon(Icons.edit),
-                          onPressed: () => _showUpdateDialog('guides', guide['guideID']),
+                          icon: const Icon(Icons.edit),
+                          onPressed: () =>
+                              _showUpdateDialog('guides', guide['guideID']),
                         ),
                         IconButton(
-                          icon: Icon(Icons.delete),
-                          onPressed: () => _deleteItem('guides', guide['guideID']),
+                          icon: const Icon(Icons.delete),
+                          onPressed: () =>
+                              _deleteItem('guides', guide['guideID']),
                         ),
                       ],
                     ),
                   )),
-              Text('Transportation:', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              const Text('Transportation:',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               ...transport.map((tp) => ListTile(
                     title: Text(tp['vehicleType']),
                     subtitle: Column(
@@ -216,17 +219,19 @@ class _TourProviderHomePageState extends State<TourProviderHomePage> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         IconButton(
-                          icon: Icon(Icons.edit),
-                          onPressed: () => _showUpdateDialog('transport', tp['transportID']),
+                          icon: const Icon(Icons.edit),
+                          onPressed: () =>
+                              _showUpdateDialog('transport', tp['transportID']),
                         ),
                         IconButton(
-                          icon: Icon(Icons.delete),
-                          onPressed: () => _deleteItem('transport', tp['transportID']),
+                          icon: const Icon(Icons.delete),
+                          onPressed: () =>
+                              _deleteItem('transport', tp['transportID']),
                         ),
                       ],
                     ),
                   )),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
             ],
           );
         },

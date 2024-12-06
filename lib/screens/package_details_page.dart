@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class PackageDetailsPage extends StatelessWidget {
   final String packageName;
 
-  PackageDetailsPage({required this.packageName});
+  PackageDetailsPage({super.key, required this.packageName});
 
   final List<String> customers = [
     'Customer A',
@@ -22,17 +22,17 @@ class PackageDetailsPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               'Package Details:',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Text(
               'Description of $packageName goes here...',
-              style: TextStyle(fontSize: 16),
+              style: const TextStyle(fontSize: 16),
             ),
-            SizedBox(height: 20),
-            Text(
+            const SizedBox(height: 20),
+            const Text(
               'Customers Opted:',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
