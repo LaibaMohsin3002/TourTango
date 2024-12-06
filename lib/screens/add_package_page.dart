@@ -1,5 +1,5 @@
 import 'dart:ffi';
-
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import '../api.dart'; 
 
@@ -24,6 +24,19 @@ class _AddPackagePageState extends State<AddPackagePage> {
   final TextEditingController _websiteController = TextEditingController();
   final TextEditingController _guideNameController = TextEditingController();
   final TextEditingController _countryController = TextEditingController();
+
+  Future<void> _pickDate(BuildContext context, TextEditingController controller) async {
+  DateTime? pickedDate = await showDatePicker(
+    context: context,
+    initialDate: DateTime.now(),
+    firstDate: DateTime(2024),
+    lastDate: DateTime(2100),
+  );
+  if (pickedDate != null) {
+    String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
+    controller.text = formattedDate;
+  }
+}
 
 
   void _submitForm() async {
@@ -89,13 +102,19 @@ class _AddPackagePageState extends State<AddPackagePage> {
 
               TextFormField(
                 controller: _startDateController,
-                decoration: InputDecoration(labelText: 'Start Date (YYYY-MM-DD)'),
-                validator: (value) => value!.isEmpty ? 'Enter start date' : null,
+                decoration: InputDecoration(labelText: 'Start Date'),
+                onTap: () async {
+                  FocusScope.of(context).requestFocus(FocusNode()); // Prevent keyboard from appearing
+                  await _pickDate(context, _startDateController);
+                },
               ),
               TextFormField(
                 controller: _endDateController,
-                decoration: InputDecoration(labelText: 'End Date (YYYY-MM-DD)'),
-                validator: (value) => value!.isEmpty ? 'Enter end date' : null,
+                decoration: InputDecoration(labelText: 'End Date'),
+                onTap: () async {
+                  FocusScope.of(context).requestFocus(FocusNode()); // Prevent keyboard from appearing
+                  await _pickDate(context, _endDateController);
+                },
               ),
               TextFormField(
                 controller: _vehicleTypeController,

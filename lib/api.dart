@@ -5,13 +5,13 @@ import 'package:http/http.dart' as http;
 const String baseUrl = 'http://10.0.2.2:3000';
 
 // Function to fetch home page data
-Future<Map<String, dynamic>> fetchHomePageDataFromAPI() async {
+Future<Map<String, dynamic>> fetchHomePageDataFromAPI(String customerEmail) async {
   try {
-    final response = await http.get(Uri.parse('$baseUrl/home'));
+    final response = await http.get(Uri.parse('$baseUrl/$customerEmail/home'));
 
     if (response.statusCode == 200) {
-      print('Response body: ${response.body}');  // Debugging the response
-      return json.decode(response.body); // Decode and return the response
+      print('Response body: ${response.body}');
+      return json.decode(response.body);
     } else {
       throw Exception('Failed to load home page data');
     }
@@ -120,7 +120,7 @@ Future<bool> addPackage({
       Uri.parse('$baseUrl/packages'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({
-        'name': name,
+        'packageName': name,
         'price': price,
         'availability': availability,
         'start_date': startDate,
@@ -163,39 +163,86 @@ Future<Map<String, dynamic>> getPackageDetails(int packageId) async {
   }
 }
 
-// Update a specific package
-Future<String> updatePackage(int packageId, Map<String, dynamic> updatedData) async {
-  try {
-    final response = await http.put(
-      Uri.parse('$baseUrl/packages/$packageId'),
-      headers: {'Content-Type': 'application/json'},
-      body: json.encode(updatedData),
-    );
+// // Update a specific package
+// Future<String> updatePackage(int packageId, Map<String, dynamic> updatedData) async {
+//   try {
+//     final response = await http.put(
+//       Uri.parse('$baseUrl/packages/$packageId'),
+//       headers: {'Content-Type': 'application/json'},
+//       body: json.encode(updatedData),
+//     );
     
-    if (response.statusCode == 200) {
-      return 'Package updated successfully';
-    } else {
-      throw Exception('Failed to update package');
-    }
-  } catch (error) {
-    throw Exception('Error updating package: $error');
+//     if (response.statusCode == 200) {
+//       return 'Package updated successfully';
+//     } else {
+//       throw Exception('Failed to update package');
+//     }
+//   } catch (error) {
+//     throw Exception('Error updating package: $error');
+//   }
+// }
+
+// Update a guide
+Future<void> updateGuide(int id, {String? name, String? availability}) async {
+  final url = Uri.parse('$baseUrl/guides/$id');
+  final body = {
+    if (name != null) 'guideName': name,
+    if (availability != null) 'guideAvailability': availability,
+  };
+  final response = await http.put(url, body: jsonEncode(body), headers: {'Content-Type': 'application/json'});
+
+  if (response.statusCode != 200) {
+    throw Exception('Failed to update guide: ${response.body}');
   }
 }
 
-// Delete a specific package
-Future<String> deletePackage(int packageId) async {
-  try {
-    final response = await http.delete(Uri.parse('$baseUrl/packages/$packageId'));
+// Update a transport
+Future<void> updateTransport(int id, {String? vehicleType, String? driverName, String? pickupLocation}) async {
+  final url = Uri.parse('$baseUrl/transport/$id');
+  final body = {
+    if (vehicleType != null) 'vehicleType': vehicleType,
+    if (driverName != null) 'driverName': driverName,
+    if (pickupLocation != null) 'pickupLocation': pickupLocation,
+  };
+  final response = await http.put(url, body: jsonEncode(body), headers: {'Content-Type': 'application/json'});
 
-    if (response.statusCode == 200) {
-      return 'Package deleted successfully';
-    } else {
-      throw Exception('Failed to delete package');
-    }
-  } catch (error) {
-    throw Exception('Error deleting package: $error');
+  if (response.statusCode != 200) {
+    throw Exception('Failed to update transport: ${response.body}');
   }
 }
+
+// Update a package
+Future<void> updatePackage(
+  int id, {
+  String? name,
+  String? availability,
+  String? guideID,
+  String? transportID,
+  String? startDate,
+  String? endDate,
+  String? country,
+  double? price,
+  String? customerLimit
+}) async {
+  final url = Uri.parse('$baseUrl/packages/$id');
+  final body = {
+    if (name != null) 'packageName': name,
+    if (availability != null) 'availability': availability,
+    if (guideID != null) 'guideID': guideID,
+    if (transportID != null) 'transportID': transportID,
+    if (startDate != null) 'start_date': startDate,
+    if (endDate != null) 'end_date': endDate,
+    if (country != null) 'country': country,
+    if (price != null) 'price': price,
+    if (customerLimit != null) 'price': customerLimit,
+  };
+  final response = await http.put(url, body: jsonEncode(body), headers: {'Content-Type': 'application/json'});
+
+  if (response.statusCode != 200) {
+    throw Exception('Failed to update package: ${response.body}');
+  }
+}
+
 
 Future<void> deleteItem(String endpoint, int id) async {
   final url = '$baseUrl/$endpoint/$id';
@@ -214,8 +261,8 @@ Future<bool> addGuide({
       Uri.parse('$baseUrl/guides'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({
-        'name': name,
-        'availability': availability,
+        'guideName': name,
+        'guideAvailability': availability,
       }),
     );
 
@@ -238,5 +285,15 @@ Future<Map<String, dynamic>> fetchCompanyDetails(String companyEmail) async {
     return json.decode(response.body);
   } else {
     throw Exception('Failed to load company details');
+  }
+}
+
+Future<Map<String, dynamic>> fetchRecord(String endpoint, int id) async {
+  final url = '$baseUrl/$endpoint/$id';
+  final response = await http.get(Uri.parse(url));
+  if (response.statusCode == 200) {
+    return json.decode(response.body);
+  } else {
+    throw Exception('Failed to fetch record');
   }
 }

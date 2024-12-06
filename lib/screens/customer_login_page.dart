@@ -153,10 +153,13 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
 
   void _login() {
     if (_formKey.currentState?.validate() ?? false) {
-      // If the form is valid, proceed with login logic
+      
+      final email = _emailController.text;
+      final password = _passwordController.text;
+
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => CustomerHomePage()),
+        MaterialPageRoute(builder: (context) => CustomerHomePage(customerEmail: email)),
       );
     } else {
       // If the form is invalid, show an error message (optional)

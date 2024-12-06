@@ -144,16 +144,24 @@ import 'booking_page.dart'; // Import Booking Page
 import 'customer_package_details.dart'; // Import Package Details Page
 import '../api.dart';
 
+
+
 class CustomerHomePage extends StatefulWidget {
+  final String customerEmail;
+
+  CustomerHomePage({required this.customerEmail});
+
   @override
   _CustomerHomePageState createState() => _CustomerHomePageState();
 }
+
 
 class _CustomerHomePageState extends State<CustomerHomePage> {
   final TextEditingController _searchController = TextEditingController();
   final GlobalKey _searchBarKey = GlobalKey(); // Key for the search bar
   List<dynamic> tourPackages = [];
   List<dynamic> topPackages = [];
+  List<dynamic> bookings = [];
   List<dynamic> filteredSuggestions = [];
   bool isLoading = true;
   bool showSuggestions = false; // Toggle for showing suggestions
@@ -162,16 +170,17 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
   @override
   void initState() {
     super.initState();
-    fetchHomePageData();
+    fetchHomePageData(widget.customerEmail);
   }
 
-  Future<void> fetchHomePageData() async {
+  Future<void> fetchHomePageData(String customerEmail) async {
     try {
-      final data = await fetchHomePageDataFromAPI(); // API function
+      final data = await fetchHomePageDataFromAPI(customerEmail); // API function
       if (data != null) {
         setState(() {
           tourPackages = data['tourPackages'] ?? [];
           topPackages = data['topPackages'] ?? [];
+          bookings = data['bookings'] ?? [];
           isLoading = false;
         });
       } else {
@@ -199,7 +208,7 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
     setState(() {
       filteredSuggestions = tourPackages
           .where((package) =>
-              package['name'].toString().toLowerCase().contains(query.toLowerCase()))
+              package['packageName'].toString().toLowerCase().contains(query.toLowerCase()))
           .toList();
       showSuggestions = true; // Show suggestions when input is not empty
     });
@@ -218,7 +227,7 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
 
   void onSuggestionSelected(dynamic package) {
     setState(() {
-      _searchController.text = package['name']; // Update the search bar text
+      _searchController.text = package['packageName']; // Update the search bar text
       showSuggestions = false; // Hide suggestions
     });
 
@@ -227,7 +236,7 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
       context,
       MaterialPageRoute(
         builder: (context) => PackageDetailsPage(
-          packageName: package['name'],
+          packageName: package['packageName'],
         ),
       ),
     );
@@ -338,7 +347,7 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => PackageDetailsPage(
-                                      packageName: package['name'],
+                                      packageName: package['packageName'],
                                     ),
                                   ),
                                 );
@@ -397,7 +406,7 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
                         itemBuilder: (context, index) {
                           final suggestion = filteredSuggestions[index];
                           return ListTile(
-                            title: Text(suggestion['name']),
+                            title: Text(suggestion['packageName']),
                             onTap: () => onSuggestionSelected(suggestion),
                           );
                         },
