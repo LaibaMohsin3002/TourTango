@@ -33,6 +33,12 @@ class _UpdatePackagePageState extends State<UpdatePackagePage> {
   late List<dynamic> guides;
   late List<dynamic> transport;
 
+  late List<dynamic> flights = [];
+
+  List<String> selectedFlightIDs = [];
+  bool isLoadingFlights = false;
+  int currentPage = 1;
+
   @override
   void initState() {
     super.initState();
@@ -78,6 +84,86 @@ class _UpdatePackagePageState extends State<UpdatePackagePage> {
     }
   }
 
+Future<void> _fetchFlights(int page) async {
+  try {
+    setState(() {
+      isLoadingFlights = true;
+    });
+    final List<dynamic> response = await getFlights(); // Fetch flights via API
+    setState(() {
+      flights = response; // Directly assign the list
+      isLoadingFlights = false;
+    });
+  } catch (e) {
+    setState(() {
+      isLoadingFlights = false;
+    });
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Error fetching flights: $e')),
+    );
+  }
+}
+
+
+  Future<void> _showFlightSelectionPopup() async {
+    await _fetchFlights(currentPage);
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Select Flights'),
+          content: SizedBox(
+            width: MediaQuery.of(context).size.width * 0.8,
+            height: 400, // Adjust height as needed
+            child: isLoadingFlights
+                ? Center(child: CircularProgressIndicator())
+                : ListView.builder(
+                    itemCount: flights.length,
+                    itemBuilder: (context, index) {
+                      final flight = flights[index];
+                      final flightID = flight['flightID'].toString();
+                      final isSelected = selectedFlightIDs.contains(flightID);
+
+                      return ListTile(
+                        title: Text(flight['flightCompany']),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Flight Company: ${flight['flightCompany']}'),
+                            Text('Departure Time: ${flight['departureTime']}'),
+                            Text('Arrival Time: ${flight['arrivalTime']}'),
+                          ],
+                        ),
+                        trailing: Checkbox(
+                          value: isSelected,
+                          onChanged: (value) {
+                            setState(() {
+                              if (value == true) {
+                                selectedFlightIDs.add(flightID);
+                              } else {
+                                selectedFlightIDs.remove(flightID);
+                              }
+                            });
+                          },
+                        ),
+                      );
+                    },
+                  ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Close the dialog
+              },
+              child: Text('Done'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   Future<void> _showScrollablePopup(String type) async {
     var selectedList = type == 'guides' ? guides : transport;
     showDialog(
@@ -120,6 +206,12 @@ class _UpdatePackagePageState extends State<UpdatePackagePage> {
   }
 
   Future<void> _updatePackage() async {
+    if (selectedFlightIDs.isEmpty) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Please select at least one flight')),
+    );
+    return;
+  }
     try {
       await updatePackage(
         widget.packageId,
@@ -131,7 +223,8 @@ class _UpdatePackagePageState extends State<UpdatePackagePage> {
         endDate: _endDateController.text,
         country: _countryController.text,
         price: double.parse(_priceController.text),
-        customerLimit: _customerLimitController.text
+        customerLimit: _customerLimitController.text,
+        flightIDs: selectedFlightIDs
       );
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Package updated successfully')),
@@ -284,6 +377,24 @@ class _UpdatePackagePageState extends State<UpdatePackagePage> {
                         controller: _vehicleTypeController,
                         decoration: InputDecoration(
                           labelText: 'Vehicle Type',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 16),
+                  Text(
+                    'Select Flights',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  GestureDetector(
+                    onTap: _showFlightSelectionPopup,
+                    child: AbsorbPointer(
+                      child: TextField(
+                        readOnly: true,
+                        decoration: InputDecoration(
+                          labelText:
+                              'Selected Flights (${selectedFlightIDs.length})',
                           border: OutlineInputBorder(),
                         ),
                       ),

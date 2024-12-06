@@ -103,17 +103,15 @@ Future<List<dynamic>> getPackages() async {
 // Add a new package
 Future<bool> addPackage({
   required String name,
-  required double price,
-  required String availability,
+  required String? availability,
+  required String guideID,
+  required String transportID,
   required String startDate,
   required String endDate,
-  required String vehicleType,
-  required String driverName,
-  required String pickupLocation,
-  required String companyName,
-  required String website,
-  required String guideName,
   required String country,
+  required double price,
+  required String customerLimit,
+  required List<String> flightIDs
 }) async {
   try {
     final response = await http.post(
@@ -126,12 +124,7 @@ Future<bool> addPackage({
         'start_date': startDate,
         'end_date': endDate,
         'country': country,
-        'vehicleType': vehicleType,
-        'driverName': driverName,
-        'pickupLocation': pickupLocation,
-        'companyName': companyName,
-        'guideName': guideName,
-        'website': website,
+        
       }),
     );
 
@@ -222,7 +215,8 @@ Future<void> updatePackage(
   String? endDate,
   String? country,
   double? price,
-  String? customerLimit
+  String? customerLimit,
+  List<String>? flightIDs
 }) async {
   final url = Uri.parse('$baseUrl/packages/$id');
   final body = {
@@ -235,6 +229,7 @@ Future<void> updatePackage(
     if (country != null) 'country': country,
     if (price != null) 'price': price,
     if (customerLimit != null) 'price': customerLimit,
+    'selectedFlightIds': flightIDs
   };
   final response = await http.put(url, body: jsonEncode(body), headers: {'Content-Type': 'application/json'});
 
@@ -295,5 +290,15 @@ Future<Map<String, dynamic>> fetchRecord(String endpoint, int id) async {
     return json.decode(response.body);
   } else {
     throw Exception('Failed to fetch record');
+  }
+}
+
+Future<List<dynamic>> getFlights() async {
+  final url = '$baseUrl/flights';
+  final response = await http.get(Uri.parse(url));
+  if (response.statusCode == 200) {
+    return json.decode(response.body) as List<dynamic>;
+  } else {
+    throw Exception('Failed to fetch flights');
   }
 }

@@ -42,12 +42,13 @@ class _CustomerSignupPageState extends State<CustomerSignupPage> {
 
   void _signUp() {
     if (_formKey.currentState?.validate() ?? false) {
+      final email = _emailController.text;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Sign-up successful!')),
       );
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => CustomerHomePage()),
+        MaterialPageRoute(builder: (context) => CustomerHomePage(customerEmail: email )),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(

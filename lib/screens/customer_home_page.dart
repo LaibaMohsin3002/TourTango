@@ -285,6 +285,7 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
   final TextEditingController _searchController = TextEditingController();
   List<Package> tourPackages = [];
   List<Package> topPackages = [];
+  List<dynamic> bookings = [];
   List<Package> filteredSuggestions = [];
   bool isLoading = true;
   bool showSuggestions = false;
@@ -298,7 +299,7 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
 
   Future<void> fetchHomePageData(String customerEmail) async {
     try {
-      final data = await fetchHomePageDataFromAPI();
+      final data = await fetchHomePageDataFromAPI(customerEmail);
       setState(() {
         tourPackages = (data['tourPackages'] as List)
             .map((e) => Package.fromJson(e))
@@ -306,6 +307,7 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
         topPackages = (data['topPackages'] as List)
             .map((e) => Package.fromJson(e))
             .toList();
+        bookings = data['bookings'] ?? [];
         isLoading = false;
       });
     } catch (error) {

@@ -471,18 +471,22 @@ showDialog(
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => AddPackagePage()),
-                      );
+                        MaterialPageRoute(builder: (context) => AddPackagePage(companyEmail: widget.companyEmail),
+                      ));
                     },
                   ),
                 ),
               ...packages.map((pkg) => ListTile(
-                    title: Text(pkg['name']),
+                    title: Text(pkg['packageName']),
                     subtitle:  Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text('Price: ${pkg['price']}'),
                         Text('Availability: ${pkg['availability']}'),
+                        Text('Start Date: ${pkg['start_date']}'),
+                        Text('End Date: ${pkg['end_date']}'),
+                        Text('Guide Name: ${pkg['guideName']}'),
+
                       ],
                     ),
                     trailing: Row(
@@ -510,10 +514,10 @@ showDialog(
                   trailing: IconButton(
                     icon: Icon(Icons.add, color: Colors.blue),
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => AddPackagePage()),
-                      );
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(builder: (context) => AddPackagePage()),
+                      // );
                     },
                   ),
                 ),
@@ -543,10 +547,10 @@ showDialog(
                   trailing: IconButton(
                     icon: Icon(Icons.add, color: Colors.blue),
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => AddPackagePage()),
-                      );
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(builder: (context) => AddPackagePage()),
+                      // );
                     },
                   ),
                 ),
