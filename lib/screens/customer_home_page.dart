@@ -1,52 +1,117 @@
 // import 'package:flutter/material.dart';
-// import 'profile_page.dart'; // Import Profile Page
-// import 'booking_page.dart'; // Import Booking Page
+// import 'package:carousel_slider/carousel_slider.dart';
+// import 'package_details_page.dart';
+// import 'profile_page.dart';
+// import 'booking_page.dart';
+// import 'customer_package_details.dart';
+// import '../widgets/search_bar.dart';
+// import '../widgets/carousel.dart';
+// import '../widgets/packages.dart';
+// import '../widgets/location.dart'; // Added LocationCard widget
+// import '../widgets/tourplaces.dart'; // Added TouristPlaces widget
+// import '../widgets/recommendations.dart'; // Add the recommended places widget
+// import '../api.dart';
 
 // class CustomerHomePage extends StatefulWidget {
+//   const CustomerHomePage({super.key});
+
 //   @override
 //   _CustomerHomePageState createState() => _CustomerHomePageState();
 // }
 
 // class _CustomerHomePageState extends State<CustomerHomePage> {
 //   final TextEditingController _searchController = TextEditingController();
-//   List<String> tourPackages = [
-//     'Beach Paradise',
-//     'Mountain Adventure',
-//     'Safari Expedition',
-//     'City Tour',
-//     'Cultural Experience'
-//   ];
-
-//   List<String> filteredTourPackages = [];
+//   List<Package> tourPackages = [];
+//   List<Package> topPackages = [];
+//   List<Package> filteredSuggestions = [];
+//   bool isLoading = true;
+//   bool showSuggestions = false;
+//   final double _suggestionBoxTop = 0.0;
 
 //   @override
 //   void initState() {
 //     super.initState();
-//     filteredTourPackages = tourPackages;
+//     fetchHomePageData();
 //   }
 
-//   void _filterPackages(String query) {
+//   Future<void> fetchHomePageData() async {
+//     try {
+//       final data = await fetchHomePageDataFromAPI();
+//       setState(() {
+//         tourPackages = (data['tourPackages'] as List)
+//             .map((e) => Package.fromJson(e))
+//             .toList();
+//         topPackages = (data['topPackages'] as List)
+//             .map((e) => Package.fromJson(e))
+//             .toList();
+//         isLoading = false;
+//       });
+//     } catch (error) {
+//       setState(() {
+//         isLoading = false;
+//       });
+//       ScaffoldMessenger.of(context).showSnackBar(
+//         SnackBar(content: Text('Error fetching packages: $error')),
+//       );
+//     }
+//   }
+
+//   void onSearchChanged(String query) {
+//     if (query.isEmpty) {
+//       setState(() {
+//         showSuggestions = false;
+//         filteredSuggestions = [];
+//       });
+//       return;
+//     }
+
 //     setState(() {
-//       filteredTourPackages = tourPackages
-//           .where(
-//               (package) => package.toLowerCase().contains(query.toLowerCase()))
+//       filteredSuggestions = tourPackages
+//           .where((package) =>
+//               package.name.toLowerCase().contains(query.toLowerCase()))
 //           .toList();
+//       showSuggestions = true;
 //     });
+//   }
+
+//   void onSuggestionSelected(Package package) {
+//     setState(() {
+//       _searchController.text = package.name;
+//       showSuggestions = false;
+//     });
+
+//     Navigator.push(
+//       context,
+//       MaterialPageRoute(
+//         builder: (context) => PackageDetailsPage(packageName: package.name),
+//       ),
+//     );
 //   }
 
 //   @override
 //   Widget build(BuildContext context) {
 //     return Scaffold(
 //       appBar: AppBar(
-//         title: Text('Welcome, Customer'),
-//         backgroundColor: Colors.blue,
-//         actions: [
-//           IconButton(
-//             icon: Icon(Icons.exit_to_app),
-//             onPressed: () {
-//               // Sign out logic here
-//               Navigator.pop(context);
-//             },
+//         elevation: 0,
+//         backgroundColor: Colors.transparent,
+//         foregroundColor: Colors.black,
+//         title: Column(
+//           crossAxisAlignment: CrossAxisAlignment.start,
+//           children: [
+//             const Text("Good Morning"),
+//             Text(
+//               "Customer Name", // Replace with dynamic username if needed
+//               style: Theme.of(context).textTheme.labelMedium,
+//             ),
+//           ],
+//         ),
+//         actions: const [
+//           Padding(
+//             padding: EdgeInsets.only(left: 8.0, right: 12),
+//             child: IconButton(
+//               icon: Icon(Icons.notifications_none),
+//               onPressed: null,
+//             ),
 //           ),
 //         ],
 //       ),
@@ -54,7 +119,7 @@
 //         child: ListView(
 //           padding: EdgeInsets.zero,
 //           children: [
-//             DrawerHeader(
+//             const DrawerHeader(
 //               decoration: BoxDecoration(
 //                 color: Colors.blue,
 //               ),
@@ -64,74 +129,127 @@
 //               ),
 //             ),
 //             ListTile(
-//               title: Text('Profile'),
+//               title: const Text('Profile'),
 //               onTap: () {
-//                 // Navigate to Profile Page
 //                 Navigator.push(
 //                   context,
-//                   MaterialPageRoute(builder: (context) => ProfilePage()),
+//                   MaterialPageRoute(builder: (context) => const ProfilePage()),
 //                 );
 //               },
 //             ),
 //             ListTile(
-//               title: Text('Bookings'),
+//               title: const Text('Bookings'),
 //               onTap: () {
-//                 // Navigate to Booking Page
 //                 Navigator.push(
 //                   context,
-//                   MaterialPageRoute(builder: (context) => BookingPage()),
+//                   MaterialPageRoute(builder: (context) => const BookingPage()),
 //                 );
 //               },
 //             ),
 //             ListTile(
-//               title: Text('Sign Out'),
+//               title: const Text('Sign Out'),
 //               onTap: () {
-//                 // Sign out logic
-//                 Navigator.pop(context); // Close the drawer
-//                 Navigator.pop(context); // Navigate back to start page
+//                 Navigator.pop(context);
+//                 Navigator.pop(context);
 //               },
 //             ),
 //           ],
 //         ),
 //       ),
-//       body: Padding(
-//         padding: const EdgeInsets.all(16.0),
-//         child: Column(
-//           crossAxisAlignment: CrossAxisAlignment.start,
-//           children: [
-//             Text(
-//               'Top 5 Hot Tour Packages',
-//               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-//             ),
-//             SizedBox(height: 16),
-//             TextField(
-//               controller: _searchController,
-//               decoration: InputDecoration(
-//                 hintText: 'Search tour packages...',
-//                 border: OutlineInputBorder(),
-//                 prefixIcon: Icon(Icons.search),
-//               ),
-//               onChanged: _filterPackages,
-//             ),
-//             SizedBox(height: 16),
-//             Expanded(
-//               child: ListView.builder(
-//                 itemCount: filteredTourPackages.length,
-//                 itemBuilder: (context, index) {
-//                   return Card(
-//                     margin: EdgeInsets.symmetric(vertical: 8),
-//                     child: ListTile(
-//                       title: Text(filteredTourPackages[index]),
-//                       onTap: () {
-//                         // Handle tour package selection
-//                       },
+//       body: isLoading
+//           ? const Center(child: CircularProgressIndicator())
+//           : ListView(
+//               padding: const EdgeInsets.all(16),
+//               children: [
+//                 const LocationCard(), // Location card
+//                 const SizedBox(height: 20),
+//                 const Text(
+//                   'Top 5 Hot Tour Packages',
+//                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+//                 ),
+//                 const SizedBox(height: 16),
+//                 if (topPackages.isNotEmpty)
+//                   CarouselSliderWidget(
+//                     packages: topPackages,
+//                     onPackageTap: (package) {
+//                       Navigator.push(
+//                         context,
+//                         MaterialPageRoute(
+//                           builder: (context) =>
+//                               PackageDetailsPage(packageName: package),
+//                         ),
+//                       );
+//                     },
+//                   ),
+//                 const SizedBox(height: 20),
+//                 const Text(
+//                   "Tourist Places",
+//                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+//                 ),
+//                 const SizedBox(height: 10),
+//                 const TouristPlaces(), // Tourist Places widget
+
+//                 const SizedBox(height: 20),
+//                 const Text(
+//                   "Recommended Places",
+//                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+//                 ),
+//                 const SizedBox(height: 10),
+//                 const RecommendedPlaces(), // Recommendation widget
+
+//                 if (showSuggestions)
+//                   Positioned(
+//                     top: _suggestionBoxTop,
+//                     left: 16,
+//                     right: 16,
+//                     child: Material(
+//                       elevation: 4,
+//                       borderRadius: BorderRadius.circular(8),
+//                       child: ListView.builder(
+//                         shrinkWrap: true,
+//                         itemCount: filteredSuggestions.length,
+//                         itemBuilder: (context, index) {
+//                           final suggestion = filteredSuggestions[index];
+//                           return ListTile(
+//                             title: Text(suggestion.name),
+//                             onTap: () => onSuggestionSelected(suggestion),
+//                           );
+//                         },
+//                       ),
 //                     ),
-//                   );
-//                 },
-//               ),
+//                   ),
+//               ],
 //             ),
-//           ],
-//         ),
+//       bottomNavigationBar: BottomNavigationBar(
+//         items: const [
+//           BottomNavigationBarItem(
+//             icon: Icon(Icons.home),
+//             label: 'Home',
+//           ),
+//           BottomNavigationBarItem(
+//             icon: Icon(Icons.bookmark),
+//             label: 'Bookings',
+//           ),
+//           BottomNavigationBarItem(
+//             icon: Icon(Icons.account_circle),
+//             label: 'Profile',
+//           ),
+//         ],
+//         onTap: (index) {
+//           if (index == 0) {
+//             // Navigate to Home page
+//           } else if (index == 1) {
+//             Navigator.push(
+//               context,
+//               MaterialPageRoute(builder: (context) => const BookingPage()),
+//             );
+//           } else if (index == 2) {
+//             Navigator.push(
+//               context,
+//               MaterialPageRoute(builder: (context) => const ProfilePage()),
+//             );
+//           }
+//         },
 //       ),
 //     );
 //   }
@@ -139,9 +257,16 @@
 
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'profile_page.dart'; // Import Profile Page
-import 'booking_page.dart'; // Import Booking Page
-import 'customer_package_details.dart'; // Import Package Details Page
+import 'package_details_page.dart';
+import 'profile_page.dart';
+import 'booking_page.dart';
+import 'customer_package_details.dart';
+import '../widgets/search_bar.dart';
+import '../widgets/carousel.dart';
+import '../widgets/packages.dart';
+import '../widgets/location.dart';
+import '../widgets/tourplaces.dart';
+import '../widgets/recommendations.dart'; // Add the recommended places widget
 import '../api.dart';
 
 
@@ -158,14 +283,12 @@ class CustomerHomePage extends StatefulWidget {
 
 class _CustomerHomePageState extends State<CustomerHomePage> {
   final TextEditingController _searchController = TextEditingController();
-  final GlobalKey _searchBarKey = GlobalKey(); // Key for the search bar
-  List<dynamic> tourPackages = [];
-  List<dynamic> topPackages = [];
-  List<dynamic> bookings = [];
-  List<dynamic> filteredSuggestions = [];
+  List<Package> tourPackages = [];
+  List<Package> topPackages = [];
+  List<Package> filteredSuggestions = [];
   bool isLoading = true;
-  bool showSuggestions = false; // Toggle for showing suggestions
-  double _suggestionBoxTop = 0.0; // Dynamic position for the suggestion box
+  bool showSuggestions = false;
+  final double _suggestionBoxTop = 0.0;
 
   @override
   void initState() {
@@ -175,17 +298,16 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
 
   Future<void> fetchHomePageData(String customerEmail) async {
     try {
-      final data = await fetchHomePageDataFromAPI(customerEmail); // API function
-      if (data != null) {
-        setState(() {
-          tourPackages = data['tourPackages'] ?? [];
-          topPackages = data['topPackages'] ?? [];
-          bookings = data['bookings'] ?? [];
-          isLoading = false;
-        });
-      } else {
-        print('Data is null or empty');
-      }
+      final data = await fetchHomePageDataFromAPI();
+      setState(() {
+        tourPackages = (data['tourPackages'] as List)
+            .map((e) => Package.fromJson(e))
+            .toList();
+        topPackages = (data['topPackages'] as List)
+            .map((e) => Package.fromJson(e))
+            .toList();
+        isLoading = false;
+      });
     } catch (error) {
       setState(() {
         isLoading = false;
@@ -199,7 +321,7 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
   void onSearchChanged(String query) {
     if (query.isEmpty) {
       setState(() {
-        showSuggestions = false; // Hide suggestions if input is empty
+        showSuggestions = false;
         filteredSuggestions = [];
       });
       return;
@@ -208,36 +330,22 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
     setState(() {
       filteredSuggestions = tourPackages
           .where((package) =>
-              package['packageName'].toString().toLowerCase().contains(query.toLowerCase()))
+              package.name.toLowerCase().contains(query.toLowerCase()))
           .toList();
-      showSuggestions = true; // Show suggestions when input is not empty
-    });
-
-    // Recalculate the suggestion box position
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final searchBox = _searchBarKey.currentContext?.findRenderObject() as RenderBox?;
-      if (searchBox != null) {
-        final searchBoxOffset = searchBox.localToGlobal(Offset.zero);
-        setState(() {
-          _suggestionBoxTop = searchBoxOffset.dy + searchBox.size.height; // Directly below the search bar
-        });
-      }
+      showSuggestions = true;
     });
   }
 
-  void onSuggestionSelected(dynamic package) {
+  void onSuggestionSelected(Package package) {
     setState(() {
-      _searchController.text = package['packageName']; // Update the search bar text
-      showSuggestions = false; // Hide suggestions
+      _searchController.text = package.name;
+      showSuggestions = false;
     });
 
-    // Navigate to the package details page
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => PackageDetailsPage(
-          packageName: package['packageName'],
-        ),
+        builder: (context) => PackageDetailsPage(packageName: package.name),
       ),
     );
   }
@@ -246,14 +354,26 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Welcome, Customer'),
-        backgroundColor: Colors.blue,
-        actions: [
-          IconButton(
-            icon: Icon(Icons.exit_to_app),
-            onPressed: () {
-              Navigator.pop(context);
-            },
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        foregroundColor: Colors.black,
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text("Good Morning"),
+            Text(
+              "Customer Name", // Replace with dynamic username if needed
+              style: Theme.of(context).textTheme.labelMedium,
+            ),
+          ],
+        ),
+        actions: const [
+          Padding(
+            padding: EdgeInsets.only(left: 8.0, right: 12),
+            child: IconButton(
+              icon: Icon(Icons.notifications_none),
+              onPressed: null,
+            ),
           ),
         ],
       ),
@@ -261,7 +381,7 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-            DrawerHeader(
+            const DrawerHeader(
               decoration: BoxDecoration(
                 color: Colors.blue,
               ),
@@ -271,25 +391,25 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
               ),
             ),
             ListTile(
-              title: Text('Profile'),
+              title: const Text('Profile'),
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ProfilePage()),
+                  MaterialPageRoute(builder: (context) => const ProfilePage()),
                 );
               },
             ),
             ListTile(
-              title: Text('Bookings'),
+              title: const Text('Bookings'),
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => BookingPage()),
+                  MaterialPageRoute(builder: (context) => const BookingPage()),
                 );
               },
             ),
             ListTile(
-              title: Text('Sign Out'),
+              title: const Text('Sign Out'),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.pop(context);
@@ -299,102 +419,57 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
         ),
       ),
       body: isLoading
-          ? Center(child: CircularProgressIndicator())
-          : Stack(
+          ? const Center(child: CircularProgressIndicator())
+          : ListView(
+              padding: const EdgeInsets.all(16),
               children: [
-                // Main Content
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      
-                      SizedBox(height: 16),
-
-                      // Search Bar
-                      TextField(
-                        key: _searchBarKey, // Assign key to search bar
-                        controller: _searchController,
-                        onChanged: onSearchChanged,
-                        decoration: InputDecoration(
-                          hintText: 'Search tour packages...',
-                          border: OutlineInputBorder(),
-                          prefixIcon: Icon(Icons.search),
+                const LocationCard(),
+                const SizedBox(height: 20),
+                const Text(
+                  'Top 5 Hot Tour Packages',
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 16),
+                if (topPackages.isNotEmpty)
+                  CarouselSliderWidget(
+                    packages: topPackages,
+                    onPackageTap: (package) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              PackageDetailsPage(packageName: package),
                         ),
-                      ),
-
-                      Text(
-                        'Top 5 Hot Tour Packages',
-                        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(height: 16),
-
-                      // Carousel Slider for Top Packages
-                      if (topPackages.isNotEmpty)
-                        CarouselSlider.builder(
-                          itemCount: topPackages.length,
-                          options: CarouselOptions(
-                            height: 400,
-                            enlargeCenterPage: true,
-                            autoPlay: true,
-                            viewportFraction: 0.8,
-                          ),
-                          itemBuilder: (context, index, realIndex) {
-                            final package = topPackages[index];
-                            return GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => PackageDetailsPage(
-                                      packageName: package['packageName'],
-                                    ),
-                                  ),
-                                );
-                              },
-                              child: Stack(
-                                children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(12),
-                                      // image: DecorationImage(
-                                      //   image: NetworkImage(package['image_url']),
-                                      //   fit: BoxFit.cover,
-                                      // ),
-                                    ),
-                                  ),
-                                  Positioned(
-                                    bottom: 16,
-                                    left: 16,
-                                    child: Text(
-                                      package['name'],
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.bold,
-                                        shadows: [
-                                          Shadow(
-                                            blurRadius: 6.0,
-                                            color: Colors.black.withOpacity(0.8),
-                                            offset: Offset(2.0, 2.0),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                        ),
-                    ],
+                      );
+                    },
+                  ),
+                const SizedBox(height: 20),
+                const Text(
+                  "Tourist Places",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 10),
+                const TouristPlaces(),
+                const SizedBox(height: 20),
+                const Text(
+                  "Recommended Places",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 10),
+                // Scrollable recommended places
+                SizedBox(
+                  height: 250, // Adjust height for scrollable area
+                  child: ListView.builder(
+                    itemCount:
+                        10, // Show the first 10 places, or adjust as needed
+                    itemBuilder: (context, index) {
+                      return const RecommendedPlaces(); // Update with dynamic content
+                    },
                   ),
                 ),
-
-                // Search Suggestions
                 if (showSuggestions)
                   Positioned(
-                    top: _suggestionBoxTop, // Directly below the search bar
+                    top: _suggestionBoxTop,
                     left: 16,
                     right: 16,
                     child: Material(
@@ -406,7 +481,7 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
                         itemBuilder: (context, index) {
                           final suggestion = filteredSuggestions[index];
                           return ListTile(
-                            title: Text(suggestion['packageName']),
+                            title: Text(suggestion.name),
                             onTap: () => onSuggestionSelected(suggestion),
                           );
                         },
@@ -415,6 +490,37 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
                   ),
               ],
             ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.bookmark),
+            label: 'Bookings',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.account_circle),
+            label: 'Profile',
+          ),
+        ],
+        onTap: (index) {
+          if (index == 0) {
+            // Navigate to Home page
+          } else if (index == 1) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const BookingPage()),
+            );
+          } else if (index == 2) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const ProfilePage()),
+            );
+          }
+        },
+      ),
     );
   }
 }

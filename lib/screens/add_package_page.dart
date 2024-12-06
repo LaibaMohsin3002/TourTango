@@ -1,9 +1,11 @@
 import 'dart:ffi';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
-import '../api.dart'; 
+import '../api.dart';
 
 class AddPackagePage extends StatefulWidget {
+  const AddPackagePage({super.key});
+
   @override
   _AddPackagePageState createState() => _AddPackagePageState();
 }
@@ -19,7 +21,8 @@ class _AddPackagePageState extends State<AddPackagePage> {
   final TextEditingController _endDateController = TextEditingController();
   final TextEditingController _vehicleTypeController = TextEditingController();
   final TextEditingController _driverNameController = TextEditingController();
-  final TextEditingController _pickupLocationController = TextEditingController();
+  final TextEditingController _pickupLocationController =
+      TextEditingController();
   final TextEditingController _companyNameController = TextEditingController();
   final TextEditingController _websiteController = TextEditingController();
   final TextEditingController _guideNameController = TextEditingController();
@@ -50,20 +53,20 @@ class _AddPackagePageState extends State<AddPackagePage> {
         endDate: _endDateController.text,
         vehicleType: _vehicleTypeController.text,
         driverName: _driverNameController.text,
-        pickupLocation:_pickupLocationController.text,
-        companyName:_companyNameController.text,
-        website:_websiteController.text,
-        guideName:_guideNameController.text,
+        pickupLocation: _pickupLocationController.text,
+        companyName: _companyNameController.text,
+        website: _websiteController.text,
+        guideName: _guideNameController.text,
         country: _countryController.text,
       );
 
       // Show success or failure message
       if (success) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text('Package added successfully!'),
         ));
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text('Failed to add package.'),
         ));
       }
@@ -74,7 +77,7 @@ class _AddPackagePageState extends State<AddPackagePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Package'),
+        title: const Text('Add Package'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -84,22 +87,24 @@ class _AddPackagePageState extends State<AddPackagePage> {
             children: [
               TextFormField(
                 controller: _nameController,
-                decoration: InputDecoration(labelText: 'Name'),
-                validator: (value) => value!.isEmpty ? 'Enter package name' : null,
+                decoration: const InputDecoration(labelText: 'Name'),
+                validator: (value) =>
+                    value!.isEmpty ? 'Enter package name' : null,
               ),
               TextFormField(
                 controller: _priceController,
-                decoration: InputDecoration(labelText: 'Price'),
+                decoration: const InputDecoration(labelText: 'Price'),
                 keyboardType: TextInputType.number,
-                validator: (value) => value!.isEmpty ? 'Enter package price' : null,
+                validator: (value) =>
+                    value!.isEmpty ? 'Enter package price' : null,
               ),
               TextFormField(
                 controller: _availabilityController,
-                decoration: InputDecoration(labelText: 'Availability (Y/N)'),
+                decoration:
+                    const InputDecoration(labelText: 'Availability (Y/N)'),
                 validator: (value) =>
                     (value != 'Y' && value != 'N') ? 'Enter Y or N' : null,
               ),
-
               TextFormField(
                 controller: _startDateController,
                 decoration: InputDecoration(labelText: 'Start Date'),
@@ -118,49 +123,55 @@ class _AddPackagePageState extends State<AddPackagePage> {
               ),
               TextFormField(
                 controller: _vehicleTypeController,
-                decoration: InputDecoration(labelText: 'Vehicle Type'),
+                decoration: const InputDecoration(labelText: 'Vehicle Type'),
                 keyboardType: TextInputType.number,
-                validator: (value) => value!.isEmpty ? 'Enter vehicle type' : null,
+                validator: (value) =>
+                    value!.isEmpty ? 'Enter vehicle type' : null,
               ),
               TextFormField(
                 controller: _driverNameController,
-                decoration: InputDecoration(labelText: 'Driver Name'),
+                decoration: const InputDecoration(labelText: 'Driver Name'),
                 keyboardType: TextInputType.number,
-                validator: (value) => value!.isEmpty ? 'Enter driver name' : null,
+                validator: (value) =>
+                    value!.isEmpty ? 'Enter driver name' : null,
               ),
               TextFormField(
                 controller: _pickupLocationController,
-                decoration: InputDecoration(labelText: 'Pickup Location'),
+                decoration: const InputDecoration(labelText: 'Pickup Location'),
                 keyboardType: TextInputType.number,
-                validator: (value) => value!.isEmpty ? 'Enter pickup location' : null,
+                validator: (value) =>
+                    value!.isEmpty ? 'Enter pickup location' : null,
               ),
               TextFormField(
                 controller: _companyNameController,
-                decoration: InputDecoration(labelText: 'Company name'),
+                decoration: const InputDecoration(labelText: 'Company name'),
                 keyboardType: TextInputType.number,
-                validator: (value) => value!.isEmpty ? 'Enter company name' : null,
+                validator: (value) =>
+                    value!.isEmpty ? 'Enter company name' : null,
               ),
               TextFormField(
                 controller: _websiteController,
-                decoration: InputDecoration(labelText: 'website'),
+                decoration: const InputDecoration(labelText: 'website'),
                 keyboardType: TextInputType.number,
-                validator: (value) => value!.isEmpty ? 'Enter company website' : null,
+                validator: (value) =>
+                    value!.isEmpty ? 'Enter company website' : null,
               ),
               TextFormField(
                 controller: _guideNameController,
-                decoration: InputDecoration(labelText: 'Guide name'),
+                decoration: const InputDecoration(labelText: 'Guide name'),
                 keyboardType: TextInputType.number,
-                validator: (value) => value!.isEmpty ? 'Enter guide name' : null,
+                validator: (value) =>
+                    value!.isEmpty ? 'Enter guide name' : null,
               ),
               TextFormField(
                 controller: _countryController,
-                decoration: InputDecoration(labelText: 'Country'),
+                decoration: const InputDecoration(labelText: 'Country'),
                 validator: (value) => value!.isEmpty ? 'Enter country' : null,
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _submitForm,
-                child: Text('Submit'),
+                child: const Text('Submit'),
               ),
             ],
           ),

@@ -90,11 +90,10 @@ import 'package:tourtango/api.dart';
 //   }
 // }
 
-
 class TourProviderHomePage extends StatefulWidget {
   final String companyEmail;
 
-  TourProviderHomePage({required this.companyEmail});
+  const TourProviderHomePage({super.key, required this.companyEmail});
 
   @override
   _TourProviderHomePageState createState() => _TourProviderHomePageState();
@@ -433,7 +432,7 @@ showDialog(
        });
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to delete item')),
+        const SnackBar(content: Text('Failed to delete item')),
       );
     }
   }
@@ -442,17 +441,17 @@ showDialog(
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Your Packages, Guides, and Transportation'),
+        title: const Text('Your Packages, Guides, and Transportation'),
       ),
       body: FutureBuilder<Map<String, dynamic>>(
         future: companyDetails,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text('No data found'));
+            return const Center(child: Text('No data found'));
           }
 
           final packages = snapshot.data!['packages'];
@@ -490,12 +489,14 @@ showDialog(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         IconButton(
-                          icon: Icon(Icons.edit),
-                          onPressed: () => _showUpdateDialog('packages', pkg['packageID']),
+                          icon: const Icon(Icons.edit),
+                          onPressed: () =>
+                              _showUpdateDialog('packages', pkg['packageID']),
                         ),
                         IconButton(
-                          icon: Icon(Icons.delete),
-                          onPressed: () => _deleteItem('packages', pkg['packageID']),
+                          icon: const Icon(Icons.delete),
+                          onPressed: () =>
+                              _deleteItem('packages', pkg['packageID']),
                         ),
                       ],
                     ),
@@ -522,12 +523,14 @@ showDialog(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         IconButton(
-                          icon: Icon(Icons.edit),
-                          onPressed: () => _showUpdateDialog('guides', guide['guideID']),
+                          icon: const Icon(Icons.edit),
+                          onPressed: () =>
+                              _showUpdateDialog('guides', guide['guideID']),
                         ),
                         IconButton(
-                          icon: Icon(Icons.delete),
-                          onPressed: () => _deleteItem('guides', guide['guideID']),
+                          icon: const Icon(Icons.delete),
+                          onPressed: () =>
+                              _deleteItem('guides', guide['guideID']),
                         ),
                       ],
                     ),
@@ -560,17 +563,19 @@ showDialog(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         IconButton(
-                          icon: Icon(Icons.edit),
-                          onPressed: () => _showUpdateDialog('transport', tp['transportID']),
+                          icon: const Icon(Icons.edit),
+                          onPressed: () =>
+                              _showUpdateDialog('transport', tp['transportID']),
                         ),
                         IconButton(
-                          icon: Icon(Icons.delete),
-                          onPressed: () => _deleteItem('transport', tp['transportID']),
+                          icon: const Icon(Icons.delete),
+                          onPressed: () =>
+                              _deleteItem('transport', tp['transportID']),
                         ),
                       ],
                     ),
                   )),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
             ],
           );
         },

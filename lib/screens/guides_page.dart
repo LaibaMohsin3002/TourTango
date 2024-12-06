@@ -6,11 +6,13 @@ class GuidesPage extends StatelessWidget {
     {'name': 'Guide Y', 'email': 'guideY@example.com'},
   ];
 
+  GuidesPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Guides'),
+        title: const Text('Guides'),
       ),
       body: ListView.builder(
         itemCount: guides.length,
@@ -22,13 +24,13 @@ class GuidesPage extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 IconButton(
-                  icon: Icon(Icons.edit),
+                  icon: const Icon(Icons.edit),
                   onPressed: () {
                     // Navigate to update guide page
                   },
                 ),
                 IconButton(
-                  icon: Icon(Icons.delete),
+                  icon: const Icon(Icons.delete),
                   onPressed: () {
                     // Delete guide logic
                   },
@@ -42,7 +44,7 @@ class GuidesPage extends StatelessWidget {
         onPressed: () {
           // Navigate to add guide page
         },
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }
