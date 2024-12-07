@@ -249,15 +249,45 @@ Future<void> deleteItem(String endpoint, int id) async {
 
 // Add a new guide
 Future<bool> addGuide({
+  required String companyEmail,
   required String name,
-  required String availability,}) async {
+  required String? availability,}) async {
   try {
     final response = await http.post(
-      Uri.parse('$baseUrl/guides'),
+      Uri.parse('$baseUrl/$companyEmail/guides'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({
         'guideName': name,
         'guideAvailability': availability,
+      }),
+    );
+
+    if (response.statusCode == 201) {
+      return true; // Success
+    } else {
+      print('Error: ${response.body}');
+      return false; // Failure
+    }
+  } catch (e) {
+    print('Exception: $e');
+    return false; // Error
+  }
+}
+
+// Add a new transport
+Future<bool> addTransport({
+  required String companyEmail,
+  required String vehicleType,
+  required String driverName, 
+  required String pickupLocation}) async {
+  try {
+    final response = await http.post(
+      Uri.parse('$baseUrl/$companyEmail/transport'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'vehicleType': vehicleType,
+        'driverName': driverName,
+        'pickupLocation': pickupLocation
       }),
     );
 
@@ -300,5 +330,101 @@ Future<List<dynamic>> getFlights() async {
     return json.decode(response.body) as List<dynamic>;
   } else {
     throw Exception('Failed to fetch flights');
+  }
+}
+
+Future<List<dynamic>> fetchCustomerHistory(String customerEmail) async {
+  final url = Uri.parse('$baseUrl/$customerEmail/history');
+  final response = await http.get(url);
+
+  if (response.statusCode == 200) {
+    return json.decode(response.body);
+  } else {
+    throw Exception('Failed to fetch booking history');
+  }
+}
+
+Future<void> submitReview(int bookingId, double rating, String comment) async {
+  final response = await http.post(
+    Uri.parse('$baseUrl/reviews'),
+    headers: {'Content-Type': 'application/json'},
+    body: json.encode({
+      'bookingId': bookingId,
+      'rating': rating,
+      'comment': comment,
+    }),
+  );
+
+  if (response.statusCode != 200) {
+    throw Exception('Failed to submit review');
+  }
+}
+
+Future<Map<String, dynamic>> fetchReview(int bookingId) async {
+  final url = '$baseUrl/reviews/$bookingId';
+  final response = await http.get(Uri.parse(url));
+  if (response.statusCode == 200) {
+    return json.decode(response.body);
+  } else {
+    throw Exception('Failed to fetch record');
+  }
+}
+
+
+Future<void> updateReview(int bookingID, double rating, String comment) async {
+  final url = Uri.parse('$baseUrl/reviews/$bookingID');
+
+  final response = await http.put(
+    url,
+    headers: {'Content-Type': 'application/json'},
+    body: jsonEncode({
+      'rating': rating,
+      'comment': comment,
+    }),
+  );
+
+  if (response.statusCode == 200) {
+    final responseData = jsonDecode(response.body);
+    if (!responseData['success']) {
+      throw Exception(responseData['message'] ?? 'Failed to update review');
+    }
+  } else {
+    throw Exception('Failed to connect to the server');
+  }
+}
+
+
+Future<void> createBookingTransaction(
+    String customerEmail, int packageId, DateTime bookingDate, int noOfPeople, double paymentAmount) async {
+  final url = Uri.parse('$baseUrl/createBookingTransaction');
+  final headers = {'Content-Type': 'application/json'};
+
+  final body = json.encode({
+    'customerEmail': customerEmail,
+    'packageId': packageId,
+    'bookingDate': bookingDate.toIso8601String(),
+    'noOfPeople': noOfPeople,
+    'paymentAmount': paymentAmount.toDouble()
+  });
+
+  try {
+    final response = await http.post(url, headers: headers, body: body);
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      final statusMessage = data['statusMessage'];
+
+      print('Transaction Status: $statusMessage');
+      if (statusMessage == 'Transaction completed successfully.') {
+        print('Booking ID: ${data['bookingID']}');
+        print('Payment ID: ${data['paymentID']}');
+      } else {
+        print('Error: $statusMessage');
+      }
+    } else {
+      print('Error: ${response.statusCode}');
+    }
+  } catch (e) {
+    print('Error: $e');
   }
 }

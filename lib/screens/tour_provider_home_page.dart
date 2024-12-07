@@ -3,6 +3,8 @@ import 'package:intl/intl.dart';
 import 'package_details_page.dart';
 import 'guides_page.dart';
 import 'add_package_page.dart';
+import 'add_guide_page.dart';
+import 'add_transport_page.dart';
 import 'update_package_page.dart';
 import 'package:tourtango/api.dart';
 
@@ -514,10 +516,10 @@ showDialog(
                   trailing: IconButton(
                     icon: Icon(Icons.add, color: Colors.blue),
                     onPressed: () {
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(builder: (context) => AddPackagePage()),
-                      // );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => AddGuidePage(companyEmail: widget.companyEmail,)),
+                      );
                     },
                   ),
                 ),
@@ -547,10 +549,10 @@ showDialog(
                   trailing: IconButton(
                     icon: Icon(Icons.add, color: Colors.blue),
                     onPressed: () {
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(builder: (context) => AddPackagePage()),
-                      // );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => AddTransportPage(companyEmail: widget.companyEmail)),
+                      );
                     },
                   ),
                 ),

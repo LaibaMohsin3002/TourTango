@@ -24,6 +24,7 @@ class _UpdatePackagePageState extends State<UpdatePackagePage> {
   late TextEditingController _guideNameController;
   late TextEditingController _countryController;
   late TextEditingController _customerLimitController;
+  late TextEditingController _accommodationController;
 
   String? _availability = 'Y';
   String? transportID;
@@ -32,6 +33,7 @@ class _UpdatePackagePageState extends State<UpdatePackagePage> {
   late Future<Map<String, dynamic>> companyDetailsFuture;
   late List<dynamic> guides;
   late List<dynamic> transport;
+  late List<dynamic> accommodation;
 
   late List<dynamic> flights = [];
 
@@ -52,6 +54,7 @@ class _UpdatePackagePageState extends State<UpdatePackagePage> {
     _guideNameController = TextEditingController();
     _countryController = TextEditingController();
     _customerLimitController = TextEditingController();
+    _accommodationController = TextEditingController();
 
     // Fetch company details when the page is initialized
     companyDetailsFuture = fetchCompanyDetails(widget.companyEmail);
@@ -66,6 +69,7 @@ class _UpdatePackagePageState extends State<UpdatePackagePage> {
     _vehicleTypeController = TextEditingController(text: recordDetails['vehicleType'] ?? '');
     _driverNameController = TextEditingController(text: recordDetails['driverName'] ?? '');
     _pickupLocationController = TextEditingController(text: recordDetails['pickupLocation'] ?? '');
+    _accommodationController = TextEditingController(text: recordDetails['hotelName'] ?? '');
     _guideNameController = TextEditingController(text: recordDetails['guideName'] ?? '');
     _countryController = TextEditingController(text: recordDetails['country'] ?? '');
     _customerLimitController = TextEditingController(text: recordDetails['customerLimit'] ?? '');
@@ -377,6 +381,23 @@ Future<void> _fetchFlights(int page) async {
                         controller: _vehicleTypeController,
                         decoration: InputDecoration(
                           labelText: 'Vehicle Type',
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 16),
+                  Text(
+                    'Select Accommodation',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  GestureDetector(
+                    onTap: () => _showScrollablePopup('accommodation'),
+                    child: AbsorbPointer(
+                      child: TextField(
+                        controller: _accommodationController,
+                        decoration: InputDecoration(
+                          labelText: 'Hotel Name',
                           border: OutlineInputBorder(),
                         ),
                       ),

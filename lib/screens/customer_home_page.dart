@@ -260,7 +260,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package_details_page.dart';
 import 'profile_page.dart';
 import 'booking_page.dart';
-import 'customer_package_details.dart';
+import 'booking_history.dart';
+import 'my_bookings.dart';
 import '../widgets/search_bar.dart';
 import '../widgets/carousel.dart';
 import '../widgets/packages.dart';
@@ -286,6 +287,7 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
   List<Package> tourPackages = [];
   List<Package> topPackages = [];
   List<dynamic> bookings = [];
+  List<dynamic> faqs = [];
   List<Package> filteredSuggestions = [];
   bool isLoading = true;
   bool showSuggestions = false;
@@ -302,12 +304,13 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
       final data = await fetchHomePageDataFromAPI(customerEmail);
       setState(() {
         tourPackages = (data['tourPackages'] as List)
-            .map((e) => Package.fromJson(e))
+            .map((e) => Package.fromJson(e as Map<String, dynamic>))
             .toList();
         topPackages = (data['topPackages'] as List)
-            .map((e) => Package.fromJson(e))
+            .map((e) => Package.fromJson(e as Map<String, dynamic>))
             .toList();
         bookings = data['bookings'] ?? [];
+        faqs = data['faqs'] ?? [];
         isLoading = false;
       });
     } catch (error) {
@@ -332,7 +335,7 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
     setState(() {
       filteredSuggestions = tourPackages
           .where((package) =>
-              package.name.toLowerCase().contains(query.toLowerCase()))
+              package.packageName.toLowerCase().contains(query.toLowerCase()))
           .toList();
       showSuggestions = true;
     });
@@ -340,14 +343,14 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
 
   void onSuggestionSelected(Package package) {
     setState(() {
-      _searchController.text = package.name;
+      _searchController.text = package.packageName;
       showSuggestions = false;
     });
 
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => PackageDetailsPage(packageName: package.name),
+        builder: (context) => PackageDetailsPage(packageId: package.packageID, customerEmail: widget.customerEmail,),
       ),
     );
   }
@@ -362,11 +365,11 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text("Good Morning"),
-            Text(
-              "Customer Name", // Replace with dynamic username if needed
-              style: Theme.of(context).textTheme.labelMedium,
-            ),
+            const Text("Welcome"),
+            // Text(
+            //   "Customer Name", // Replace with dynamic username if needed
+            //   style: Theme.of(context).textTheme.labelMedium,
+            // ),
           ],
         ),
         actions: const [
@@ -406,7 +409,16 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const BookingPage()),
+                  MaterialPageRoute(builder: (context) => const MyBookingsPage()),
+                );
+              },
+            ),
+            ListTile(
+              title: const Text('Booking History'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => BookingHistoryPage(customerEmail: widget.customerEmail)),
                 );
               },
             ),
@@ -440,7 +452,8 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
                         context,
                         MaterialPageRoute(
                           builder: (context) =>
-                              PackageDetailsPage(packageName: package),
+                              PackageDetailsPage(packageId: package.packageID, customerEmail: widget.customerEmail,
+                        ),
                         ),
                       );
                     },
@@ -483,13 +496,31 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
                         itemBuilder: (context, index) {
                           final suggestion = filteredSuggestions[index];
                           return ListTile(
-                            title: Text(suggestion.name),
+                            title: Text(suggestion.packageName),
                             onTap: () => onSuggestionSelected(suggestion),
                           );
                         },
                       ),
                     ),
                   ),
+
+                  const SizedBox(height: 20),
+                  const Text(
+                    'Frequently Asked Questions',
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 16),
+                  
+                  
+                  ...faqs.map((faq) => ExpansionTile(
+                    title: Text(faq['question']),
+                    children: <Widget>[
+                      ListTile(
+                        title: Text(faq['answer']),
+                      ),
+                    ],
+                  )).toList(),
+
               ],
             ),
       bottomNavigationBar: BottomNavigationBar(
@@ -513,7 +544,7 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
           } else if (index == 1) {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const BookingPage()),
+              MaterialPageRoute(builder: (context) => const MyBookingsPage()),
             );
           } else if (index == 2) {
             Navigator.push(

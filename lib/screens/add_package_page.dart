@@ -212,6 +212,7 @@ Future<void> _fetchFlights(int page) async {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Package added successfully')),
       );
+      Navigator.pop(context);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error adding package: $e')),
