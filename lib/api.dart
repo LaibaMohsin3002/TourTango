@@ -4,9 +4,9 @@ import 'package:http/http.dart' as http;
 // Define a base URL for your API (make sure it has the correct protocol)
 const String baseUrl = 'http://10.0.2.2:3000';
 
-// Function to fetch home page data
-Future<Map<String, dynamic>> fetchHomePageDataFromAPI(
-    String customerEmail) async {
+//Function to fetch home page data
+Future<Map<String, dynamic>> fetchHomePageDataFromAPI(String customerEmail,
+    {String? filterBy}) async {
   try {
     final response = await http.get(Uri.parse('$baseUrl/$customerEmail/home'));
 
@@ -21,6 +21,28 @@ Future<Map<String, dynamic>> fetchHomePageDataFromAPI(
     throw Exception('Failed to load data');
   }
 }
+
+// Future<Map<String, dynamic>> fetchHomePageDataFromAPI(String customerEmail,
+//     {String? filterBy, String? search}) async {
+//   try {
+//     final queryParams = {
+//       if (filterBy != null) 'filterBy': filterBy,
+//       if (search != null) 'search': search,
+//     };
+
+//     final uri = Uri.parse('$baseUrl/$customerEmail/home')
+//         .replace(queryParameters: queryParams);
+//     final response = await http.get(uri);
+
+//     if (response.statusCode == 200) {
+//       return json.decode(response.body);
+//     } else {
+//       throw Exception('Failed to load home page data');
+//     }
+//   } catch (error) {
+//     throw Exception('Failed to load data: $error');
+//   }
+// }
 
 //   Future<bool> addPackage({
 //   required String name,
