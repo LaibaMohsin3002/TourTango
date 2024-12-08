@@ -226,19 +226,19 @@ class TourPackageDetailsPage extends StatelessWidget {
             // Booking Button
             ElevatedButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => BookingFormPage(
-                      packageId: 1,
-                      tourCompany: '',
-                      duration: '',
-                      price: 100,
-                      //packageId: 1,
-                      customerEmail: '',
-                    ),
-                  ),
-                );
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) => BookingFormPage(
+                //       packageId: 1,
+                //       tourCompany: '',
+                //       duration: '',
+                //       price: 100,
+                //       //packageId: 1,
+                //       customerEmail: '',
+                //     ),
+                //   ),
+                // );
               },
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size(double.infinity, 50),

@@ -107,20 +107,7 @@ Future<bool> signUp(
   }
 }
 
-// Fetch all packages
-Future<List<dynamic>> getPackages() async {
-  try {
-    final response = await http.get(Uri.parse('$baseUrl/packages'));
 
-    if (response.statusCode == 200) {
-      return json.decode(response.body); // Returns list of packages
-    } else {
-      throw Exception('Failed to load packages');
-    }
-  } catch (error) {
-    throw Exception('Error fetching packages: $error');
-  }
-}
 
 // Add a new package
 Future<bool> addPackage({
@@ -225,25 +212,6 @@ Future<Map<String, dynamic>> getPackageDetails(int packageId) async {
     throw Exception('Error fetching package details: $error');
   }
 }
-
-// // Update a specific package
-// Future<String> updatePackage(int packageId, Map<String, dynamic> updatedData) async {
-//   try {
-//     final response = await http.put(
-//       Uri.parse('$baseUrl/packages/$packageId'),
-//       headers: {'Content-Type': 'application/json'},
-//       body: json.encode(updatedData),
-//     );
-
-//     if (response.statusCode == 200) {
-//       return 'Package updated successfully';
-//     } else {
-//       throw Exception('Failed to update package');
-//     }
-//   } catch (error) {
-//     throw Exception('Error updating package: $error');
-//   }
-// }
 
 // Update a guide
 Future<void> updateGuide(int id, {String? name, String? availability}) async {
@@ -530,18 +498,10 @@ Future<void> createBookingTransaction(
     final response = await http.post(url, headers: headers, body: body);
 
     if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-      final statusMessage = data['statusMessage'];
-
-      print('Transaction Status: $statusMessage');
-      if (statusMessage == 'Transaction completed successfully.') {
-        print('Booking ID: ${data['bookingID']}');
-        print('Payment ID: ${data['paymentID']}');
+      
+      print('Transaction success');
       } else {
-        print('Error: $statusMessage');
-      }
-    } else {
-      print('Error: ${response.statusCode}');
+        print('Error');
     }
   } catch (e) {
     print('Error: $e');

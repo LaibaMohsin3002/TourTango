@@ -816,28 +816,24 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:tourtango/notification.dart';
 import 'booking_confirmation_page.dart';
+import 'package:tourtango/api.dart';
 
 class BookingFormPage extends StatefulWidget {
   final int packageId;
   final String customerEmail;
   final double price;
-  final String tourCompany;
-  //final int packageID;
-  final String duration;
 
   const BookingFormPage({
     Key? key,
     required this.packageId,
     required this.customerEmail,
     required this.price,
-    required this.tourCompany,
-    //required this.packageID,
-    required this.duration,
   }) : super(key: key);
 
   @override
   State<BookingFormPage> createState() => _BookingFormPageState();
 }
+
 
 class _BookingFormPageState extends State<BookingFormPage> {
   final _formKey = GlobalKey<FormState>();
@@ -847,6 +843,49 @@ class _BookingFormPageState extends State<BookingFormPage> {
   final _numberOfPeopleController = TextEditingController();
   final NotificationService notificationService = NotificationService();
   final String currentDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+  String tourCompany='';
+  String duration ='';
+
+  @override
+void initState() {
+  super.initState();
+  fetchPackageDetails();
+}
+
+Future<void> fetchPackageDetails() async {
+  try {
+    final packageDetails = await getPackageDetails(widget.packageId);
+    final String? startDateString = packageDetails['start_date'];
+    final String? endDateString = packageDetails['end_date'];
+
+    if (startDateString != null && endDateString != null) {
+      try {
+        final startDate = DateTime.parse(startDateString);
+        final endDate = DateTime.parse(endDateString);
+
+        setState(() {
+          tourCompany = packageDetails['companyName'];
+          duration = '${endDate.difference(startDate).inDays} days';
+        });
+      } catch (dateError) {
+        setState(() {
+          tourCompany = packageDetails['companyName'] ?? 'Unknown';
+          duration = 'Invalid date format';
+        });
+      }
+    } else {
+      setState(() {
+        tourCompany = packageDetails['companyName'] ?? 'Unknown';
+        duration = 'Dates not available';
+      });
+    }
+  } catch (error) {
+    setState(() {
+      tourCompany = 'Unknown';
+      duration = 'Error fetching details';
+    });
+  }
+}
 
   @override
   void dispose() {
@@ -856,6 +895,7 @@ class _BookingFormPageState extends State<BookingFormPage> {
     _numberOfPeopleController.dispose();
     super.dispose();
   }
+  
 
   Widget _buildInfoDisplay(String label, String value) {
     return Padding(
@@ -891,13 +931,10 @@ class _BookingFormPageState extends State<BookingFormPage> {
               children: [
                 // _buildInfoDisplay(
                 //     'Tour Company', widget.tourCompany.toString()),
-                _buildInfoDisplay(
-                    'Tour Company',
-                    widget.tourCompany.isNotEmpty
-                        ? widget.tourCompany
-                        : 'Unknown'),
+                _buildInfoDisplay('Tour Company', tourCompany.isNotEmpty? tourCompany: 'Unknown Company'),
 
                 _buildInfoDisplay('Package ID', widget.packageId.toString()),
+                _buildInfoDisplay('Duration', duration),
                 _buildInfoDisplay('Customer Email', widget.customerEmail),
                 _buildInfoDisplay(
                     'Price', '\$${widget.price.toStringAsFixed(2)}'),
@@ -992,8 +1029,8 @@ class _BookingFormPageState extends State<BookingFormPage> {
                             email: widget.customerEmail,
                             phone: _phoneController.text,
                             packageId: widget.packageId,
-                            tourCompany: widget.tourCompany,
-                            duration: '10 days',
+                            tourCompany: tourCompany,
+                            duration: duration,
                             price: widget.price,
                             bookingDate: currentDate,
                             numberOfPeople: _numberOfPeopleController.text,

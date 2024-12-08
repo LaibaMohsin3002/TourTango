@@ -58,13 +58,17 @@ class _BookingHistoryPageState extends State<BookingHistoryPage> {
               // Extract details
               final bookingID = historyItem['booking_id'];
               final bookingDate = historyItem['booking_date'];
-              final status = historyItem['booking_status'];
               final totalAmount = historyItem['total_amount'];
               final operation = historyItem['operation'];
               final timestamp = historyItem['action_timestamp'];
               final packageName = historyItem['packageName'];
-              final paymentID = historyItem['payment_id'];
+              final paymentMode = historyItem['payment_mode'];
+              final startDate = DateTime.parse(historyItem['start_date']);
               final endDate = DateTime.parse(historyItem['end_date']);
+              final noOfPeople = historyItem['noOfPeople'];
+              final company = historyItem['tourCompany'];
+
+              final duration = endDate.difference(startDate).inDays;
 
               // Check if the package is reviewable
               final isReviewable = DateTime.now().isAfter(endDate);
@@ -91,7 +95,7 @@ class _BookingHistoryPageState extends State<BookingHistoryPage> {
                       ),
                       const SizedBox(height: 5),
                       Text(
-                        'Payment ID: $paymentID',
+                        'Payment ID: $company',
                         style: const TextStyle(fontSize: 14),
                       ),
                       const SizedBox(height: 5),
@@ -101,7 +105,7 @@ class _BookingHistoryPageState extends State<BookingHistoryPage> {
                       ),
                       const SizedBox(height: 5),
                       Text(
-                        'Status: $status',
+                        'Status: $operation',
                         style: const TextStyle(fontSize: 14),
                       ),
                       const SizedBox(height: 5),
@@ -112,12 +116,12 @@ class _BookingHistoryPageState extends State<BookingHistoryPage> {
                       ),
                       const SizedBox(height: 5),
                       Text(
-                        'Operation: $operation',
+                        'Number of people booked for: $noOfPeople',
                         style: const TextStyle(fontSize: 14),
                       ),
                       const SizedBox(height: 5),
                       Text(
-                        'Action Timestamp: $timestamp',
+                        'Number of days for tour: $duration',
                         style:
                             const TextStyle(fontSize: 12, color: Colors.grey),
                       ),

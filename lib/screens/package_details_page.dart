@@ -408,7 +408,7 @@
 import 'package:flutter/material.dart';
 import 'package:tourtango/api.dart';
 import 'package:tourtango/screens/booking_form_page.dart';
-import 'booking_page.dart';
+import 'booking_form_page.dart'; 
 import 'package:ionicons/ionicons.dart';
 import '/widgets/distance.dart';
 import '/widgets/favourite.dart';
@@ -505,8 +505,8 @@ class _PackageDetailsPageState extends State<PackageDetailsPage> {
                               ),
                             ),
                              child: Favourite(
-                              customerEmail: widget.customerEmail, // Pass customer email here
-                              packageID: widget.packageId, // Pass package ID here
+                              customerEmail: widget.customerEmail,
+                              packageID: widget.packageId,
     ),
                           ),
                         ),
@@ -562,7 +562,7 @@ class _PackageDetailsPageState extends State<PackageDetailsPage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => BookingPage(
+                          builder: (context) => BookingFormPage(
                             packageId: data['packageID'],
                             customerEmail: widget.customerEmail,
                             price: data['price'].toDouble(),
