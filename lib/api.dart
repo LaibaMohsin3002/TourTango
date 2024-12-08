@@ -104,27 +104,43 @@ Future<List<dynamic>> getPackages() async {
 Future<bool> addPackage({
   required String name,
   required String? availability,
-  required String guideID,
-  required String transportID,
+  required String description,
+  required int guideID,
+  required int transportID,
   required String startDate,
   required String endDate,
   required String country,
   required double price,
-  required String customerLimit,
-  required List<String> flightIDs
+  required int customerLimit,
+  required int accommodationID,
+  required List<String> flightIDs,
+  required List<String> itineraryIDs,
+  required List<String> itineraryDates,
+  required List<String> itineraryTimeOfDay,
+  required String imageUrl,
+  required String companyEmail
 }) async {
   try {
     final response = await http.post(
-      Uri.parse('$baseUrl/packages'),
+      Uri.parse('$baseUrl/$companyEmail/addPackage'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({
         'packageName': name,
         'price': price,
         'availability': availability,
+        'description': description,
         'start_date': startDate,
         'end_date': endDate,
         'country': country,
-        
+        'guideID': guideID, 
+        'transportID': transportID,
+        'accommodationID': accommodationID,
+        'package_limit': customerLimit, 
+        'image_url': imageUrl,
+        'flightIDs': flightIDs,
+        'itineraryIDs': itineraryIDs,
+        'itineraryDates': itineraryDates,
+        'itineraryTimeOfDay': itineraryTimeOfDay,
       }),
     );
 
@@ -137,6 +153,38 @@ Future<bool> addPackage({
   } catch (e) {
     print('Exception: $e');
     return false; // Error
+  }
+}
+
+Future<void> createItinerary({
+  required String itineraryDate,
+  required String timeOfDay,
+  required String activity,
+  required String description,
+  required String city,
+}) async {
+  try {
+    final response = await http.post(
+      Uri.parse('$baseUrl/itinerary'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'activity': activity,
+        'description': description,
+        'time_of_day': timeOfDay,
+        'date': itineraryDate,
+        'city': city,
+      }),
+    );
+
+   if (response.statusCode == 200) {
+      // Successfully created itinerary
+      print('Itinerary created');
+    } else {
+      // Handle error
+      throw Exception('Failed to create itinerary');
+    }
+  } catch (e) {
+    throw Exception('Error creating itinerary: $e');
   }
 }
 
@@ -207,37 +255,56 @@ Future<void> updateTransport(int id, {String? vehicleType, String? driverName, S
 // Update a package
 Future<void> updatePackage(
   int id, {
-  String? name,
-  String? availability,
-  String? guideID,
-  String? transportID,
-  String? startDate,
-  String? endDate,
-  String? country,
-  double? price,
-  String? customerLimit,
-  List<String>? flightIDs
+  required String name,
+  required String? availability,
+  required String description,
+  required int guideID,
+  required int transportID,
+  required String startDate,
+  required String endDate,
+  required String country,
+  required double price,
+  required int customerLimit,
+  required int accommodationID,
+  required List<String> flightIDs,
+  required List<String> itineraryIDs,
+  required List<String> itineraryDates,
+  required List<String> itineraryTimeOfDay,
+  required String imageUrl
 }) async {
-  final url = Uri.parse('$baseUrl/packages/$id');
-  final body = {
-    if (name != null) 'packageName': name,
-    if (availability != null) 'availability': availability,
-    if (guideID != null) 'guideID': guideID,
-    if (transportID != null) 'transportID': transportID,
-    if (startDate != null) 'start_date': startDate,
-    if (endDate != null) 'end_date': endDate,
-    if (country != null) 'country': country,
-    if (price != null) 'price': price,
-    if (customerLimit != null) 'price': customerLimit,
-    'selectedFlightIds': flightIDs
-  };
-  final response = await http.put(url, body: jsonEncode(body), headers: {'Content-Type': 'application/json'});
+  try {
+    final response = await http.put(
+      Uri.parse('$baseUrl/packages/$id'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'packageName': name,
+        'price': price,
+        'availability': availability,
+        'description': description,
+        'start_date': startDate,
+        'end_date': endDate,
+        'country': country,
+        'guideID': guideID, 
+        'transportID': transportID,
+        'accommodationID': accommodationID,
+        'package_limit': customerLimit, 
+        'image_url': imageUrl,
+        'flightIDs': flightIDs,
+        'itineraryIDs': itineraryIDs,
+        'itineraryDates': itineraryDates,
+        'itineraryTimeOfDay': itineraryTimeOfDay,
+      }),
+    );
 
-  if (response.statusCode != 200) {
-    throw Exception('Failed to update package: ${response.body}');
+    if (response.statusCode == 201) {
+      print('Update successful');
+    } else {
+      print('Error: ${response.body}');
+    }
+  } catch (e) {
+    print('Exception: $e');
   }
 }
-
 
 Future<void> deleteItem(String endpoint, int id) async {
   final url = '$baseUrl/$endpoint/$id';
@@ -326,10 +393,36 @@ Future<Map<String, dynamic>> fetchRecord(String endpoint, int id) async {
 Future<List<dynamic>> getFlights() async {
   final url = '$baseUrl/flights';
   final response = await http.get(Uri.parse(url));
+  print(response);
   if (response.statusCode == 200) {
     return json.decode(response.body) as List<dynamic>;
+    
   } else {
     throw Exception('Failed to fetch flights');
+  }
+}
+
+Future<List<dynamic>> getItineraries() async {
+  final url = '$baseUrl/itinerary';
+  final response = await http.get(Uri.parse(url));
+  print(response);
+  if (response.statusCode == 200) {
+    return json.decode(response.body) as List<dynamic>;
+    
+  } else {
+    throw Exception('Failed to fetch itineraries');
+  }
+}
+
+Future<List<dynamic>> getAccommodations() async {
+  final url = '$baseUrl/accommodation';
+  final response = await http.get(Uri.parse(url));
+  print(response);
+  if (response.statusCode == 200) {
+    return json.decode(response.body) as List<dynamic>;
+    
+  } else {
+    throw Exception('Failed to fetch accommodations');
   }
 }
 
@@ -395,7 +488,7 @@ Future<void> updateReview(int bookingID, double rating, String comment) async {
 
 
 Future<void> createBookingTransaction(
-    String customerEmail, int packageId, DateTime bookingDate, int noOfPeople, double paymentAmount) async {
+    String customerEmail, int packageId, DateTime bookingDate, int noOfPeople, double paymentAmount, String paymentOption) async {
   final url = Uri.parse('$baseUrl/createBookingTransaction');
   final headers = {'Content-Type': 'application/json'};
 
@@ -404,7 +497,8 @@ Future<void> createBookingTransaction(
     'packageId': packageId,
     'bookingDate': bookingDate.toIso8601String(),
     'noOfPeople': noOfPeople,
-    'paymentAmount': paymentAmount.toDouble()
+    'paymentAmount': paymentAmount.toDouble(),
+    'payment_mode': paymentOption
   });
 
   try {
@@ -428,3 +522,55 @@ Future<void> createBookingTransaction(
     print('Error: $e');
   }
 }
+
+Future<void> addToFavorites({
+  required String customerEmail,
+  required int packageID,
+}) async {
+  try {
+    final response = await http.post(
+      Uri.parse('$baseUrl/$customerEmail/favourites/$packageID'),
+      headers: {'Content-Type': 'application/json'},);
+
+   if (response.statusCode == 200) {
+      print('Added to favourites');
+    } else {
+      // Handle error
+      throw Exception('Failed to add to favourites');
+    }
+  } catch (e) {
+    throw Exception('$e');
+  }
+}
+
+Future<void> deleteFromFavourites({
+  required String customerEmail,
+  required int packageID,
+}) async {
+  try {
+    final response = await http.delete(
+      Uri.parse('$baseUrl/$customerEmail/favourites/$packageID'),
+      headers: {'Content-Type': 'application/json'},
+    );
+
+    if (response.statusCode == 200) {
+      print('Removed from favourites');
+    } else {
+      throw Exception('Failed to remove from favourites');
+    }
+  } catch (e) {
+    throw Exception('$e');
+  }
+}
+
+Future<List<dynamic>> getFavourites({required String customerEmail}) async {
+  final url = '$baseUrl/$customerEmail/favourites';
+  final response = await http.get(Uri.parse(url));
+  if (response.statusCode == 200) {
+    return json.decode(response.body) as List<dynamic>;
+    
+  } else {
+    throw Exception('Failed to fetch favourites');
+  }
+}
+

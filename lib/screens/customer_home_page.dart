@@ -269,6 +269,7 @@ import '../widgets/location.dart';
 import '../widgets/tourplaces.dart';
 import '../widgets/recommendations.dart'; // Add the recommended places widget
 import '../api.dart';
+import 'favourites_page.dart';
 
 
 
@@ -419,6 +420,15 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => BookingHistoryPage(customerEmail: widget.customerEmail)),
+                );
+              },
+            ),
+            ListTile(
+              title: const Text('Favourites'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => FavouritesPage(customerEmail: widget.customerEmail)),
                 );
               },
             ),

@@ -15,6 +15,8 @@ class BookingPage extends StatefulWidget {
 
 class _BookingPageState extends State<BookingPage> {
   final TextEditingController _noOfPeopleController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   DateTime selectedDate = DateTime.now();
 
   Future<void> _createBooking() async {
@@ -51,6 +53,15 @@ class _BookingPageState extends State<BookingPage> {
                 controller: _noOfPeopleController,
                 decoration: InputDecoration(labelText: 'No of People'),
                 keyboardType: TextInputType.number,
+              ),
+              TextField(
+                controller: _phoneController,
+                decoration: InputDecoration(labelText: 'Phone Number'),
+                keyboardType: TextInputType.number,
+              ),
+              TextField(
+                controller: _emailController,
+                decoration: InputDecoration(labelText: 'Email'),
               ),
               ElevatedButton(
                 onPressed: _createBooking,

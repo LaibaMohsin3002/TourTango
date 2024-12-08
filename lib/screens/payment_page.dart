@@ -55,6 +55,7 @@ class _PaymentPageState extends State<PaymentPage> {
         DateTime.now(),
         widget.noOfPeople,
         paymentAmount,
+        paymentOption
       );
       Navigator.pop(context); // Go back to the package details page
     } else {
