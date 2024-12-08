@@ -19,7 +19,18 @@
 import 'package:flutter/material.dart';
 
 class ProfilePage extends StatefulWidget {
+class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
+
+  @override
+  _ProfilePageState createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  bool isEditing = false;
+  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
 
   @override
   _ProfilePageState createState() => _ProfilePageState();
@@ -47,9 +58,9 @@ class _ProfilePageState extends State<ProfilePage> {
                 CrossAxisAlignment.center, // Center the content horizontally
             children: [
               // Profile Image Section
-              const CircleAvatar(
+              CircleAvatar(
                 radius: 50,
-                backgroundColor: Color.fromARGB(10, 233, 30, 98),
+                backgroundColor: const Color.fromARGB(10, 233, 30, 98),
                 child:
                     Icon(Icons.account_circle, size: 80, color: Colors.white),
               ),
@@ -234,7 +245,7 @@ class _ProfilePageState extends State<ProfilePage> {
             borderRadius: BorderRadius.circular(15),
           ),
         ),
-      ),
-    );
-  }
+     ),
+   );
+}
 }

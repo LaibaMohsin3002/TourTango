@@ -505,6 +505,7 @@ class _PaymentPageState extends State<PaymentPage> {
         DateTime.now(),
         widget.noOfPeople,
         paymentAmount,
+        paymentOption
       );
 
       // Show a notification after successful payment
