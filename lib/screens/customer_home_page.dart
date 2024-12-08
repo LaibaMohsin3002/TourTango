@@ -1112,7 +1112,7 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const ProfilePage()),
+                  MaterialPageRoute(builder: (context) => ProfilePage()),
                 );
               },
             ),
@@ -1142,7 +1142,9 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => FavouritesPage(customerEmail: widget.customerEmail)),
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          FavouritesPage(customerEmail: widget.customerEmail)),
                 );
               },
             ),
@@ -1282,7 +1284,7 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
           } else if (index == 2) {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const ProfilePage()),
+              MaterialPageRoute(builder: (context) => ProfilePage()),
             );
           }
         },
