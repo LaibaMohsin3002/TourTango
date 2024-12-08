@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tourtango/api.dart';
 import 'payment_page.dart';
 
 class BookingPage extends StatefulWidget {
@@ -7,7 +6,11 @@ class BookingPage extends StatefulWidget {
   final String customerEmail;
   final double price;
 
-  BookingPage({required this.packageId, required this.customerEmail, required this.price});
+  const BookingPage(
+      {super.key,
+      required this.packageId,
+      required this.customerEmail,
+      required this.price});
 
   @override
   _BookingPageState createState() => _BookingPageState();
@@ -24,11 +27,10 @@ class _BookingPageState extends State<BookingPage> {
       context,
       MaterialPageRoute(
         builder: (context) => PaymentPage(
-          packageId: widget.packageId,
-          customerEmail: widget.customerEmail,
-          price:widget.price,
-          noOfPeople: people
-        ),
+            packageId: widget.packageId,
+            customerEmail: widget.customerEmail,
+            price: widget.price,
+            noOfPeople: people),
       ),
     );
   }
@@ -42,19 +44,19 @@ class _BookingPageState extends State<BookingPage> {
         return Future.value(false); // Prevent the default back navigation
       },
       child: Scaffold(
-        appBar: AppBar(title: Text('Booking Page')),
+        appBar: AppBar(title: const Text('Booking Page')),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
               TextField(
                 controller: _noOfPeopleController,
-                decoration: InputDecoration(labelText: 'No of People'),
+                decoration: const InputDecoration(labelText: 'No of People'),
                 keyboardType: TextInputType.number,
               ),
               ElevatedButton(
                 onPressed: _createBooking,
-                child: Text('Proceed to Payment'),
+                child: const Text('Proceed to Payment'),
               ),
             ],
           ),

@@ -5,7 +5,7 @@ import 'package:tourtango/api.dart';
 class AddPackagePage extends StatefulWidget {
   final String companyEmail;
 
-  AddPackagePage({required this.companyEmail});
+  const AddPackagePage({super.key, required this.companyEmail});
 
   @override
   _AddPackagePageState createState() => _AddPackagePageState();
@@ -24,7 +24,7 @@ class _AddPackagePageState extends State<AddPackagePage> {
   late TextEditingController _customerLimitController;
 
   String? _availability = 'Y';
-  String transportID ='';
+  String transportID = '';
   String guideID = '';
 
   late Future<Map<String, dynamic>> companyDetailsFuture;
@@ -55,7 +55,8 @@ class _AddPackagePageState extends State<AddPackagePage> {
     companyDetailsFuture = fetchCompanyDetails(widget.companyEmail);
   }
 
-  Future<void> _pickDate(BuildContext context, TextEditingController controller) async {
+  Future<void> _pickDate(
+      BuildContext context, TextEditingController controller) async {
     DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
@@ -68,26 +69,26 @@ class _AddPackagePageState extends State<AddPackagePage> {
     }
   }
 
-Future<void> _fetchFlights(int page) async {
-  try {
-    setState(() {
-      isLoadingFlights = true;
-    });
-    final List<dynamic> response = await getFlights(); // Fetch flights via API
-    setState(() {
-      flights = response; // Directly assign the list
-      isLoadingFlights = false;
-    });
-  } catch (e) {
-    setState(() {
-      isLoadingFlights = false;
-    });
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Error fetching flights: $e')),
-    );
+  Future<void> _fetchFlights(int page) async {
+    try {
+      setState(() {
+        isLoadingFlights = true;
+      });
+      final List<dynamic> response =
+          await getFlights(); // Fetch flights via API
+      setState(() {
+        flights = response; // Directly assign the list
+        isLoadingFlights = false;
+      });
+    } catch (e) {
+      setState(() {
+        isLoadingFlights = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error fetching flights: $e')),
+      );
+    }
   }
-}
-
 
   Future<void> _showFlightSelectionPopup() async {
     await _fetchFlights(currentPage);
@@ -96,12 +97,12 @@ Future<void> _fetchFlights(int page) async {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Select Flights'),
+          title: const Text('Select Flights'),
           content: SizedBox(
             width: MediaQuery.of(context).size.width * 0.8,
             height: 400, // Adjust height as needed
             child: isLoadingFlights
-                ? Center(child: CircularProgressIndicator())
+                ? const Center(child: CircularProgressIndicator())
                 : ListView.builder(
                     itemCount: flights.length,
                     itemBuilder: (context, index) {
@@ -140,7 +141,7 @@ Future<void> _fetchFlights(int page) async {
               onPressed: () {
                 Navigator.pop(context); // Close the dialog
               },
-              child: Text('Done'),
+              child: const Text('Done'),
             ),
           ],
         );
@@ -156,18 +157,24 @@ Future<void> _fetchFlights(int page) async {
         return AlertDialog(
           title: Text('Select $type'),
           content: SizedBox(
-            width: MediaQuery.of(context).size.width * 0.8, // Optional width constraint
+            width: MediaQuery.of(context).size.width *
+                0.8, // Optional width constraint
             height: 300, // Adjust height as needed
             child: ListView.builder(
               itemCount: selectedList.length,
               itemBuilder: (context, index) {
                 final item = selectedList[index];
                 return ListTile(
-                  title: Text(type == 'guides' && item['guideAvailability'] == 'Y' ? item['guideName'] : item['vehicleType']),
-                  subtitle: type == 'transport' ? Text(item['driverName']) : null,
+                  title: Text(
+                      type == 'guides' && item['guideAvailability'] == 'Y'
+                          ? item['guideName']
+                          : item['vehicleType']),
+                  subtitle:
+                      type == 'transport' ? Text(item['driverName']) : null,
                   onTap: () {
                     setState(() {
-                      if (type == 'guides'  && item['guideAvailability'] == 'Y') {
+                      if (type == 'guides' &&
+                          item['guideAvailability'] == 'Y') {
                         _guideNameController.text = item['guideName'];
                         guideID = item['guideID'];
                       } else {
@@ -183,7 +190,6 @@ Future<void> _fetchFlights(int page) async {
               },
             ),
           ),
-
         );
       },
     );
@@ -191,26 +197,25 @@ Future<void> _fetchFlights(int page) async {
 
   Future<void> _addPackage() async {
     if (selectedFlightIDs.isEmpty) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Please select at least one flight')),
-    );
-    return;
-  }
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please select at least one flight')),
+      );
+      return;
+    }
     try {
       await addPackage(
-        name: _nameController.text,
-        availability: _availability,
-        guideID: guideID,
-        transportID: transportID,
-        startDate: _startDateController.text,
-        endDate: _endDateController.text,
-        country: _countryController.text,
-        price: double.parse(_priceController.text),
-        customerLimit: _customerLimitController.text,
-        flightIDs: selectedFlightIDs
-      );
+          name: _nameController.text,
+          availability: _availability,
+          guideID: guideID,
+          transportID: transportID,
+          startDate: _startDateController.text,
+          endDate: _endDateController.text,
+          country: _countryController.text,
+          price: double.parse(_priceController.text),
+          customerLimit: _customerLimitController.text,
+          flightIDs: selectedFlightIDs);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Package added successfully')),
+        const SnackBar(content: Text('Package added successfully')),
       );
       Navigator.pop(context);
     } catch (e) {
@@ -224,19 +229,19 @@ Future<void> _fetchFlights(int page) async {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Package'),
+        title: const Text('Add Package'),
       ),
       body: FutureBuilder<Map<String, dynamic>>(
         future: companyDetailsFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
           if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           }
           if (!snapshot.hasData) {
-            return Center(child: Text('No company details available'));
+            return const Center(child: Text('No company details available'));
           }
 
           // Fetch guides and transport from company details
@@ -249,33 +254,33 @@ Future<void> _fetchFlights(int page) async {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  const Text(
                     'Package Details',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   TextField(
                     controller: _nameController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Package Name',
                       border: OutlineInputBorder(),
                     ),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   TextField(
                     controller: _priceController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Price',
                       border: OutlineInputBorder(),
                     ),
                   ),
-                  SizedBox(height: 16),
-                  Text(
+                  const SizedBox(height: 16),
+                  const Text(
                     'Availability',
                     style: TextStyle(fontSize: 16),
                   ),
                   RadioListTile<String>(
-                    title: Text('Yes'),
+                    title: const Text('Yes'),
                     value: 'Y',
                     groupValue: _availability,
                     onChanged: (value) {
@@ -285,7 +290,7 @@ Future<void> _fetchFlights(int page) async {
                     },
                   ),
                   RadioListTile<String>(
-                    title: Text('No'),
+                    title: const Text('No'),
                     value: 'N',
                     groupValue: _availability,
                     onChanged: (value) {
@@ -294,46 +299,46 @@ Future<void> _fetchFlights(int page) async {
                       });
                     },
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   TextField(
                     controller: _startDateController,
                     readOnly: true,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Start Date',
                       border: OutlineInputBorder(),
                       suffixIcon: Icon(Icons.calendar_today),
                     ),
                     onTap: () => _pickDate(context, _startDateController),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   TextField(
                     controller: _endDateController,
                     readOnly: true,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'End Date',
                       border: OutlineInputBorder(),
                       suffixIcon: Icon(Icons.calendar_today),
                     ),
                     onTap: () => _pickDate(context, _endDateController),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   TextField(
                     controller: _countryController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Country',
                       border: OutlineInputBorder(),
                     ),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   TextField(
                     controller: _customerLimitController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Package Limit',
                       border: OutlineInputBorder(),
                     ),
                   ),
-                  SizedBox(height: 16),
-                  Text(
+                  const SizedBox(height: 16),
+                  const Text(
                     'Select Guide',
                     style: TextStyle(fontSize: 16),
                   ),
@@ -342,15 +347,15 @@ Future<void> _fetchFlights(int page) async {
                     child: AbsorbPointer(
                       child: TextField(
                         controller: _guideNameController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Guide Name',
                           border: OutlineInputBorder(),
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(height: 16),
-                  Text(
+                  const SizedBox(height: 16),
+                  const Text(
                     'Select Transport',
                     style: TextStyle(fontSize: 16),
                   ),
@@ -359,15 +364,15 @@ Future<void> _fetchFlights(int page) async {
                     child: AbsorbPointer(
                       child: TextField(
                         controller: _vehicleTypeController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Vehicle Type',
                           border: OutlineInputBorder(),
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(height: 16),
-                  Text(
+                  const SizedBox(height: 16),
+                  const Text(
                     'Select Flights',
                     style: TextStyle(fontSize: 16),
                   ),
@@ -379,15 +384,15 @@ Future<void> _fetchFlights(int page) async {
                         decoration: InputDecoration(
                           labelText:
                               'Selected Flights (${selectedFlightIDs.length})',
-                          border: OutlineInputBorder(),
+                          border: const OutlineInputBorder(),
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   ElevatedButton(
                     onPressed: _addPackage,
-                    child: Text('Add Package'),
+                    child: const Text('Add Package'),
                   ),
                 ],
               ),

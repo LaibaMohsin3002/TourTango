@@ -256,13 +256,10 @@
 // }
 
 import 'package:flutter/material.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package_details_page.dart';
 import 'profile_page.dart';
-import 'booking_page.dart';
 import 'booking_history.dart';
 import 'my_bookings.dart';
-import '../widgets/search_bar.dart';
 import '../widgets/carousel.dart';
 import '../widgets/packages.dart';
 import '../widgets/location.dart';
@@ -270,17 +267,14 @@ import '../widgets/tourplaces.dart';
 import '../widgets/recommendations.dart'; // Add the recommended places widget
 import '../api.dart';
 
-
-
 class CustomerHomePage extends StatefulWidget {
   final String customerEmail;
 
-  CustomerHomePage({required this.customerEmail});
+  const CustomerHomePage({super.key, required this.customerEmail});
 
   @override
   _CustomerHomePageState createState() => _CustomerHomePageState();
 }
-
 
 class _CustomerHomePageState extends State<CustomerHomePage> {
   final TextEditingController _searchController = TextEditingController();
@@ -350,7 +344,10 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => PackageDetailsPage(packageId: package.packageID, customerEmail: widget.customerEmail,),
+        builder: (context) => PackageDetailsPage(
+          packageId: package.packageID,
+          customerEmail: widget.customerEmail,
+        ),
       ),
     );
   }
@@ -362,10 +359,10 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
         elevation: 0,
         backgroundColor: Colors.transparent,
         foregroundColor: Colors.black,
-        title: Column(
+        title: const Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text("Welcome"),
+            Text("Welcome"),
             // Text(
             //   "Customer Name", // Replace with dynamic username if needed
             //   style: Theme.of(context).textTheme.labelMedium,
@@ -409,7 +406,8 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const MyBookingsPage()),
+                  MaterialPageRoute(
+                      builder: (context) => const MyBookingsPage()),
                 );
               },
             ),
@@ -418,7 +416,9 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => BookingHistoryPage(customerEmail: widget.customerEmail)),
+                  MaterialPageRoute(
+                      builder: (context) => BookingHistoryPage(
+                          customerEmail: widget.customerEmail)),
                 );
               },
             ),
@@ -451,9 +451,10 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>
-                              PackageDetailsPage(packageId: package.packageID, customerEmail: widget.customerEmail,
-                        ),
+                          builder: (context) => PackageDetailsPage(
+                            packageId: package.packageID,
+                            customerEmail: widget.customerEmail,
+                          ),
                         ),
                       );
                     },
@@ -504,23 +505,21 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
                     ),
                   ),
 
-                  const SizedBox(height: 20),
-                  const Text(
-                    'Frequently Asked Questions',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 16),
-                  
-                  
-                  ...faqs.map((faq) => ExpansionTile(
-                    title: Text(faq['question']),
-                    children: <Widget>[
-                      ListTile(
-                        title: Text(faq['answer']),
-                      ),
-                    ],
-                  )).toList(),
+                const SizedBox(height: 20),
+                const Text(
+                  'Frequently Asked Questions',
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 16),
 
+                ...faqs.map((faq) => ExpansionTile(
+                      title: Text(faq['question']),
+                      children: <Widget>[
+                        ListTile(
+                          title: Text(faq['answer']),
+                        ),
+                      ],
+                    )),
               ],
             ),
       bottomNavigationBar: BottomNavigationBar(

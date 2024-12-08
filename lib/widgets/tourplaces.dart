@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '/models/tourist_places_model.dart';
 
 class TouristPlaces extends StatelessWidget {
-  const TouristPlaces({Key? key}) : super(key: key);
+  const TouristPlaces({super.key});
 
   @override
   Widget build(BuildContext context) {

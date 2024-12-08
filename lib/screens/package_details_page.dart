@@ -248,15 +248,16 @@
 
 import 'package:flutter/material.dart';
 import 'package:tourtango/api.dart';
+import 'package:tourtango/screens/booking_form_page.dart';
 import 'booking_page.dart';
 import 'package:ionicons/ionicons.dart';
-import '/widgets/distance.dart';
 
 class PackageDetailsPage extends StatefulWidget {
   final int packageId;
   final String customerEmail;
 
-  PackageDetailsPage({required this.packageId, required this.customerEmail});
+  const PackageDetailsPage(
+      {super.key, required this.packageId, required this.customerEmail});
 
   @override
   _PackageDetailsPageState createState() => _PackageDetailsPageState();
@@ -384,7 +385,8 @@ class _PackageDetailsPageState extends State<PackageDetailsPage> {
                         child: IconButton(
                           onPressed: () {},
                           iconSize: 20,
-                          icon: const Icon(Ionicons.chatbubble_ellipses_outline),
+                          icon:
+                              const Icon(Ionicons.chatbubble_ellipses_outline),
                         ),
                       ),
                       Column(
@@ -410,9 +412,13 @@ class _PackageDetailsPageState extends State<PackageDetailsPage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => BookingPage(
-                              packageId: data['packageID'], customerEmail: widget.customerEmail, price: data['price'].toDouble())
-                        ),
+                            builder: (context) => BookingFormPage(
+                                  packageId: widget.packageId,
+                                  customerEmail: widget.customerEmail,
+                                  price: data['price'].toDouble(),
+                                  tourCompany: data['tourCompany'] ?? 'Unknown',
+                                  duration: '10 days',
+                                )),
                       );
                     },
                     style: ElevatedButton.styleFrom(
