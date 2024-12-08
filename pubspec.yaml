@@ -43,6 +43,7 @@ dependencies:
   ionicons: ^0.2.1
   intl: ^0.20.1
   flutter_rating_bar: ^4.0.1
+  flutter_local_notifications: ^18.0.1
 
 dev_dependencies:
   flutter_test:

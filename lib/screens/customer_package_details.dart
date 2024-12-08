@@ -64,10 +64,10 @@ class TourPackageDetailsPage extends StatelessWidget {
   final String image;
 
   const TourPackageDetailsPage({
-    Key? key,
+    super.key,
     required this.packageName,
     required this.image,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -213,8 +213,8 @@ class TourPackageDetailsPage extends StatelessWidget {
                 borderRadius: BorderRadius.circular(15),
                 color: Theme.of(context).colorScheme.secondary.withOpacity(0.1),
                 image: const DecorationImage(
-                  image:
-                      AssetImage('assets/map.png'), // Replace with dynamic map
+                  image: AssetImage(
+                      'assets/images/map.png'), // Replace with dynamic map
                   fit: BoxFit.cover,
                 ),
               ),
@@ -229,8 +229,14 @@ class TourPackageDetailsPage extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) =>
-                        BookingFormPage(packageName: packageName),
+                    builder: (context) => BookingFormPage(
+                      packageId: 1,
+                      tourCompany: '',
+                      duration: '',
+                      price: 100,
+                      //packageId: 1,
+                      customerEmail: '',
+                    ),
                   ),
                 );
               },

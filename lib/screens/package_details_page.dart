@@ -407,6 +407,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:tourtango/api.dart';
+import 'package:tourtango/screens/booking_form_page.dart';
 import 'booking_page.dart';
 import 'package:ionicons/ionicons.dart';
 import '/widgets/distance.dart';
@@ -416,7 +417,8 @@ class PackageDetailsPage extends StatefulWidget {
   final int packageId;
   final String customerEmail;
 
-  PackageDetailsPage({required this.packageId, required this.customerEmail});
+  const PackageDetailsPage(
+      {super.key, required this.packageId, required this.customerEmail});
 
   @override
   _PackageDetailsPageState createState() => _PackageDetailsPageState();

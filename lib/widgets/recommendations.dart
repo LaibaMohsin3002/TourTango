@@ -4,7 +4,7 @@ import '/models/recs.dart';
 import '/screens/customer_package_details.dart';
 
 class RecommendedPlaces extends StatelessWidget {
-  const RecommendedPlaces({Key? key}) : super(key: key);
+  const RecommendedPlaces({super.key});
 
   @override
   Widget build(BuildContext context) {

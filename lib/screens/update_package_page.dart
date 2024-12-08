@@ -7,7 +7,12 @@ class UpdatePackagePage extends StatefulWidget {
   final String companyEmail;
   final Map<String, dynamic> recordDetails;
 
-  UpdatePackagePage({required this.packageId, required this.companyEmail, required this.recordDetails,});
+  const UpdatePackagePage({
+    super.key,
+    required this.packageId,
+    required this.companyEmail,
+    required this.recordDetails,
+  });
 
   @override
   _UpdatePackagePageState createState() => _UpdatePackagePageState();
@@ -86,7 +91,8 @@ class _UpdatePackagePageState extends State<UpdatePackagePage> {
     _descriptionController = TextEditingController(text: recordDetails['description']);
   }
 
-  Future<void> _pickDate(BuildContext context, TextEditingController controller) async {
+  Future<void> _pickDate(
+      BuildContext context, TextEditingController controller) async {
     DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
@@ -141,12 +147,12 @@ Future<void> _fetchFlights() async {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Select Flights'),
+          title: const Text('Select Flights'),
           content: SizedBox(
             width: MediaQuery.of(context).size.width * 0.8,
             height: 400, // Adjust height as needed
             child: isLoadingFlights
-                ? Center(child: CircularProgressIndicator())
+                ? const Center(child: CircularProgressIndicator())
                 : ListView.builder(
                     itemCount: flights.length,
                     itemBuilder: (context, index) {
@@ -186,7 +192,7 @@ Future<void> _fetchFlights() async {
               onPressed: () {
                 Navigator.pop(context); // Close the dialog
               },
-              child: Text('Done'),
+              child: const Text('Done'),
             ),
           ],
         );
@@ -412,7 +418,8 @@ Future<void> _showAddItineraryDialog() async {
         return AlertDialog(
           title: Text('Select $type'),
           content: SizedBox(
-            width: MediaQuery.of(context).size.width * 0.8, // Optional width constraint
+            width: MediaQuery.of(context).size.width *
+                0.8, // Optional width constraint
             height: 300, // Adjust height as needed
             child: ListView.builder(
               itemCount: selectedList.length,
@@ -452,11 +459,11 @@ Future<void> _showAddItineraryDialog() async {
 
   Future<void> _updatePackage() async {
     if (selectedFlightIDs.isEmpty) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Please select at least one flight')),
-    );
-    return;
-  }
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please select at least one flight')),
+      );
+      return;
+    }
     try {
       await updatePackage(
         widget.packageId,
@@ -478,7 +485,7 @@ Future<void> _showAddItineraryDialog() async {
         imageUrl: _imageUrlController.text,
       );
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Package updated successfully')),
+        const SnackBar(content: Text('Package updated successfully')),
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -491,19 +498,19 @@ Future<void> _showAddItineraryDialog() async {
    Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Update Package'),
+        title: const Text('Update Package'),
       ),
       body: FutureBuilder<Map<String, dynamic>>(
         future: companyDetailsFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
           if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           }
           if (!snapshot.hasData) {
-            return Center(child: Text('No company details available'));
+            return const Center(child: Text('No company details available'));
           }
 
           // Fetch guides and transport from company details
@@ -516,22 +523,22 @@ Future<void> _showAddItineraryDialog() async {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  const Text(
                     'Package Details',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   TextField(
                     controller: _nameController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Package Name',
                       border: OutlineInputBorder(),
                     ),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   TextField(
                     controller: _priceController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Price',
                       border: OutlineInputBorder(),
                     ),
@@ -550,7 +557,7 @@ Future<void> _showAddItineraryDialog() async {
                     style: TextStyle(fontSize: 16),
                   ),
                   RadioListTile<String>(
-                    title: Text('Yes'),
+                    title: const Text('Yes'),
                     value: 'Y',
                     groupValue: _availability,
                     onChanged: (value) {
@@ -560,7 +567,7 @@ Future<void> _showAddItineraryDialog() async {
                     },
                   ),
                   RadioListTile<String>(
-                    title: Text('No'),
+                    title: const Text('No'),
                     value: 'N',
                     groupValue: _availability,
                     onChanged: (value) {
@@ -569,40 +576,40 @@ Future<void> _showAddItineraryDialog() async {
                       });
                     },
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   TextField(
                     controller: _startDateController,
                     readOnly: true,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Start Date',
                       border: OutlineInputBorder(),
                       suffixIcon: Icon(Icons.calendar_today),
                     ),
                     onTap: () => _pickDate(context, _startDateController),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   TextField(
                     controller: _endDateController,
                     readOnly: true,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'End Date',
                       border: OutlineInputBorder(),
                       suffixIcon: Icon(Icons.calendar_today),
                     ),
                     onTap: () => _pickDate(context, _endDateController),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   TextField(
                     controller: _countryController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Country',
                       border: OutlineInputBorder(),
                     ),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   TextField(
                     controller: _customerLimitController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Package Limit',
                       border: OutlineInputBorder(),
                     ),
@@ -625,15 +632,15 @@ Future<void> _showAddItineraryDialog() async {
                     child: AbsorbPointer(
                       child: TextField(
                         controller: _guideNameController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Guide Name',
                           border: OutlineInputBorder(),
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(height: 16),
-                  Text(
+                  const SizedBox(height: 16),
+                  const Text(
                     'Select Transport',
                     style: TextStyle(fontSize: 16),
                   ),
@@ -642,15 +649,15 @@ Future<void> _showAddItineraryDialog() async {
                     child: AbsorbPointer(
                       child: TextField(
                         controller: _vehicleTypeController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Vehicle Type',
                           border: OutlineInputBorder(),
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(height: 16),
-                  Text(
+                  const SizedBox(height: 16),
+                  const Text(
                     'Select Accommodation',
                     style: TextStyle(fontSize: 16),
                   ),
@@ -659,15 +666,15 @@ Future<void> _showAddItineraryDialog() async {
                     child: AbsorbPointer(
                       child: TextField(
                         controller: _accommodationController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Hotel Name',
                           border: OutlineInputBorder(),
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(height: 16),
-                  Text(
+                  const SizedBox(height: 16),
+                  const Text(
                     'Select Flights',
                     style: TextStyle(fontSize: 16),
                   ),
@@ -704,7 +711,7 @@ Future<void> _showAddItineraryDialog() async {
               SizedBox(height: 16),
                   ElevatedButton(
                     onPressed: _updatePackage,
-                    child: Text('Update Package'),
+                    child: const Text('Update Package'),
                   ),
                 ],
               ),

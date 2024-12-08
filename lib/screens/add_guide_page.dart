@@ -3,7 +3,7 @@ import 'package:tourtango/api.dart';
 
 class AddGuidePage extends StatefulWidget {
   final String companyEmail;
-  AddGuidePage({required this.companyEmail});
+  const AddGuidePage({super.key, required this.companyEmail});
 
   @override
   _AddGuidePageState createState() => _AddGuidePageState();
@@ -23,7 +23,7 @@ class _AddGuidePageState extends State<AddGuidePage> {
   Future<void> _addGuide() async {
     if (_guideNameController.text.isEmpty) {
       // Show error if the guide name is empty
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('Please enter a guide name'),
         backgroundColor: Colors.red,
       ));
@@ -36,7 +36,7 @@ class _AddGuidePageState extends State<AddGuidePage> {
         availability: _availability,
       );
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Guide added successfully')),
+        const SnackBar(content: Text('Guide added successfully')),
       );
       Navigator.pop(context);
     } catch (e) {
@@ -46,11 +46,11 @@ class _AddGuidePageState extends State<AddGuidePage> {
     }
   }
 
-   @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Guide'),
+        title: const Text('Add Guide'),
         backgroundColor: Colors.blueAccent,
       ),
       body: Padding(
@@ -59,25 +59,25 @@ class _AddGuidePageState extends State<AddGuidePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              const Text(
                 'Guide Details',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               TextField(
                 controller: _guideNameController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Guide Name',
                   border: OutlineInputBorder(),
                 ),
               ),
-              SizedBox(height: 16),
-              Text(
+              const SizedBox(height: 16),
+              const Text(
                 'Availability',
                 style: TextStyle(fontSize: 16),
               ),
               RadioListTile<String>(
-                title: Text('Yes'),
+                title: const Text('Yes'),
                 value: 'Y',
                 groupValue: _availability,
                 onChanged: (value) {
@@ -87,7 +87,7 @@ class _AddGuidePageState extends State<AddGuidePage> {
                 },
               ),
               RadioListTile<String>(
-                title: Text('No'),
+                title: const Text('No'),
                 value: 'N',
                 groupValue: _availability,
                 onChanged: (value) {
@@ -96,14 +96,14 @@ class _AddGuidePageState extends State<AddGuidePage> {
                   });
                 },
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: _addGuide,
-                child: Text('Add Guide'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blueAccent,
-                  padding: EdgeInsets.symmetric(vertical: 16),
+                  padding: const EdgeInsets.symmetric(vertical: 16),
                 ),
+                child: const Text('Add Guide'),
               ),
             ],
           ),

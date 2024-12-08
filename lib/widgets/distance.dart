@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 
 class Distance extends StatelessWidget {
-  const Distance({Key? key}) : super(key: key);
+  const Distance({super.key});
 
   @override
   Widget build(BuildContext context) {

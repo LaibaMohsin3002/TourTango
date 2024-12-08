@@ -6,7 +6,7 @@ import 'review_detail_page.dart'; // Assuming you have this page implemented
 class BookingHistoryPage extends StatefulWidget {
   final String customerEmail;
 
-  BookingHistoryPage({required this.customerEmail});
+  const BookingHistoryPage({super.key, required this.customerEmail});
 
   @override
   _BookingHistoryPageState createState() => _BookingHistoryPageState();
@@ -25,23 +25,23 @@ class _BookingHistoryPageState extends State<BookingHistoryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Booking History'),
+        title: const Text('Booking History'),
         backgroundColor: Colors.blueAccent,
       ),
       body: FutureBuilder<List<dynamic>>(
         future: _historyFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(
               child: Text(
                 'Error: ${snapshot.error}',
-                style: TextStyle(fontSize: 16, color: Colors.red),
+                style: const TextStyle(fontSize: 16, color: Colors.red),
               ),
             );
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(
+            return const Center(
               child: Text(
                 'No booking history found.',
                 style: TextStyle(fontSize: 16),
@@ -70,61 +70,63 @@ class _BookingHistoryPageState extends State<BookingHistoryPage> {
               final isReviewable = DateTime.now().isAfter(endDate);
 
               return Card(
-                margin: EdgeInsets.all(10),
+                margin: const EdgeInsets.all(10),
                 elevation: 5,
                 child: Padding(
-                  padding: EdgeInsets.all(15),
+                  padding: const EdgeInsets.all(15),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         'Booking ID: $bookingID',
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      SizedBox(height: 5),
+                      const SizedBox(height: 5),
                       Text(
                         'Package Name: $packageName',
-                        style: TextStyle(fontSize: 14),
+                        style: const TextStyle(fontSize: 14),
                       ),
-                      SizedBox(height: 5),
+                      const SizedBox(height: 5),
                       Text(
                         'Payment ID: $paymentID',
-                        style: TextStyle(fontSize: 14),
+                        style: const TextStyle(fontSize: 14),
                       ),
-                      SizedBox(height: 5),
+                      const SizedBox(height: 5),
                       Text(
                         'Booking Date: $bookingDate',
-                        style: TextStyle(fontSize: 14),
+                        style: const TextStyle(fontSize: 14),
                       ),
-                      SizedBox(height: 5),
+                      const SizedBox(height: 5),
                       Text(
                         'Status: $status',
-                        style: TextStyle(fontSize: 14),
+                        style: const TextStyle(fontSize: 14),
                       ),
-                      SizedBox(height: 5),
+                      const SizedBox(height: 5),
                       Text(
                         'Total Amount: \$${totalAmount.toStringAsFixed(2)}',
-                        style: TextStyle(fontSize: 14, color: Colors.green),
+                        style:
+                            const TextStyle(fontSize: 14, color: Colors.green),
                       ),
-                      SizedBox(height: 5),
+                      const SizedBox(height: 5),
                       Text(
                         'Operation: $operation',
-                        style: TextStyle(fontSize: 14),
+                        style: const TextStyle(fontSize: 14),
                       ),
-                      SizedBox(height: 5),
+                      const SizedBox(height: 5),
                       Text(
                         'Action Timestamp: $timestamp',
-                        style: TextStyle(fontSize: 12, color: Colors.grey),
+                        style:
+                            const TextStyle(fontSize: 12, color: Colors.grey),
                       ),
-                      SizedBox(height: 5),
+                      const SizedBox(height: 5),
                       Text(
                         'End Date: ${DateFormat('yyyy-MM-dd').format(endDate)}',
-                        style: TextStyle(fontSize: 14),
+                        style: const TextStyle(fontSize: 14),
                       ),
-                      SizedBox(height: 15),
+                      const SizedBox(height: 15),
                       ElevatedButton(
                         onPressed: isReviewable
                             ? () {
@@ -138,12 +140,12 @@ class _BookingHistoryPageState extends State<BookingHistoryPage> {
                                 );
                               }
                             : null,
-                        child: Text('Leave Review'),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: isReviewable
                               ? Colors.blue
                               : Colors.grey, // Disable button if not reviewable
                         ),
+                        child: const Text('Leave Review'),
                       ),
                     ],
                   ),

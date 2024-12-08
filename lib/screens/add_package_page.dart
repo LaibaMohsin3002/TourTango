@@ -5,7 +5,7 @@ import 'package:tourtango/api.dart';
 class AddPackagePage extends StatefulWidget {
   final String companyEmail;
 
-  AddPackagePage({required this.companyEmail});
+  const AddPackagePage({super.key, required this.companyEmail});
 
   @override
   _AddPackagePageState createState() => _AddPackagePageState();
@@ -69,7 +69,8 @@ class _AddPackagePageState extends State<AddPackagePage> {
     _fetchAccommodation();
   }
 
-  Future<void> _pickDate(BuildContext context, TextEditingController controller) async {
+  Future<void> _pickDate(
+      BuildContext context, TextEditingController controller) async {
     DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
@@ -124,12 +125,12 @@ Future<void> _fetchFlights(int page) async {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Select Flights'),
+          title: const Text('Select Flights'),
           content: SizedBox(
             width: MediaQuery.of(context).size.width * 0.8,
             height: 400, // Adjust height as needed
             child: isLoadingFlights
-                ? Center(child: CircularProgressIndicator())
+                ? const Center(child: CircularProgressIndicator())
                 : ListView.builder(
                     itemCount: flights.length,
                     itemBuilder: (context, index) {
@@ -169,7 +170,7 @@ Future<void> _fetchFlights(int page) async {
               onPressed: () {
                 Navigator.pop(context); // Close the dialog
               },
-              child: Text('Done'),
+              child: const Text('Done'),
             ),
           ],
         );
@@ -396,7 +397,8 @@ Future<void> _showScrollablePopup(String type) async {
         return AlertDialog(
           title: Text('Select $type'),
           content: SizedBox(
-            width: MediaQuery.of(context).size.width * 0.8, // Optional width constraint
+            width: MediaQuery.of(context).size.width *
+                0.8, // Optional width constraint
             height: 300, // Adjust height as needed
             child: ListView.builder(
               itemCount: selectedList.length,
@@ -471,7 +473,7 @@ Future<void> _showScrollablePopup(String type) async {
         companyEmail: widget.companyEmail
       );
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Package added successfully')),
+        const SnackBar(content: Text('Package added successfully')),
       );
       Navigator.pop(context);
     } catch (e) {
@@ -485,19 +487,19 @@ Future<void> _showScrollablePopup(String type) async {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Package'),
+        title: const Text('Add Package'),
       ),
       body: FutureBuilder<Map<String, dynamic>>(
         future: companyDetailsFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
           if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           }
           if (!snapshot.hasData) {
-            return Center(child: Text('No company details available'));
+            return const Center(child: Text('No company details available'));
           }
 
           // Fetch guides and transport from company details
@@ -510,22 +512,22 @@ Future<void> _showScrollablePopup(String type) async {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  const Text(
                     'Package Details',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   TextField(
                     controller: _nameController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Package Name',
                       border: OutlineInputBorder(),
                     ),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   TextField(
                     controller: _priceController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Price',
                       border: OutlineInputBorder(),
                     ),
@@ -544,7 +546,7 @@ Future<void> _showScrollablePopup(String type) async {
                     style: TextStyle(fontSize: 16),
                   ),
                   RadioListTile<String>(
-                    title: Text('Yes'),
+                    title: const Text('Yes'),
                     value: 'Y',
                     groupValue: _availability,
                     onChanged: (value) {
@@ -554,7 +556,7 @@ Future<void> _showScrollablePopup(String type) async {
                     },
                   ),
                   RadioListTile<String>(
-                    title: Text('No'),
+                    title: const Text('No'),
                     value: 'N',
                     groupValue: _availability,
                     onChanged: (value) {
@@ -563,40 +565,40 @@ Future<void> _showScrollablePopup(String type) async {
                       });
                     },
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   TextField(
                     controller: _startDateController,
                     readOnly: true,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Start Date',
                       border: OutlineInputBorder(),
                       suffixIcon: Icon(Icons.calendar_today),
                     ),
                     onTap: () => _pickDate(context, _startDateController),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   TextField(
                     controller: _endDateController,
                     readOnly: true,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'End Date',
                       border: OutlineInputBorder(),
                       suffixIcon: Icon(Icons.calendar_today),
                     ),
                     onTap: () => _pickDate(context, _endDateController),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   TextField(
                     controller: _countryController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Country',
                       border: OutlineInputBorder(),
                     ),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   TextField(
                     controller: _customerLimitController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Package Limit',
                       border: OutlineInputBorder(),
                     ),
@@ -619,15 +621,15 @@ Future<void> _showScrollablePopup(String type) async {
                     child: AbsorbPointer(
                       child: TextField(
                         controller: _guideNameController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Guide Name',
                           border: OutlineInputBorder(),
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(height: 16),
-                  Text(
+                  const SizedBox(height: 16),
+                  const Text(
                     'Select Transport',
                     style: TextStyle(fontSize: 16),
                   ),
@@ -636,7 +638,7 @@ Future<void> _showScrollablePopup(String type) async {
                     child: AbsorbPointer(
                       child: TextField(
                         controller: _vehicleTypeController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Vehicle Type',
                           border: OutlineInputBorder(),
                         ),
@@ -698,7 +700,7 @@ Future<void> _showScrollablePopup(String type) async {
               SizedBox(height: 16),
                   ElevatedButton(
                     onPressed: _addPackage,
-                    child: Text('Add Package'),
+                    child: const Text('Add Package'),
                   ),
                 ],
               ),

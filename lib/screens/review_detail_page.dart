@@ -5,7 +5,7 @@ import 'package:tourtango/api.dart';
 class ReviewDetailPage extends StatefulWidget {
   final int bookingID;
 
-  ReviewDetailPage({required this.bookingID});
+  const ReviewDetailPage({super.key, required this.bookingID});
 
   @override
   _ReviewDetailPageState createState() => _ReviewDetailPageState();
@@ -13,7 +13,7 @@ class ReviewDetailPage extends StatefulWidget {
 
 class _ReviewDetailPageState extends State<ReviewDetailPage> {
   double _rating = 0;
-  TextEditingController _commentController = TextEditingController();
+  final TextEditingController _commentController = TextEditingController();
   bool _hasExistingReview = false;
   Map<String, dynamic>? _existingReview;
 
@@ -25,15 +25,14 @@ class _ReviewDetailPageState extends State<ReviewDetailPage> {
 
   Future<void> _fetchExistingReview() async {
     try {
-      final review = await fetchReview(widget.bookingID); // Fetch existing review
-      if (review != null) {
-        setState(() {
-          _hasExistingReview = true;
-          _existingReview = review;
-          _rating = review['rating'];
-          _commentController.text = review['comment'];
-        });
-      }
+      final review =
+          await fetchReview(widget.bookingID); // Fetch existing review
+      setState(() {
+        _hasExistingReview = true;
+        _existingReview = review;
+        _rating = review['rating'];
+        _commentController.text = review['comment'];
+      });
     } catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Failed to load review: $error')),
@@ -44,21 +43,23 @@ class _ReviewDetailPageState extends State<ReviewDetailPage> {
   Future<void> _submitReview() async {
     if (_rating == 0 || _commentController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Please provide a rating and comment.')),
+        const SnackBar(content: Text('Please provide a rating and comment.')),
       );
       return;
     }
 
     try {
       if (_hasExistingReview) {
-        await updateReview(widget.bookingID, _rating, _commentController.text); // Update existing review
+        await updateReview(widget.bookingID, _rating,
+            _commentController.text); // Update existing review
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Review updated successfully!')),
+          const SnackBar(content: Text('Review updated successfully!')),
         );
       } else {
-        await submitReview(widget.bookingID, _rating, _commentController.text); // Submit new review
+        await submitReview(widget.bookingID, _rating,
+            _commentController.text); // Submit new review
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Review submitted successfully!')),
+          const SnackBar(content: Text('Review submitted successfully!')),
         );
       }
       Navigator.pop(context); // Go back after successful submission or update
@@ -72,7 +73,7 @@ class _ReviewDetailPageState extends State<ReviewDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Leave a Review')),
+      appBar: AppBar(title: const Text('Leave a Review')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -82,21 +83,21 @@ class _ReviewDetailPageState extends State<ReviewDetailPage> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  const Text(
                     'Already Reviewed',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Text(
                     'Rating: ${_existingReview!['rating'].toStringAsFixed(1)}',
-                    style: TextStyle(fontSize: 16),
+                    style: const TextStyle(fontSize: 16),
                   ),
-                  SizedBox(height: 5),
+                  const SizedBox(height: 5),
                   Text(
                     'Comment: ${_existingReview!['comment']}',
-                    style: TextStyle(fontSize: 16),
+                    style: const TextStyle(fontSize: 16),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () {
                       setState(() {
@@ -104,9 +105,9 @@ class _ReviewDetailPageState extends State<ReviewDetailPage> {
                         _hasExistingReview = false;
                       });
                     },
-                    child: Text('Modify Review'),
+                    child: const Text('Modify Review'),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                 ],
               ),
             if (!_hasExistingReview)
@@ -114,17 +115,20 @@ class _ReviewDetailPageState extends State<ReviewDetailPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    _hasExistingReview ? 'Modify your Review' : 'Rate your Experience',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    _hasExistingReview
+                        ? 'Modify your Review'
+                        : 'Rate your Experience',
+                    style: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   RatingBar.builder(
                     initialRating: _rating,
                     minRating: 1,
                     direction: Axis.horizontal,
                     allowHalfRating: true,
                     itemCount: 5,
-                    itemBuilder: (context, _) => Icon(
+                    itemBuilder: (context, _) => const Icon(
                       Icons.star,
                       color: Colors.amber,
                     ),
@@ -134,19 +138,21 @@ class _ReviewDetailPageState extends State<ReviewDetailPage> {
                       });
                     },
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   TextField(
                     controller: _commentController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Leave a comment',
                     ),
                     maxLines: 5,
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Center(
                     child: ElevatedButton(
                       onPressed: _submitReview,
-                      child: Text(_hasExistingReview ? 'Update Review' : 'Submit Review'),
+                      child: Text(_hasExistingReview
+                          ? 'Update Review'
+                          : 'Submit Review'),
                     ),
                   ),
                 ],

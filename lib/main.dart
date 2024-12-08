@@ -38,14 +38,26 @@
 
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart'; // Import Firebase Core
+import 'package:tourtango/notification.dart';
+// import 'package:tourtango/notification.dart';
 import 'screens/start_page.dart';
+
+// NotificationService notificationService = NotificationService();
 
 void main() async {
   // Ensure that widget binding is initialized before Firebase is initialized
+  // WidgetsFlutterBinding.ensureInitialized();
+  // await NotificationService().initNotification();
+
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize NotificationService
+  NotificationService().initialize();
 
   // Initialize Firebase
   await Firebase.initializeApp();
+
+  //await notificationService.initialize();
 
   runApp(const MyApp());
 }

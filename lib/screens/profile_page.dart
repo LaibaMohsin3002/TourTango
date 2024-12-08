@@ -1,7 +1,36 @@
+// import 'package:flutter/material.dart';
+
+// class ProfilePage extends StatelessWidget {
+//   const ProfilePage({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: const Text('Profile'),
+//       ),
+//       body: const Center(
+//         child: Text('Profile information goes here'),
+//       ),
+//     );
+//   }
+// }
+
 import 'package:flutter/material.dart';
 
 class ProfilePage extends StatefulWidget {
+class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
+
+  @override
+  _ProfilePageState createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  bool isEditing = false;
+  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
 
   @override
   _ProfilePageState createState() => _ProfilePageState();
