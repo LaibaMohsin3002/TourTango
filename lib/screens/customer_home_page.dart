@@ -396,10 +396,10 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
             ListTile(
               title: const Text('Profile'),
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const ProfilePage()),
-                );
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(builder: (context) => const ProfilePage()),
+                // );
               },
             ),
             ListTile(
@@ -556,10 +556,10 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
               MaterialPageRoute(builder: (context) => const MyBookingsPage()),
             );
           } else if (index == 2) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const ProfilePage()),
-            );
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(builder: (context) => const ProfilePage()),
+            // );
           }
         },
       ),

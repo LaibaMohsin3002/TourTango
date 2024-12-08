@@ -35,7 +35,7 @@ class _ReviewDetailPageState extends State<ReviewDetailPage> {
       });
     } catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to load review: $error')),
+        SnackBar(content: Text('No existing reviews: $error')),
       );
     }
   }
@@ -62,7 +62,7 @@ class _ReviewDetailPageState extends State<ReviewDetailPage> {
           const SnackBar(content: Text('Review submitted successfully!')),
         );
       }
-      Navigator.pop(context); // Go back after successful submission or update
+      Navigator.pop(context);
     } catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Failed to submit review: $error')),
