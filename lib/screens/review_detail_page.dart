@@ -100,7 +100,6 @@ class _ReviewDetailPageState extends State<ReviewDetailPage> {
                   ElevatedButton(
                     onPressed: () {
                       setState(() {
-                        
                         _hasExistingReview = false;
                       });
                     },

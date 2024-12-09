@@ -46,17 +46,14 @@ class _CustomerSignupPageState extends State<CustomerSignupPage> {
     final email = _emailController.text;
     final password = _passwordController.text;
 
-
     final response = await http.post(
-      Uri.parse('http://your-api-url/login'),
+      Uri.parse('http://login'),
       headers: {'Content-Type': 'application/json'},
       body: json.encode({'email': email, 'password': password}),
     );
 
-    // Step 2: Handle the response
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
-      // On success, navigate to the home page
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -79,11 +76,13 @@ class _CustomerSignupPageState extends State<CustomerSignupPage> {
       );
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => CustomerHomePage(customerEmail: email)),
+        MaterialPageRoute(
+            builder: (context) => CustomerHomePage(customerEmail: email)),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fix the errors before submitting')),
+        const SnackBar(
+            content: Text('Please fix the errors before submitting')),
       );
     }
   }
@@ -170,7 +169,7 @@ class _CustomerSignupPageState extends State<CustomerSignupPage> {
                         child: const Text('Sign Up'),
                       ),
                       ElevatedButton(
-                        onPressed: _login, // Add login functionality here
+                        onPressed: _login,
                         style: ElevatedButton.styleFrom(
                           minimumSize: const Size(double.infinity, 50),
                           backgroundColor: Colors.teal,

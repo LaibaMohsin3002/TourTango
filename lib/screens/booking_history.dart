@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // For date comparison
 import 'package:tourtango/api.dart';
-import 'review_detail_page.dart'; // Assuming you have this page implemented
+import 'review_detail_page.dart';
 
 class BookingHistoryPage extends StatefulWidget {
   final String customerEmail;
@@ -55,7 +55,6 @@ class _BookingHistoryPageState extends State<BookingHistoryPage> {
             itemBuilder: (context, index) {
               final historyItem = history[index];
 
-              // Extract details
               final bookingID = historyItem['booking_id'];
               final bookingDate = historyItem['booking_date'];
               final totalAmount = historyItem['total_amount'];

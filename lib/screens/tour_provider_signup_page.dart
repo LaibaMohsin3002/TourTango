@@ -61,8 +61,7 @@ class _TourProviderSignupPageState extends State<TourProviderSignupPage> {
           Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image:
-                    AssetImage('assets/images/bg.jpg'), 
+                image: AssetImage('assets/images/bg.jpg'),
                 fit: BoxFit.cover,
               ),
             ),

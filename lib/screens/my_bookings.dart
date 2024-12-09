@@ -19,12 +19,11 @@ class _BookingsPageState extends State<BookingsPage> {
     _bookings = fetchBookings(widget.customerEmail);
   }
 
-
   void _cancelBooking(int bookingID) async {
     try {
       await deleteBooking(bookingID);
       setState(() {
-        _bookings = fetchBookings(widget.customerEmail); // Refetch bookings
+        _bookings = fetchBookings(widget.customerEmail);
       });
     } catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -63,18 +62,19 @@ class _BookingsPageState extends State<BookingsPage> {
               return ListTile(
                 title: Text('Booking ID: ${booking['BookingID']}'),
                 subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Booking Date: ${booking['BookingDate']}'),
-                        Text('Confirmation Status: ${booking['confirmationStatus']}'),
-                        Text('Number of people: ${booking['noOfPeople']}'),
-                        Text('Amount paid: ${booking['amount']}'),
-                      ],
-                    ),
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Booking Date: ${booking['BookingDate']}'),
+                    Text(
+                        'Confirmation Status: ${booking['confirmationStatus']}'),
+                    Text('Number of people: ${booking['noOfPeople']}'),
+                    Text('Amount paid: ${booking['amount']}'),
+                  ],
+                ),
                 trailing: ElevatedButton(
                   onPressed: () => _cancelBooking(booking['BookingID']),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.teal, // Button color
+                    backgroundColor: Colors.teal,
                     padding: const EdgeInsets.symmetric(
                         horizontal: 32, vertical: 16),
                     shape: RoundedRectangleBorder(

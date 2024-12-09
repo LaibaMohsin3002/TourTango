@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'customer_login_page.dart';
 import 'tour_provider_login_page.dart';
@@ -14,7 +13,7 @@ class StartPage extends StatelessWidget {
         children: [
           // Top Section: Tour Tango Title
           const Expanded(
-            flex: 3, 
+            flex: 3,
             child: Center(
               child: Text(
                 'TOUR TANGO',
@@ -30,11 +29,11 @@ class StartPage extends StatelessWidget {
           ),
           // Middle Section: Full-Width Image
           Expanded(
-            flex: 4, 
+            flex: 4,
             child: Container(
               decoration: const BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage('assets/images/logo2'), 
+                  image: AssetImage('assets/images/logo2'),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -42,7 +41,7 @@ class StartPage extends StatelessWidget {
           ),
           // Bottom Section: Buttons
           Expanded(
-            flex: 3, 
+            flex: 3,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24.0),
               child: Column(
@@ -57,14 +56,13 @@ class StartPage extends StatelessWidget {
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(
-                          255, 115, 198, 191), 
-                      foregroundColor: Colors.white, 
+                      backgroundColor: const Color.fromARGB(255, 115, 198, 191),
+                      foregroundColor: Colors.white,
                       minimumSize: const Size(double.infinity, 60),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16),
                       ),
-                      elevation: 4, 
+                      elevation: 4,
                     ),
                     child: const Text(
                       'I am a Customer',
@@ -86,14 +84,13 @@ class StartPage extends StatelessWidget {
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(
-                          255, 115, 198, 191), 
-                      foregroundColor: Colors.white, 
+                      backgroundColor: const Color.fromARGB(255, 115, 198, 191),
+                      foregroundColor: Colors.white,
                       minimumSize: const Size(double.infinity, 60),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16),
                       ),
-                      elevation: 4, 
+                      elevation: 4,
                     ),
                     child: const Text(
                       'I am a Tour Provider',

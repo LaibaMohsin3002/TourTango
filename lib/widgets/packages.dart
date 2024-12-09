@@ -1,4 +1,3 @@
-
 class Package {
   final int packageID;
   final String packageName;
@@ -73,8 +72,6 @@ class Package {
       country: json['country'],
       imageUrl: json['imageUrl'],
       specialOffers: json['specialOffers'] ?? '',
-      // duration: json['duration'],
-      // location: json['location'], // Duration from API response
     );
   }
 }

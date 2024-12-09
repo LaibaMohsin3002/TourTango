@@ -20,7 +20,6 @@ class BookingFormPage extends StatefulWidget {
   State<BookingFormPage> createState() => _BookingFormPageState();
 }
 
-
 class _BookingFormPageState extends State<BookingFormPage> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
@@ -29,49 +28,49 @@ class _BookingFormPageState extends State<BookingFormPage> {
   final _numberOfPeopleController = TextEditingController();
   final NotificationService notificationService = NotificationService();
   final String currentDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
-  String tourCompany='';
-  String duration ='';
+  String tourCompany = '';
+  String duration = '';
 
   @override
-void initState() {
-  super.initState();
-  fetchPackageDetails();
-}
+  void initState() {
+    super.initState();
+    fetchPackageDetails();
+  }
 
-Future<void> fetchPackageDetails() async {
-  try {
-    final packageDetails = await getPackageDetails(widget.packageId);
-    final String? startDateString = packageDetails['start_date'];
-    final String? endDateString = packageDetails['end_date'];
+  Future<void> fetchPackageDetails() async {
+    try {
+      final packageDetails = await getPackageDetails(widget.packageId);
+      final String? startDateString = packageDetails['start_date'];
+      final String? endDateString = packageDetails['end_date'];
 
-    if (startDateString != null && endDateString != null) {
-      try {
-        final startDate = DateTime.parse(startDateString);
-        final endDate = DateTime.parse(endDateString);
+      if (startDateString != null && endDateString != null) {
+        try {
+          final startDate = DateTime.parse(startDateString);
+          final endDate = DateTime.parse(endDateString);
 
-        setState(() {
-          tourCompany = packageDetails['companyName'];
-          duration = '${endDate.difference(startDate).inDays} days';
-        });
-      } catch (dateError) {
+          setState(() {
+            tourCompany = packageDetails['companyName'];
+            duration = '${endDate.difference(startDate).inDays} days';
+          });
+        } catch (dateError) {
+          setState(() {
+            tourCompany = packageDetails['companyName'] ?? 'Unknown';
+            duration = 'Invalid date format';
+          });
+        }
+      } else {
         setState(() {
           tourCompany = packageDetails['companyName'] ?? 'Unknown';
-          duration = 'Invalid date format';
+          duration = 'Dates not available';
         });
       }
-    } else {
+    } catch (error) {
       setState(() {
-        tourCompany = packageDetails['companyName'] ?? 'Unknown';
-        duration = 'Dates not available';
+        tourCompany = 'Unknown';
+        duration = 'Error fetching details';
       });
     }
-  } catch (error) {
-    setState(() {
-      tourCompany = 'Unknown';
-      duration = 'Error fetching details';
-    });
   }
-}
 
   @override
   void dispose() {
@@ -81,7 +80,6 @@ Future<void> fetchPackageDetails() async {
     _numberOfPeopleController.dispose();
     super.dispose();
   }
-  
 
   Widget _buildInfoDisplay(String label, String value) {
     return Padding(
@@ -105,8 +103,7 @@ Future<void> fetchPackageDetails() async {
       backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
         title: Text('Book Package ${widget.packageId}'),
-        backgroundColor:
-            const Color.fromARGB(255, 100, 131, 156),
+        backgroundColor: const Color.fromARGB(255, 100, 131, 156),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -115,8 +112,8 @@ Future<void> fetchPackageDetails() async {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                _buildInfoDisplay('Tour Company', tourCompany.isNotEmpty? tourCompany: 'Unknown Company'),
-
+                _buildInfoDisplay('Tour Company',
+                    tourCompany.isNotEmpty ? tourCompany : 'Unknown Company'),
                 _buildInfoDisplay('Package ID', widget.packageId.toString()),
                 _buildInfoDisplay('Duration', duration),
                 _buildInfoDisplay('Customer Email', widget.customerEmail),
@@ -128,12 +125,10 @@ Future<void> fetchPackageDetails() async {
                   decoration: InputDecoration(
                     labelText: 'Name',
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(
-                          30.0),
+                      borderRadius: BorderRadius.circular(30.0),
                     ),
                     contentPadding: const EdgeInsets.symmetric(
-                        vertical: 12.0,
-                        horizontal: 16.0), 
+                        vertical: 12.0, horizontal: 16.0),
                   ),
                   validator: (value) =>
                       value!.isEmpty ? 'Please enter your name' : null,
@@ -169,7 +164,6 @@ Future<void> fetchPackageDetails() async {
                       ? 'Please enter the number of people'
                       : null,
                 ),
-
                 const SizedBox(height: 24),
                 ElevatedButton(
                   onPressed: () {
@@ -200,8 +194,7 @@ Future<void> fetchPackageDetails() async {
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromARGB(
-                        255, 176, 174, 196),
+                    backgroundColor: const Color.fromARGB(255, 176, 174, 196),
                     minimumSize: const Size(double.infinity, 50),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(25),

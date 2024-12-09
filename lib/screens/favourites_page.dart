@@ -53,7 +53,8 @@ class _FavouritesPageState extends State<FavouritesPage> {
                   margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                   child: ListTile(
                     contentPadding: EdgeInsets.all(16),
-                    title: Text(packageName, style: TextStyle(fontWeight: FontWeight.bold)),
+                    title: Text(packageName,
+                        style: TextStyle(fontWeight: FontWeight.bold)),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -77,7 +78,8 @@ class _FavouritesPageState extends State<FavouritesPage> {
                           packageID: packageID,
                         );
                         setState(() {
-                          _favourites = getFavourites(customerEmail: widget.customerEmail); // Refresh the list after deletion
+                          _favourites = getFavourites(
+                              customerEmail: widget.customerEmail);
                         });
                       },
                     ),

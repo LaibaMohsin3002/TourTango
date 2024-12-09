@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:ionicons/ionicons.dart'; 
-import 'package:tourtango/api.dart'; 
+import 'package:ionicons/ionicons.dart';
+import 'package:tourtango/api.dart';
+
 class Favourite extends StatefulWidget {
   final String customerEmail;
   final int packageID;
@@ -26,29 +27,29 @@ class _FavouriteState extends State<Favourite> {
     });
   }
 
-
   Future<void> _toggleFavorite() async {
-
     if (_isFavorited) {
       // Remove from favorites
-      await deleteFromFavourites(customerEmail: widget.customerEmail, packageID: widget.packageID);
+      await deleteFromFavourites(
+          customerEmail: widget.customerEmail, packageID: widget.packageID);
       setState(() {
         _isFavorited = false;
       });
       _showSnackBar('Removed from Favourites');
     } else {
       // Add to favorites
-      await addToFavorites(customerEmail: widget.customerEmail, packageID: widget.packageID);
+      await addToFavorites(
+          customerEmail: widget.customerEmail, packageID: widget.packageID);
       setState(() {
         _isFavorited = true;
       });
       _showSnackBar('Added to Favourites');
     }
-
   }
 
   void _showSnackBar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(message)));
   }
 
   @override
@@ -58,7 +59,7 @@ class _FavouriteState extends State<Favourite> {
       onPressed: _toggleFavorite,
       icon: Icon(
         _isFavorited ? Ionicons.heart : Ionicons.heart_outline,
-        color:_isFavorited ? Colors.red : null,
+        color: _isFavorited ? Colors.red : null,
       ),
     );
   }

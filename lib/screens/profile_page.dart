@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tourtango/api.dart'; // Import the API helper
+import 'package:tourtango/api.dart';
 
 class ProfilePage extends StatefulWidget {
   final String customerEmail;
@@ -16,7 +16,6 @@ class _ProfilePageState extends State<ProfilePage> {
   TextEditingController primaryPhoneController = TextEditingController();
   TextEditingController secondaryPhoneController = TextEditingController();
 
-  // Profile Data
   String name = "";
   String email = "";
   String primaryPhone = "";
@@ -25,25 +24,23 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    _fetchProfileData(); 
+    _fetchProfileData();
   }
 
-  // Fetch profile data from the database
   Future<void> _fetchProfileData() async {
-  try {
-    var profile = await fetchProfile(widget.customerEmail); // API call to get profile data
-    setState(() {
-      name = profile['name'] ?? '';
-      email = profile['email'] ?? '';
-      primaryPhone = profile['primaryPhone'] ?? "Add Primary Phone Number";
-      secondaryPhone = profile['secondaryPhone'] ?? "Add Secondary Phone Number";
-    });
-  } catch (e) {
-    // Handle errors (e.g., network issues)
-    print("Error fetching profile: $e");
+    try {
+      var profile = await fetchProfile(widget.customerEmail);
+      setState(() {
+        name = profile['name'] ?? '';
+        email = profile['email'] ?? '';
+        primaryPhone = profile['primaryPhone'] ?? "Add Primary Phone Number";
+        secondaryPhone =
+            profile['secondaryPhone'] ?? "Add Secondary Phone Number";
+      });
+    } catch (e) {
+      print("Error fetching profile: $e");
+    }
   }
-}
-
 
   // Save updated profile data to the database
   Future<void> _updateProfileData() async {
@@ -63,7 +60,6 @@ class _ProfilePageState extends State<ProfilePage> {
         isEditing = false;
       });
 
-      // Go back to the previous screen after saving updates
       Navigator.pop(context);
     } catch (e) {
       print("Error updating profile: $e");
@@ -79,7 +75,7 @@ class _ProfilePageState extends State<ProfilePage> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context); // Navigate back to the previous screen
+            Navigator.pop(context);
           },
         ),
         backgroundColor: const Color.fromARGB(255, 206, 176, 186),
@@ -94,11 +90,11 @@ class _ProfilePageState extends State<ProfilePage> {
               CircleAvatar(
                 radius: 50,
                 backgroundColor: const Color.fromARGB(10, 233, 30, 98),
-                child: const Icon(Icons.account_circle, size: 80, color: Colors.white),
+                child: const Icon(Icons.account_circle,
+                    size: 80, color: Colors.white),
               ),
               const SizedBox(height: 16),
 
-              // Name Field
               _buildProfileField(
                 label: "Name",
                 value: name,
@@ -108,7 +104,6 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               const SizedBox(height: 16),
 
-              // Email Field
               _buildProfileField(
                 label: "Email",
                 value: email,
@@ -118,7 +113,6 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               const SizedBox(height: 16),
 
-              // Primary Phone Field
               _buildProfileField(
                 label: "Primary Phone",
                 value: primaryPhone,
@@ -128,7 +122,6 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               const SizedBox(height: 16),
 
-              // Secondary Phone Field
               _buildProfileField(
                 label: "Secondary Phone",
                 value: secondaryPhone,
@@ -142,10 +135,10 @@ class _ProfilePageState extends State<ProfilePage> {
               ElevatedButton(
                 onPressed: () {
                   if (isEditing) {
-                    _updateProfileData(); // Save changes
+                    _updateProfileData();
                   } else {
                     setState(() {
-                      isEditing = true; // Enable editing
+                      isEditing = true;
                       nameController.text = name;
                       emailController.text = email;
                       primaryPhoneController.text = primaryPhone;
@@ -202,7 +195,8 @@ class _ProfilePageState extends State<ProfilePage> {
               controller: controller,
               decoration: InputDecoration(
                 labelText: label,
-                prefixIcon: Icon(icon, color: const Color.fromARGB(255, 100, 131, 156)),
+                prefixIcon:
+                    Icon(icon, color: const Color.fromARGB(255, 100, 131, 156)),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15),
                 ),

@@ -8,7 +8,7 @@ import '../widgets/carousel.dart';
 import '../widgets/packages.dart';
 import '../widgets/location.dart';
 import '../widgets/tourplaces.dart';
-import '../widgets/recommendations.dart'; // Add the recommended places widget
+import '../widgets/recommendations.dart';
 import '../api.dart';
 import 'favourites_page.dart';
 
@@ -138,7 +138,9 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ProfilePage(customerEmail: widget.customerEmail)),
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          ProfilePage(customerEmail: widget.customerEmail)),
                 );
               },
             ),
@@ -148,7 +150,8 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => BookingsPage(customerEmail: widget.customerEmail)),
+                      builder: (context) =>
+                          BookingsPage(customerEmail: widget.customerEmail)),
                 );
               },
             ),
@@ -268,7 +271,6 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
                         ),
                       ],
                     )),
-                // Add the ElevatedButton here
                 ElevatedButton(
                   onPressed: () {
                     Navigator.push(
@@ -305,12 +307,16 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
           } else if (index == 1) {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => BookingsPage(customerEmail: widget.customerEmail)),
+              MaterialPageRoute(
+                  builder: (context) =>
+                      BookingsPage(customerEmail: widget.customerEmail)),
             );
           } else if (index == 2) {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => ProfilePage(customerEmail: widget.customerEmail)),
+              MaterialPageRoute(
+                  builder: (context) =>
+                      ProfilePage(customerEmail: widget.customerEmail)),
             );
           }
         },

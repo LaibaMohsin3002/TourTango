@@ -26,7 +26,6 @@ class _AddTransportPageState extends State<AddTransportPage> {
     if (_driverNameController.text.isEmpty ||
         _vehicleTypeController.text.isEmpty ||
         _pickupLocationController.text.isEmpty) {
-      // Show error if the guide name is empty
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('Please fill empty fields'),
         backgroundColor: Colors.red,

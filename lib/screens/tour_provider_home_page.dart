@@ -181,7 +181,7 @@ class _TourProviderHomePageState extends State<TourProviderHomePage> {
                         driverName: driverNameController.text,
                         pickupLocation: pickupLocationController.text,
                       );
-                    } 
+                    }
                     setState(() {
                       companyDetails = fetchCompanyDetails(widget.companyEmail);
                     });

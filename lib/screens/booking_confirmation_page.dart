@@ -1,7 +1,5 @@
-
-
 import 'package:flutter/material.dart';
-import 'package:tourtango/notification.dart'; 
+import 'package:tourtango/notification.dart';
 import 'payment_page.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -98,8 +96,7 @@ class BookingConfirmationPage extends StatelessWidget {
       backgroundColor: const Color.fromARGB(255, 238, 242, 239),
       appBar: AppBar(
         title: const Text('Booking Confirmation'),
-        backgroundColor:
-            const Color.fromARGB(255, 100, 131, 156), 
+        backgroundColor: const Color.fromARGB(255, 100, 131, 156),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -132,7 +129,7 @@ class BookingConfirmationPage extends StatelessWidget {
               _buildInfoCard('Booking Date', bookingDate),
               const SizedBox(height: 16),
               _buildInfoCard('Number of People', numberOfPeople),
-              const SizedBox(height: 32), 
+              const SizedBox(height: 32),
               ElevatedButton(
                 onPressed: () => _navigateToPayment(context),
                 style: ElevatedButton.styleFrom(

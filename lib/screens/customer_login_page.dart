@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'customer_home_page.dart';
-import 'customer_signup_page.dart'; 
+import 'customer_signup_page.dart';
 import 'package:tourtango/api.dart';
 
 class CustomerLoginPage extends StatefulWidget {
@@ -41,7 +41,7 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
     return null;
   }
 
-Future<void> _login() async {
+  Future<void> _login() async {
     final email = _emailController.text;
     final password = _passwordController.text;
 
@@ -49,21 +49,19 @@ Future<void> _login() async {
     final result = await login(email, password);
 
     if (result.containsKey('error')) {
-      // Display error message if login failed
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(result['error'])),
       );
     } else {
-      // If login is successful, navigate to the homepage
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => CustomerHomePage(customerEmail: result['email']),
+          builder: (context) =>
+              CustomerHomePage(customerEmail: result['email']),
         ),
       );
     }
   }
-
 
   void _navigateToSignUp() {
     Navigator.push(
@@ -82,7 +80,6 @@ Future<void> _login() async {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // No background color here, will be handled by the Container
       body: Stack(
         fit: StackFit.expand,
         children: [
@@ -90,25 +87,22 @@ Future<void> _login() async {
           Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage(
-                    'assets/images/bg.jpg'), // Add your image path here
+                image: AssetImage('assets/images/bg.jpg'),
                 fit: BoxFit.cover,
               ),
             ),
           ),
-          // Content with semi-transparent background
           Center(
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Container(
                 padding: const EdgeInsets.all(16.0),
                 decoration: BoxDecoration(
-                  color: Colors.white
-                      .withOpacity(0.8), // Semi-transparent white background
+                  color: Colors.white.withOpacity(0.8),
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Form(
-                  key: _formKey, // Attach the form key
+                  key: _formKey,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -127,7 +121,7 @@ Future<void> _login() async {
                           labelText: 'Email',
                           border: OutlineInputBorder(),
                         ),
-                        validator: _emailValidator, // Apply email validator
+                        validator: _emailValidator,
                       ),
                       const SizedBox(height: 20),
                       TextFormField(
@@ -137,21 +131,20 @@ Future<void> _login() async {
                           labelText: 'Password',
                           border: OutlineInputBorder(),
                         ),
-                        validator:
-                            _passwordValidator, // Apply password validator
+                        validator: _passwordValidator,
                       ),
                       const SizedBox(height: 30),
                       ElevatedButton(
                         onPressed: _login,
                         style: ElevatedButton.styleFrom(
                           minimumSize: const Size(double.infinity, 50),
-                          backgroundColor: Colors.teal, // Corrected property
+                          backgroundColor: Colors.teal,
                         ),
                         child: const Text('Login'),
                       ),
                       const SizedBox(height: 20),
                       TextButton(
-                        onPressed: _navigateToSignUp, // Navigate to Sign Up
+                        onPressed: _navigateToSignUp,
                         child: const Text(
                           'Don\'t have an account? Sign Up',
                           style: TextStyle(fontSize: 16),

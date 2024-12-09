@@ -1,59 +1,3 @@
-// import 'package:flutter/material.dart';
-// import 'booking_form_page.dart'; // Import Booking Form Page
-
-// class PackageDetailsPage extends StatelessWidget {
-//   final String packageName;
-
-//   const PackageDetailsPage({super.key, required this.packageName});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text(packageName),
-//       ),
-//       body: Padding(
-//         padding: const EdgeInsets.all(16.0),
-//         child: Column(
-//           crossAxisAlignment: CrossAxisAlignment.start,
-//           children: [
-//             Text(
-//               'Package Details for $packageName',
-//               style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-//             ),
-//             const SizedBox(height: 16),
-//             Text(
-//               'Description of $packageName:\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse efficitur.',
-//               style: const TextStyle(fontSize: 16),
-//             ),
-//             const SizedBox(height: 16),
-//             const Text(
-//               'Price: \$299',
-//               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-//             ),
-//             const Spacer(),
-//             ElevatedButton(
-//               onPressed: () {
-//                 Navigator.push(
-//                   context,
-//                   MaterialPageRoute(
-//                     builder: (context) =>
-//                         BookingFormPage(packageName: packageName),
-//                   ),
-//                 );
-//               },
-//               style: ElevatedButton.styleFrom(
-//                 minimumSize: const Size(double.infinity, 50),
-//               ),
-//               child: const Text('Book Now'),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
-
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import '/widgets/distance.dart';
@@ -220,26 +164,11 @@ class TourPackageDetailsPage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 15),
-            // Distance Widget
             const Distance(),
             const SizedBox(height: 20),
             // Booking Button
             ElevatedButton(
-              onPressed: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => BookingFormPage(
-                //       packageId: 1,
-                //       tourCompany: '',
-                //       duration: '',
-                //       price: 100,
-                //       //packageId: 1,
-                //       customerEmail: '',
-                //     ),
-                //   ),
-                // );
-              },
+              onPressed: () {},
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size(double.infinity, 50),
               ),

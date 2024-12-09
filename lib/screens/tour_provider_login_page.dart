@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'tour_provider_signup_page.dart';
-import 'tour_provider_home_page.dart'; 
+import 'tour_provider_home_page.dart';
 
 class TourProviderLoginPage extends StatefulWidget {
   const TourProviderLoginPage({super.key});
@@ -13,9 +13,7 @@ class _TourProviderLoginPageState extends State<TourProviderLoginPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-
   final _formKey = GlobalKey<FormState>();
-
 
   String? _emailValidator(String? email) {
     if (email == null || email.isEmpty) {
@@ -79,21 +77,19 @@ class _TourProviderLoginPageState extends State<TourProviderLoginPage> {
           Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage(
-                    'assets/images/bg.jpg'),
+                image: AssetImage('assets/images/bg.jpg'),
                 fit: BoxFit.cover,
               ),
             ),
           ),
-          // 
+          //
           Center(
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Container(
                 padding: const EdgeInsets.all(16.0),
                 decoration: BoxDecoration(
-                  color: Colors.white
-                      .withOpacity(0.8), 
+                  color: Colors.white.withOpacity(0.8),
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Form(
@@ -116,7 +112,7 @@ class _TourProviderLoginPageState extends State<TourProviderLoginPage> {
                           labelText: 'Email',
                           border: OutlineInputBorder(),
                         ),
-                        validator: _emailValidator, 
+                        validator: _emailValidator,
                       ),
                       const SizedBox(height: 20),
                       TextFormField(
@@ -126,15 +122,14 @@ class _TourProviderLoginPageState extends State<TourProviderLoginPage> {
                           labelText: 'Password',
                           border: OutlineInputBorder(),
                         ),
-                        validator:
-                            _passwordValidator, 
+                        validator: _passwordValidator,
                       ),
                       const SizedBox(height: 30),
                       ElevatedButton(
                         onPressed: _login,
                         style: ElevatedButton.styleFrom(
                           minimumSize: const Size(double.infinity, 50),
-                          backgroundColor: Colors.teal, 
+                          backgroundColor: Colors.teal,
                         ),
                         child: const Text('Login'),
                       ),
