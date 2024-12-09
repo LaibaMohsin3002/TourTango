@@ -30,11 +30,10 @@ class CarouselSliderWidget extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
                    image: DecorationImage(
-                    image: AssetImage(package.imageUrl), // Use package.imageUrl
-                    fit: BoxFit.cover, // Cover the container
+                    image: AssetImage(package.imageUrl), 
+                    fit: BoxFit.cover, 
                   ),
                 ),
-                // You can add an image or background color for the container
               ),
               Positioned(
                 bottom: 16,

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'customer_home_page.dart';
 
 class CustomerSignupPage extends StatefulWidget {
@@ -40,6 +42,35 @@ class _CustomerSignupPageState extends State<CustomerSignupPage> {
     return null;
   }
 
+  Future<void> _login() async {
+    final email = _emailController.text;
+    final password = _passwordController.text;
+
+
+    final response = await http.post(
+      Uri.parse('http://your-api-url/login'),
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode({'email': email, 'password': password}),
+    );
+
+    // Step 2: Handle the response
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      // On success, navigate to the home page
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => CustomerHomePage(customerEmail: data['email']),
+        ),
+      );
+    } else {
+      final errorData = json.decode(response.body);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(errorData['error'])),
+      );
+    }
+  }
+
   void _signUp() {
     if (_formKey.currentState?.validate() ?? false) {
       final email = _emailController.text;
@@ -48,12 +79,11 @@ class _CustomerSignupPageState extends State<CustomerSignupPage> {
       );
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => CustomerHomePage(customerEmail: email )),
+        MaterialPageRoute(builder: (context) => CustomerHomePage(customerEmail: email)),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content: Text('Please fix the errors before submitting')),
+        const SnackBar(content: Text('Please fix the errors before submitting')),
       );
     }
   }
@@ -75,8 +105,7 @@ class _CustomerSignupPageState extends State<CustomerSignupPage> {
           Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage(
-                    'assets/images/bg.jpg'), // Add your image path here
+                image: AssetImage('assets/images/bg.jpg'),
                 fit: BoxFit.cover,
               ),
             ),
@@ -139,6 +168,14 @@ class _CustomerSignupPageState extends State<CustomerSignupPage> {
                           backgroundColor: Colors.teal,
                         ),
                         child: const Text('Sign Up'),
+                      ),
+                      ElevatedButton(
+                        onPressed: _login, // Add login functionality here
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: const Size(double.infinity, 50),
+                          backgroundColor: Colors.teal,
+                        ),
+                        child: const Text('Login'),
                       ),
                     ],
                   ),

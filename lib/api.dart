@@ -1,8 +1,34 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-// Define a base URL for your API (make sure it has the correct protocol)
+
 const String baseUrl = 'http://10.0.2.2:3000';
+
+Future<Map<String, dynamic>> login(String email, String password) async {
+    final url = Uri.parse('$baseUrl/login');
+    final body = json.encode({
+      'email': email,
+      'password': password,
+    });
+
+    try {
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: body,
+      );
+
+
+      if (response.statusCode == 200) {
+        return json.decode(response.body);
+      } else {
+        final errorData = json.decode(response.body);
+        return {'error': errorData['error'] ?? 'Login failed'};
+      }
+    } catch (e) {
+      return {'error': 'An error occurred: $e'};
+    }
+  }
 
 //Function to fetch home page data
 Future<Map<String, dynamic>> fetchHomePageDataFromAPI(String customerEmail,
@@ -22,69 +48,6 @@ Future<Map<String, dynamic>> fetchHomePageDataFromAPI(String customerEmail,
   }
 }
 
-// Future<Map<String, dynamic>> fetchHomePageDataFromAPI(String customerEmail,
-//     {String? filterBy, String? search}) async {
-//   try {
-//     final queryParams = {
-//       if (filterBy != null) 'filterBy': filterBy,
-//       if (search != null) 'search': search,
-//     };
-
-//     final uri = Uri.parse('$baseUrl/$customerEmail/home')
-//         .replace(queryParameters: queryParams);
-//     final response = await http.get(uri);
-
-//     if (response.statusCode == 200) {
-//       return json.decode(response.body);
-//     } else {
-//       throw Exception('Failed to load home page data');
-//     }
-//   } catch (error) {
-//     throw Exception('Failed to load data: $error');
-//   }
-// }
-
-//   Future<bool> addPackage({
-//   required String name,
-//   required double price,
-//   required String availability,
-//   required int tourCompanyID,
-//   required String startDate,
-//   required String endDate,
-//   required int transportID,
-//   required int guideID,
-//   required String country,
-// }) async {
-
-//   try {
-//     final response = await http.post(
-//   Uri.parse('$baseUrl/addPackage'),
-//   headers: {'Content-Type': 'application/json'},
-//   body: jsonEncode({
-//     'name': name,
-//     'price': price,
-//     'availability': availability,
-//     'tourCompanyID': tourCompanyID,
-//     'start_date': startDate,
-//     'end_date': endDate,
-//     'transportID': transportID,
-//     'guideID': guideID,
-//     'country': country,
-//   }),
-// );
-
-//     if (response.statusCode == 201) {
-//       return true; // Success
-//     } else {
-//       print('Error: ${response.body}');
-//       return false; // Failure
-//     }
-//   } catch (e) {
-//     print('Exception: $e');
-//     return false; // Error
-//   }
-// }
-
 Future<bool> signUp(
     String companyName, String website, String email, String password) async {
   final url = Uri.parse("$baseUrl/company_signup");
@@ -100,12 +63,43 @@ Future<bool> signUp(
   );
 
   if (response.statusCode == 200) {
-    return true; // Sign-up successful
+    return true;
   } else {
     print('Error: ${response.body}');
-    return false; // Sign-up failed
+    return false;
   }
 }
+
+
+//get custoner profile
+Future<Map<String, dynamic>> fetchProfile(String customerEmail) async {
+  final response = await http.get(Uri.parse('$baseUrl/profile/$customerEmail'));
+  if (response.statusCode == 200) {
+    return json.decode(response.body);
+  } else {
+    throw Exception('Failed to fetch profile');
+  }
+}
+
+//update customer profile
+Future<void> updateProfile(
+    String name, String email, String primaryPhone, String secondaryPhone, String customerEmail) async {
+  final response = await http.put(
+    Uri.parse('$baseUrl/profile/$customerEmail'),
+    headers: {'Content-Type': 'application/json'},
+    body: json.encode({
+      'name': name,
+      'email': email,
+      'primaryPhone': primaryPhone,
+      'secondaryPhone': secondaryPhone,
+    }),
+  );
+
+  if (response.statusCode != 200) {
+    throw Exception('Failed to update profile');
+  }
+}
+
 
 
 
@@ -154,14 +148,14 @@ Future<bool> addPackage({
     );
 
     if (response.statusCode == 201) {
-      return true; // Success
+      return true; 
     } else {
       print('Error: ${response.body}');
-      return false; // Failure
+      return false; 
     }
   } catch (e) {
     print('Exception: $e');
-    return false; // Error
+    return false; 
   }
 }
 
@@ -186,10 +180,8 @@ Future<void> createItinerary({
     );
 
    if (response.statusCode == 200) {
-      // Successfully created itinerary
       print('Itinerary created');
     } else {
-      // Handle error
       throw Exception('Failed to create itinerary');
     }
   } catch (e) {
@@ -204,7 +196,7 @@ Future<Map<String, dynamic>> getPackageDetails(int packageId) async {
     final response = await http.get(Uri.parse('$baseUrl/packages/$packageId'));
 
     if (response.statusCode == 200) {
-      return json.decode(response.body); // Returns the package details
+      return json.decode(response.body); 
     } else {
       throw Exception('Package not found');
     }
@@ -324,14 +316,14 @@ Future<bool> addGuide({
     );
 
     if (response.statusCode == 201) {
-      return true; // Success
+      return true; 
     } else {
       print('Error: ${response.body}');
-      return false; // Failure
+      return false; 
     }
   } catch (e) {
     print('Exception: $e');
-    return false; // Error
+    return false; 
   }
 }
 
@@ -353,14 +345,14 @@ Future<bool> addTransport(
     );
 
     if (response.statusCode == 201) {
-      return true; // Success
+      return true;
     } else {
       print('Error: ${response.body}');
-      return false; // Failure
+      return false; 
     }
   } catch (e) {
     print('Exception: $e');
-    return false; // Error
+    return false; 
   }
 }
 
@@ -420,6 +412,26 @@ Future<List<dynamic>> getAccommodations() async {
   }
 }
 
+Future<List<dynamic>> fetchBookings(String customerEmail) async {
+  final url = '$baseUrl/$customerEmail/bookings';
+  final response = await http.get(Uri.parse(url));
+
+  if (response.statusCode == 200) {
+    final data = json.decode(response.body);
+    return data['bookings'] ?? [];
+  } else {
+    throw Exception('Failed to load bookings');
+  }
+}
+
+Future<void> deleteBooking(int bookingID) async {
+  final response = await http.delete(Uri.parse('$baseUrl/bookings/$bookingID'));
+
+  if (response.statusCode != 200) {
+    throw Exception('Failed to delete booking');
+  }
+}
+
 Future<List<dynamic>> fetchCustomerHistory(String customerEmail) async {
   final url = Uri.parse('$baseUrl/$customerEmail/history');
   final response = await http.get(url);
@@ -451,7 +463,7 @@ Future<Map<String, dynamic>> fetchReview(int bookingId) async {
   final url = '$baseUrl/reviews/$bookingId';
   final response = await http.get(Uri.parse(url));
   if (response.statusCode == 200) {
-    return json.decode(response.body);
+    return Map<String, dynamic>.from(json.decode(response.body));
   } else {
     throw Exception('Failed to fetch record');
   }
@@ -520,7 +532,6 @@ Future<void> addToFavorites({
    if (response.statusCode == 200) {
       print('Added to favourites');
     } else {
-      // Handle error
       throw Exception('Failed to add to favourites');
     }
   } catch (e) {

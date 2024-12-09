@@ -161,130 +161,6 @@ class _TourProviderHomePageState extends State<TourProviderHomePage> {
                     ),
                     const SizedBox(height: 16),
                   ],
-                  // if (endpoint == 'packages') ...[
-                  //   Text(
-                  //     'Package Details',
-                  //     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  //   ),
-                  //   SizedBox(height: 8),
-                  //   TextField(
-                  //     controller: _nameController,
-                  //     decoration: InputDecoration(
-                  //       labelText: 'Package Name',
-                  //       border: OutlineInputBorder(),
-                  //     ),
-                  //   ),
-                  //   SizedBox(height: 16),
-                  //   TextField(
-                  //     controller: _priceController,
-                  //     decoration: InputDecoration(
-                  //       labelText: 'Price',
-                  //       border: OutlineInputBorder(),
-                  //     ),
-                  //   ),
-                  //   SizedBox(height: 16),
-                  //   Text(
-                  //     'Availability',
-                  //     style: TextStyle(fontSize: 16),
-                  //   ),
-                  //   RadioListTile<String>(
-                  //     title: Text('Yes'),
-                  //     value: 'Y',
-                  //     groupValue: _availability,
-                  //     onChanged: (value) {
-                  //       setState(() {
-                  //         _availability = value;
-                  //       });
-                  //     },
-                  //   ),
-                  //   RadioListTile<String>(
-                  //     title: Text('No'),
-                  //     value: 'N',
-                  //     groupValue: _availability,
-                  //     onChanged: (value) {
-                  //       setState(() {
-                  //         _availability = value;
-                  //       });
-                  //     },
-                  //   ),
-                  //   TextField(
-                  //     controller: _startDateController,
-                  //     readOnly: true,
-                  //     decoration: InputDecoration(
-                  //       labelText: 'Start Date',
-                  //       border: OutlineInputBorder(),
-                  //       suffixIcon: Icon(Icons.calendar_today),
-                  //     ),
-                  //     onTap: () => _pickDate(context, _startDateController),
-                  //   ),
-                  //   SizedBox(height: 16),
-                  //   TextField(
-                  //     controller: _endDateController,
-                  //     readOnly: true,
-                  //     decoration: InputDecoration(
-                  //       labelText: 'End Date',
-                  //       border: OutlineInputBorder(),
-                  //       suffixIcon: Icon(Icons.calendar_today),
-                  //     ),
-                  //     onTap: () => _pickDate(context, _endDateController),
-                  //   ),
-                  //   SizedBox(height: 16),
-                  //   TextField(
-                  //     controller: _countryController,
-                  //     decoration: InputDecoration(
-                  //       labelText: 'Country',
-                  //       border: OutlineInputBorder(),
-                  //     ),
-                  //   ),
-                  //   SizedBox(height: 16),
-                  //   Text(
-                  //       'Select Guide',
-                  //       style: TextStyle(fontSize: 16),
-                  //     ),
-                  //     Container(
-                  //       height: 300, // Make the list scrollable
-                  //       child: ListView.builder(
-                  //         itemCount: guides.length,
-                  //         itemBuilder: (context, index) {
-                  //           final guide = guides[index];
-                  //           return ListTile(
-                  //             title: Text(guide['name']),
-                  //             onTap: () {
-                  //               setState(() {
-                  //                 _guideNameController.text = guide['name'];
-                  //               });
-                  //               Navigator.pop(context); // Close the dialog after selection
-                  //             },
-                  //           );
-                  //         },
-                  //       ),
-                  //     ),
-                  //      Text(
-                  //       'Select Transport',
-                  //       style: TextStyle(fontSize: 16),
-                  //     ),
-                  //     Container(
-                  //       height: 200, // Make the list scrollable
-                  //       child: ListView.builder(
-                  //         itemCount: transport.length,
-                  //         itemBuilder: (context, index) {
-                  //           final tp = transport[index];
-                  //           return ListTile(
-                  //             title: Text(tp['vehicleType']),
-                  //             subtitle: Text(tp['driverName']),
-                  //             onTap: () {
-                  //               setState(() {
-                  //                 _vehicleTypeController.text = tp['vehicleType'];
-                  //                 _driverNameController.text = tp['driverName'];
-                  //                 _pickupLocationController.text = tp['pickupLocation'];
-                  //               });
-                  //               Navigator.pop(context); // Close the dialog after selection
-                  //             },
-                  //           );
-                  //         },
-                  //       ),
-                  //     ),
-                  // ],
                 ],
               ),
             ),
@@ -305,21 +181,7 @@ class _TourProviderHomePageState extends State<TourProviderHomePage> {
                         driverName: driverNameController.text,
                         pickupLocation: pickupLocationController.text,
                       );
-                    } //else if (endpoint == 'packages') {
-                    //   await updatePackage(
-                    //     id,
-                    //     name: _nameController.text,
-                    //     availability: _availability,
-                    //     guideName: _guideNameController.text,
-                    //     vehicleType: _vehicleTypeController.text,
-                    //     driverName: _driverNameController.text,
-                    //     pickupLocation: _pickupLocationController.text,
-                    //     startDate: _startDateController.text,
-                    //     endDate: _endDateController.text,
-                    //     country: _countryController.text,
-                    //     price: double.parse(_priceController.text),
-                    //   );
-                    // }
+                    } 
                     setState(() {
                       companyDetails = fetchCompanyDetails(widget.companyEmail);
                     });
@@ -358,7 +220,7 @@ class _TourProviderHomePageState extends State<TourProviderHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Your Packages, Guides, and Transportation'),
+        title: const Text('Welcome'),
       ),
       body: FutureBuilder<Map<String, dynamic>>(
         future: companyDetails,

@@ -69,7 +69,7 @@ class _UpdatePackagePageState extends State<UpdatePackagePage> {
     _descriptionController = TextEditingController();
     _imageUrlController = TextEditingController();
 
-    // Fetch company details when the page is initialized
+
     companyDetailsFuture = fetchCompanyDetails(widget.companyEmail);
     _fetchAccommodation();
     _initializeControllers(widget.recordDetails);
@@ -124,9 +124,9 @@ Future<void> _fetchFlights() async {
     setState(() {
       isLoadingFlights = true;
     });
-    final List<dynamic> response = await getFlights(); // Fetch flights via API
+    final List<dynamic> response = await getFlights(); 
     setState(() {
-      flights = response; // Directly assign the list
+      flights = response; 
       isLoadingFlights = false;
     });
   } catch (e) {
@@ -150,7 +150,7 @@ Future<void> _fetchFlights() async {
           title: const Text('Select Flights'),
           content: SizedBox(
             width: MediaQuery.of(context).size.width * 0.8,
-            height: 400, // Adjust height as needed
+            height: 400, 
             child: isLoadingFlights
                 ? const Center(child: CircularProgressIndicator())
                 : ListView.builder(
@@ -190,7 +190,7 @@ Future<void> _fetchFlights() async {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.pop(context); // Close the dialog
+                Navigator.pop(context); 
               },
               child: const Text('Done'),
             ),
@@ -208,12 +208,12 @@ Future<void> _fetchFlights() async {
         title: Text('Select or Create Itinerary'),
         content: SizedBox(
           width: MediaQuery.of(context).size.width * 0.8,
-          height: 400, // Adjust height as needed
+          height: 400, 
           child: Column(
             children: [
               ElevatedButton(
                 onPressed: () async {
-                  // Open a dialog to add a new itinerary
+                  
                   _showAddItineraryDialog();
                 },
                 child: Text('Create New Itinerary'),
@@ -253,7 +253,7 @@ Future<void> _fetchFlights() async {
                                 selecteditineraryTimeOfDay.add(itineraryTimeOfDay);
                               }
                             } else {
-                              // Remove the deselected item
+                              
                               final indexToRemove = selecteditineraryIDs.indexOf(itineraryID);
                               if (indexToRemove != -1) {
                                 selecteditineraryIDs.removeAt(indexToRemove);
@@ -277,7 +277,7 @@ Future<void> _fetchFlights() async {
         actions: [
           TextButton(
             onPressed: () {
-              Navigator.pop(context); // Close the dialog
+              Navigator.pop(context); 
             },
             child: Text('Done'),
           ),
@@ -292,7 +292,7 @@ Future<void> _fetchItineraries() async {
       setState(() {
         isLoadingItineraries = true;
       });
-      final List<dynamic> response = await getItineraries(); // Fetch itineraries via API
+      final List<dynamic> response = await getItineraries(); 
       setState(() {
         itineraries = response;
         isLoadingItineraries = false;
@@ -369,7 +369,7 @@ Future<void> _showAddItineraryDialog() async {
         actions: [
           TextButton(
             onPressed: () {
-              Navigator.pop(context); // Close the dialog
+              Navigator.pop(context); 
             },
             child: Text('Cancel'),
           ),
@@ -381,7 +381,6 @@ Future<void> _showAddItineraryDialog() async {
               String description = activityDescriptionController.text;
               String city = cityController.text;
 
-              // Make API call to create new itinerary
               try {
                 await createItinerary(
                   itineraryDate: itineraryDate,
@@ -394,7 +393,7 @@ Future<void> _showAddItineraryDialog() async {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text('Itinerary created successfully')),
                 );
-                Navigator.pop(context); // Close the dialog
+                Navigator.pop(context); 
               } catch (e) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text('Error creating itinerary: $e')),
@@ -419,8 +418,8 @@ Future<void> _showAddItineraryDialog() async {
           title: Text('Select $type'),
           content: SizedBox(
             width: MediaQuery.of(context).size.width *
-                0.8, // Optional width constraint
-            height: 300, // Adjust height as needed
+                0.8, 
+            height: 300, 
             child: ListView.builder(
               itemCount: selectedList.length,
               itemBuilder: (context, index) {
@@ -445,7 +444,7 @@ Future<void> _showAddItineraryDialog() async {
                         transportID = item['transportID'];
                       }
                     });
-                    Navigator.pop(context); // Close the popup
+                    Navigator.pop(context); 
                   },
                 );
               },

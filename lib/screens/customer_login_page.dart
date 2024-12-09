@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'customer_home_page.dart';
-import 'customer_signup_page.dart'; // Import the Sign-Up Page
+import 'customer_signup_page.dart'; 
+import 'package:tourtango/api.dart';
 
 class CustomerLoginPage extends StatefulWidget {
   const CustomerLoginPage({super.key});
@@ -40,24 +41,29 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
     return null;
   }
 
-  void _login() {
-    if (_formKey.currentState?.validate() ?? false) {
-      
-      final email = _emailController.text;
-      final password = _passwordController.text;
+Future<void> _login() async {
+    final email = _emailController.text;
+    final password = _passwordController.text;
 
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => CustomerHomePage(customerEmail: email)),
+    // Call the API login function
+    final result = await login(email, password);
+
+    if (result.containsKey('error')) {
+      // Display error message if login failed
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(result['error'])),
       );
     } else {
-      // If the form is invalid, show an error message (optional)
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content: Text('Please fix the errors before submitting')),
+      // If login is successful, navigate to the homepage
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => CustomerHomePage(customerEmail: result['email']),
+        ),
       );
     }
   }
+
 
   void _navigateToSignUp() {
     Navigator.push(

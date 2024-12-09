@@ -62,7 +62,7 @@ class _TourProviderSignupPageState extends State<TourProviderSignupPage> {
             decoration: const BoxDecoration(
               image: DecorationImage(
                 image:
-                    AssetImage('assets/images/bg.jpg'), // Your background image
+                    AssetImage('assets/images/bg.jpg'), 
                 fit: BoxFit.cover,
               ),
             ),
@@ -90,7 +90,6 @@ class _TourProviderSignupPageState extends State<TourProviderSignupPage> {
                         ),
                       ),
                       const SizedBox(height: 40),
-                      // Form fields
                       TextFormField(
                         controller: _companyNameController,
                         decoration: const InputDecoration(

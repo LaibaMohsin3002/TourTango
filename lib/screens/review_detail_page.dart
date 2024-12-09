@@ -25,8 +25,7 @@ class _ReviewDetailPageState extends State<ReviewDetailPage> {
 
   Future<void> _fetchExistingReview() async {
     try {
-      final review =
-          await fetchReview(widget.bookingID); // Fetch existing review
+      final review = await fetchReview(widget.bookingID);
       setState(() {
         _hasExistingReview = true;
         _existingReview = review;
@@ -101,7 +100,7 @@ class _ReviewDetailPageState extends State<ReviewDetailPage> {
                   ElevatedButton(
                     onPressed: () {
                       setState(() {
-                        // Allow modification of review
+                        
                         _hasExistingReview = false;
                       });
                     },

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ionicons/ionicons.dart'; // For heart icons
-import 'package:tourtango/api.dart'; // Import the file where addToFavorites and deleteFromFavourites functions are defined
-
+import 'package:ionicons/ionicons.dart'; 
+import 'package:tourtango/api.dart'; 
 class Favourite extends StatefulWidget {
   final String customerEmail;
   final int packageID;
