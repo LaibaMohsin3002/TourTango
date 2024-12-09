@@ -168,7 +168,9 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => FavouritesPage(customerEmail: widget.customerEmail)),
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          FavouritesPage(customerEmail: widget.customerEmail)),
                 );
               },
             ),

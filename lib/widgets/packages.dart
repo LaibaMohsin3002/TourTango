@@ -20,6 +20,8 @@ class Package {
   final String? checkOutDate;
   final String country;
   final String imageUrl;
+  final String specialOffers;
+  //final int duration; // Duration in days
 
   Package({
     required this.packageID,
@@ -42,6 +44,8 @@ class Package {
     required this.checkOutDate,
     required this.country,
     required this.imageUrl,
+    required this.specialOffers,
+    //  required this.duration, // Duration passed directly
   });
 
   factory Package.fromJson(Map<String, dynamic> json) {
@@ -68,6 +72,9 @@ class Package {
       checkOutDate: json['checkOutDate'],
       country: json['country'],
       imageUrl: json['imageUrl'],
+      specialOffers: json['specialOffers'] ?? '',
+      // duration: json['duration'],
+      // location: json['location'], // Duration from API response
     );
   }
 }
