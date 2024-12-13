@@ -13,6 +13,7 @@ class ReviewDetailPage extends StatefulWidget {
 
 class _ReviewDetailPageState extends State<ReviewDetailPage> {
   double _rating = 0;
+  int _reviewID = 0;
   final TextEditingController _commentController = TextEditingController();
   bool _hasExistingReview = false;
   Map<String, dynamic>? _existingReview;
@@ -26,15 +27,18 @@ class _ReviewDetailPageState extends State<ReviewDetailPage> {
   Future<void> _fetchExistingReview() async {
     try {
       final review = await fetchReview(widget.bookingID);
+      print("Fetched review response: $review");
       setState(() {
         _hasExistingReview = true;
         _existingReview = review;
         _rating = review['rating'];
         _commentController.text = review['comment'];
+        _reviewID = review['reviewID'];
       });
+      print("Parsed reviewID: $_reviewID");
     } catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('No existing reviews: $error')),
+        SnackBar(content: Text('No existing reviews')),
       );
     }
   }
@@ -50,7 +54,8 @@ class _ReviewDetailPageState extends State<ReviewDetailPage> {
     try {
       if (_hasExistingReview) {
         await updateReview(widget.bookingID, _rating,
-            _commentController.text); // Update existing review
+            _commentController.text, _reviewID); // Update existing review
+            print(_reviewID);
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Review updated successfully!')),
         );

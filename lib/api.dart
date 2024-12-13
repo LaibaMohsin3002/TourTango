@@ -469,15 +469,15 @@ Future<Map<String, dynamic>> fetchReview(int bookingId) async {
   }
 }
 
-Future<void> updateReview(int bookingID, double rating, String comment) async {
+Future<void> updateReview(int bookingID, double rating, String comment, int reviewID) async {
   final url = Uri.parse('$baseUrl/reviews/$bookingID');
-
   final response = await http.put(
     url,
     headers: {'Content-Type': 'application/json'},
     body: jsonEncode({
       'rating': rating,
       'comment': comment,
+      'reviewID': reviewID
     }),
   );
 
@@ -512,6 +512,7 @@ Future<void> createBookingTransaction(
     if (response.statusCode == 200) {
       
       print('Transaction success');
+      print(response);
       } else {
         print('Error');
     }
