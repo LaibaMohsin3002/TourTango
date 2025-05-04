@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package_details_page.dart';
-import '../widgets/packages.dart'; // Add the recommended places widget
+import '../models/packages.dart'; // Add the recommended places widget
 import '../api.dart';
 
 class BrowsePage extends StatefulWidget {

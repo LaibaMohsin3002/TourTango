@@ -15,8 +15,6 @@ class Package {
   final String? departureTime;
   final String? arrivalTime;
   final String? hotelName;
-  final String? checkInDate;
-  final String? checkOutDate;
   final String country;
   final String imageUrl;
   final String specialOffers;
@@ -39,8 +37,6 @@ class Package {
     required this.departureTime,
     required this.arrivalTime,
     required this.hotelName,
-    required this.checkInDate,
-    required this.checkOutDate,
     required this.country,
     required this.imageUrl,
     required this.specialOffers,
@@ -63,12 +59,10 @@ class Package {
       pickupLocation: json['pickupLocation'],
       guideName: json['guideName'],
       guideAvailability: json['guideAvailability'],
-      flightCompany: json['flightCompany'],
+      flightCompany: json['FlightCompany'],
       departureTime: json['departureTime'],
       arrivalTime: json['arrivalTime'],
       hotelName: json['hotelName'],
-      checkInDate: json['checkInDate'],
-      checkOutDate: json['checkOutDate'],
       country: json['country'],
       imageUrl: json['imageUrl'],
       specialOffers: json['specialOffers'] ?? '',
