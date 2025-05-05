@@ -5,7 +5,7 @@ import 'booking_history.dart';
 import 'browse.dart';
 import 'my_bookings.dart';
 import '../widgets/carousel.dart';
-import '../widgets/packages.dart';
+import '../models/packages.dart';
 import '../widgets/location.dart';
 import '../widgets/tourplaces.dart';
 import '../widgets/recommendations.dart';
