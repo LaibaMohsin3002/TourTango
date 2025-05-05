@@ -4,8 +4,34 @@ import 'package:http/http.dart' as http;
 
 const String baseUrl = 'http://10.0.2.2:3000';
 
-Future<Map<String, dynamic>> login(String email, String password) async {
-    final url = Uri.parse('$baseUrl/login');
+Future<Map<String, dynamic>> customerLogin(String email, String password) async {
+    final url = Uri.parse('$baseUrl/customer_login');
+    final body = json.encode({
+      'email': email,
+      'password': password,
+    });
+
+    try {
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: body,
+      );
+
+
+      if (response.statusCode == 200) {
+        return json.decode(response.body);
+      } else {
+        final errorData = json.decode(response.body);
+        return {'error': errorData['error'] ?? 'Login failed'};
+      }
+    } catch (e) {
+      return {'error': 'An error occurred: $e'};
+    }
+  }
+
+  Future<Map<String, dynamic>> providerLogin(String email, String password) async {
+    final url = Uri.parse('$baseUrl/provider_login');
     final body = json.encode({
       'email': email,
       'password': password,
@@ -100,6 +126,35 @@ Future<void> updateProfile(
   }
 }
 
+//get provider profile
+Future<Map<String, dynamic>> fetchProviderProfile(String companyEmail) async {
+  final response = await http.get(Uri.parse('$baseUrl/companyProfile/$companyEmail'));
+  if (response.statusCode == 200) {
+    return json.decode(response.body);
+  } else {
+    throw Exception('Failed to fetch profile');
+  }
+}
+
+Future<void> updateProviderProfile(String name, String email, String website, String plotNo, String streetAddress, String city, String country, String companyEmail) async{
+  final response = await http.put(Uri.parse('$baseUrl/companyProfile/$companyEmail'),
+    headers: {'Content-Type': 'application/json'},
+    body: json.encode({
+      'name': name,
+      'email': email,
+      'website': website,
+      'plotNo': plotNo,
+      'street_address': streetAddress,
+      'city': city,
+      'country': country,
+    }),
+  );
+
+  if (response.statusCode != 200) {
+    throw Exception('Failed to update profile');
+  }
+}
+
 
 
 
@@ -125,7 +180,7 @@ Future<bool> addPackage({
 }) async {
   try {
     final response = await http.post(
-      Uri.parse('$baseUrl/$companyEmail/addPackage'),
+      Uri.parse('$baseUrl/$companyEmail/packages'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({
         'packageName': name,
@@ -373,6 +428,42 @@ Future<Map<String, dynamic>> fetchRecord(String endpoint, int id) async {
     return json.decode(response.body);
   } else {
     throw Exception('Failed to fetch record');
+  }
+}
+
+Future<Map<String, dynamic>> getPackages(String companyEmail) async {
+  final url = '$baseUrl/$companyEmail/packages';
+  final response = await http.get(Uri.parse(url));
+  print(response);
+  if (response.statusCode == 200) {
+    return json.decode(response.body);
+    
+  } else {
+    throw Exception('Failed to fetch packages');
+  }
+}
+
+Future<Map<String, dynamic>> getGuides(String companyEmail) async {
+  final url = '$baseUrl/$companyEmail/guides';
+  final response = await http.get(Uri.parse(url));
+  print(response);
+  if (response.statusCode == 200) {
+    return json.decode(response.body);
+    
+  } else {
+    throw Exception('Failed to fetch guides');
+  }
+}
+
+Future<Map<String, dynamic>> getTransport(String companyEmail) async {
+  final url = '$baseUrl/$companyEmail/transport';
+  final response = await http.get(Uri.parse(url));
+  print(response);
+  if (response.statusCode == 200) {
+    return json.decode(response.body);
+    
+  } else {
+    throw Exception('Failed to fetch transportation');
   }
 }
 

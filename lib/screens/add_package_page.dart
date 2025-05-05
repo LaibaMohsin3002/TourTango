@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // For date formatting
 import 'package:tourtango/api.dart';
+import '../services/cloudinary_Uploader.dart';
 
 class AddPackagePage extends StatefulWidget {
   final String companyEmail;
@@ -80,6 +81,26 @@ class _AddPackagePageState extends State<AddPackagePage> {
       controller.text = formattedDate;
     }
   }
+
+  Future<void> _handleImageUpload() async {
+  // Call your CloudinaryUploader service
+  String? newImageUrl = await CloudinaryUploader().uploadImage();
+
+  if (newImageUrl != null) {
+    setState(() {
+      _imageUrlController.text = newImageUrl;
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Image uploaded successfully')),
+    );
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Image upload failed')),
+    );
+  }
+}
+
 
   Future<void> _fetchAccommodation() async {
     try {
@@ -490,7 +511,7 @@ class _AddPackagePageState extends State<AddPackagePage> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Package added successfully')),
       );
-      Navigator.pop(context);
+      Navigator.pop(context, true);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error adding package: $e')),
@@ -561,8 +582,8 @@ class _AddPackagePageState extends State<AddPackagePage> {
                     style: TextStyle(fontSize: 16),
                   ),
                   RadioListTile<String>(
-                    title: const Text('Yes'),
-                    value: 'Y',
+                    title: const Text('Active'),
+                    value: 'Active',
                     groupValue: _availability,
                     onChanged: (value) {
                       setState(() {
@@ -571,8 +592,18 @@ class _AddPackagePageState extends State<AddPackagePage> {
                     },
                   ),
                   RadioListTile<String>(
-                    title: const Text('No'),
-                    value: 'N',
+                    title: const Text('Upcoming'),
+                    value: 'Upcoming',
+                    groupValue: _availability,
+                    onChanged: (value) {
+                      setState(() {
+                        _availability = value;
+                      });
+                    },
+                  ),
+                  RadioListTile<String>(
+                    title: const Text('Expired'),
+                    value: 'Expired',
                     groupValue: _availability,
                     onChanged: (value) {
                       setState(() {
@@ -619,12 +650,9 @@ class _AddPackagePageState extends State<AddPackagePage> {
                     ),
                   ),
                   SizedBox(height: 16),
-                  TextField(
-                    controller: _imageUrlController,
-                    decoration: InputDecoration(
-                      labelText: 'Upload image URL for package',
-                      border: OutlineInputBorder(),
-                    ),
+                  ElevatedButton(
+                    onPressed: _handleImageUpload,
+                    child: Text('Upload Image'),
                   ),
                   SizedBox(height: 16),
                   Text(

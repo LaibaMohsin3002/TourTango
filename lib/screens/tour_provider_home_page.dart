@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'add_package_page.dart';
-import 'add_guide_page.dart';
-import 'add_transport_page.dart';
+import 'tour_provider_packages_page.dart';
+import 'tour_provider_guides_page.dart';
+import 'tour_provider_transport_page.dart';
 import 'update_package_page.dart';
 import 'package:tourtango/api.dart';
+import 'provider_profile_page.dart';
 
 class TourProviderHomePage extends StatefulWidget {
   final String companyEmail;
@@ -222,153 +223,436 @@ class _TourProviderHomePageState extends State<TourProviderHomePage> {
       appBar: AppBar(
         title: const Text('Welcome'),
       ),
-      body: FutureBuilder<Map<String, dynamic>>(
-        future: companyDetails,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text('No data found'));
-          }
-
-          final packages = snapshot.data!['packages'];
-          final guides = snapshot.data!['guides'];
-          final transport = snapshot.data!['transport'];
-
-          return ListView(
-            padding: const EdgeInsets.all(16.0),
-            children: [
-              ListTile(
-                title: const Text(
-                  'Packages:',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                trailing: IconButton(
-                  icon: const Icon(Icons.add, color: Colors.blue),
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              AddPackagePage(companyEmail: widget.companyEmail),
-                        ));
-                  },
-                ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue,
               ),
-              ...packages.map((pkg) => ListTile(
-                    title: Text(pkg['packageName']),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Price: ${pkg['price']}'),
-                        Text('Availability: ${pkg['availability']}'),
-                        Text('Start Date: ${pkg['start_date']}'),
-                        Text('End Date: ${pkg['end_date']}'),
-                        Text('Guide Name: ${pkg['guideName']}'),
-                      ],
-                    ),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        IconButton(
-                          icon: const Icon(Icons.edit),
-                          onPressed: () =>
-                              _showUpdateDialog('packages', pkg['packageID']),
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.delete),
-                          onPressed: () =>
-                              _deleteItem('packages', pkg['packageID']),
-                        ),
-                      ],
-                    ),
-                  )),
-              const SizedBox(height: 20),
-              ListTile(
-                title: const Text(
-                  'Guides:',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                trailing: IconButton(
-                  icon: const Icon(Icons.add, color: Colors.blue),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => AddGuidePage(
-                                companyEmail: widget.companyEmail,
-                              )),
-                    );
-                  },
-                ),
+              child: Text(
+                'User Info',
+                style: TextStyle(color: Colors.white, fontSize: 24),
               ),
-              ...guides.map((guide) => ListTile(
-                    title: Text(guide['guideName']),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        IconButton(
-                          icon: const Icon(Icons.edit),
-                          onPressed: () =>
-                              _showUpdateDialog('guides', guide['guideID']),
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.delete),
-                          onPressed: () =>
-                              _deleteItem('guides', guide['guideID']),
-                        ),
-                      ],
-                    ),
-                  )),
-              ListTile(
-                title: const Text(
-                  'Transportation:',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                trailing: IconButton(
-                  icon: const Icon(Icons.add, color: Colors.blue),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => AddTransportPage(
-                              companyEmail: widget.companyEmail)),
-                    );
-                  },
-                ),
-              ),
-              ...transport.map((tp) => ListTile(
-                    title: Text(tp['vehicleType']),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Driver Name: ${tp['driverName']}'),
-                        Text('Pickup Location: ${tp['pickupLocation']}'),
-                      ],
-                    ),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        IconButton(
-                          icon: const Icon(Icons.edit),
-                          onPressed: () =>
-                              _showUpdateDialog('transport', tp['transportID']),
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.delete),
-                          onPressed: () =>
-                              _deleteItem('transport', tp['transportID']),
-                        ),
-                      ],
-                    ),
-                  )),
-              const SizedBox(height: 20),
-            ],
-          );
-        },
+            ),
+            ListTile(
+              title: const Text('Profile'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          ProfilePage(companyEmail: widget.companyEmail)),
+                );
+              },
+            ),
+            // ListTile(
+            //   title: const Text('All packages'),
+            //   onTap: () {
+            //     Navigator.push(
+            //       context,
+            //       MaterialPageRoute(
+            //           builder: (context) =>
+            //               BookingsPage(companyEmail: widget.companyEmail)),
+            //     );
+            //   },
+            // ),
+            // ListTile(
+            //   title: const Text('All guides'),
+            //   onTap: () {
+            //     Navigator.push(
+            //       context,
+            //       MaterialPageRoute(
+            //           builder: (context) => BookingHistoryPage(
+            //               companyEmail: widget.companyEmail)),
+            //     );
+            //   },
+            // ),
+            // ListTile(
+            //   title: const Text('All transportation'),
+            //   onTap: () {
+            //     Navigator.push(
+            //       context,
+            //       MaterialPageRoute(
+            //           builder: (context) =>
+            //               FavouritesPage(customerEmail: widget.customerEmail)),
+            //     );
+            //   },
+            // ),
+            ListTile(
+              title: const Text('Sign Out'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
       ),
+//       body: FutureBuilder<Map<String, dynamic>>(
+//         future: companyDetails,
+//         builder: (context, snapshot) {
+//           if (snapshot.connectionState == ConnectionState.waiting) {
+//             return const Center(child: CircularProgressIndicator());
+//           } else if (snapshot.hasError) {
+//             return Center(child: Text('Error: ${snapshot.error}'));
+//           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+//             return const Center(child: Text('No data found'));
+//           }
+
+//           final packages = snapshot.data!['packages'];
+//           final guides = snapshot.data!['guides'];
+//           final transport = snapshot.data!['transport'];
+
+//           return ListView(
+//             padding: const EdgeInsets.all(16.0),
+//             children: [
+//               ListTile(
+//                 title: const Text(
+//                   'Packages:',
+//                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+//                 ),
+//                 trailing: IconButton(
+//                   icon: const Icon(Icons.add, color: Colors.blue),
+//                   onPressed: () async {
+//                     final result = await Navigator.push(
+//                         context,
+//                         MaterialPageRoute(
+//                           builder: (context) =>
+//                               AddPackagePage(companyEmail: widget.companyEmail),
+//                         ));
+//                     if (result == true) {
+//                       setState(() {
+//                         companyDetails =
+//                             fetchCompanyDetails(widget.companyEmail);
+//                       });
+//                     }
+//                   },
+//                 ),
+//               ),
+//               ...packages.map((pkg) => ListTile(
+//                     title: Text(pkg['packageName']),
+//                     subtitle: Column(
+//                       crossAxisAlignment: CrossAxisAlignment.start,
+//                       children: [
+//                         Text('Price: ${pkg['price']}'),
+//                         Text('Availability: ${pkg['availability']}'),
+//                         Text('Start Date: ${pkg['start_date']}'),
+//                         Text('End Date: ${pkg['end_date']}'),
+//                         Text('Guide Name: ${pkg['guideName']}'),
+//                       ],
+//                     ),
+//                     trailing: Row(
+//                       mainAxisSize: MainAxisSize.min,
+//                       children: [
+//                         IconButton(
+//                           icon: const Icon(Icons.edit),
+//                           onPressed: () =>
+//                               _showUpdateDialog('packages', pkg['packageID']),
+//                         ),
+//                         IconButton(
+//                           icon: const Icon(Icons.delete),
+//                           onPressed: () =>
+//                               _deleteItem('packages', pkg['packageID']),
+//                         ),
+//                       ],
+//                     ),
+//                   )),
+//               const SizedBox(height: 20),
+//               ListTile(
+//                 title: const Text(
+//                   'Guides:',
+//                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+//                 ),
+//                 trailing: IconButton(
+//                   icon: const Icon(Icons.add, color: Colors.blue),
+//                   onPressed: () async {
+//                     final result = await Navigator.push(
+//                       context,
+//                       MaterialPageRoute(
+//                           builder: (context) => AddGuidePage(
+//                                 companyEmail: widget.companyEmail,
+//                               )),
+//                     );
+
+//                     if (result == true) {
+//                       setState(() {
+//                         companyDetails =
+//                             fetchCompanyDetails(widget.companyEmail);
+//                       });
+//                     }
+//                   },
+//                 ),
+//               ),
+//               ...guides.map((guide) => ListTile(
+//                     title: Text(guide['guideName']),
+//                     trailing: Row(
+//                       mainAxisSize: MainAxisSize.min,
+//                       children: [
+//                         IconButton(
+//                           icon: const Icon(Icons.edit),
+//                           onPressed: () =>
+//                               _showUpdateDialog('guides', guide['guideID']),
+//                         ),
+//                         IconButton(
+//                           icon: const Icon(Icons.delete),
+//                           onPressed: () =>
+//                               _deleteItem('guides', guide['guideID']),
+//                         ),
+//                       ],
+//                     ),
+//                   )),
+//               ListTile(
+//                 title: const Text(
+//                   'Transportation:',
+//                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+//                 ),
+//                 trailing: IconButton(
+//                   icon: const Icon(Icons.add, coloColor.fromARGB(255, 157, 170, 180)lue),
+//                   onPressed: () async {
+//                     final result = await Navigator.push(
+//                       context,
+//                       MaterialPageRoute(
+//                           builder: (context) => AddTransportPage(
+//                               companyEmail: widget.companyEmail)),
+//                     );
+
+//                     if (result == true) {
+//                       setState(() {
+//                         companyDetails =
+//                             fetchCompanyDetails(widget.companyEmail);
+//                       });
+//                     }
+//                   },
+//                 ),
+//               ),
+//               ...transport.map((tp) => ListTile(
+//                     title: Text(tp['vehicleType']),
+//                     subtitle: Column(
+//                       crossAxisAlignment: CrossAxisAlignment.start,
+//                       children: [
+//                         Text('Driver Name: ${tp['driverName']}'),
+//                         Text('Pickup Location: ${tp['pickupLocation']}'),
+//                       ],
+//                     ),
+//                     trailing: Row(
+//                       mainAxisSize: MainAxisSize.min,
+//                       children: [
+//                         IconButton(
+//                           icon: const Icon(Icons.edit),
+//                           onPressed: () =>
+//                               _showUpdateDialog('transport', tp['transportID']),
+//                         ),
+//                         IconButton(
+//                           icon: const Icon(Icons.delete),
+//                           onPressed: () =>
+//                               _deleteItem('transport', tp['transportID']),
+//                         ),
+//                       ],
+//                     ),
+//                   )),
+//               const SizedBox(height: 20),
+//             ],
+//           );
+//         },
+//       ),
+//     );
+//   }
+// }
+
+body: FutureBuilder<Map<String, dynamic>>(
+  future: companyDetails,  // Ensure this includes total bookings and active tours
+  builder: (context, snapshot) {
+    if (snapshot.connectionState == ConnectionState.waiting) {
+      return const Center(child: CircularProgressIndicator());
+    } else if (snapshot.hasError) {
+      return Center(child: Text('Error: ${snapshot.error}'));
+    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+      return const Center(child: Text('No data found'));
+    }
+
+    final totalBookings = snapshot.data!['totalBookings']; // Total bookings this month
+    final activeTours = snapshot.data!['activeTours']; // Active tours count
+    final activeTourPackages = snapshot.data!['activeTourPackages']; // Active tours packages
+    final upcomingTourPackages = snapshot.data!['upcomingTourPackages']; // Upcoming tours packages
+
+    return ListView(
+      padding: const EdgeInsets.all(16.0),
+      children: [
+        // Total Bookings and Active Tours
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              children: [
+                Text(
+                  '$totalBookings',
+                  style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+                ),
+                const Text('Total Bookings This Month', style: TextStyle(fontSize: 14)),
+              ],
+            ),
+            Column(
+              children: [
+                Text(
+                  '$activeTours',
+                  style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+                ),
+                const Text('Active Tours', style: TextStyle(fontSize: 14)),
+              ],
+            ),
+          ],
+        ),
+
+        const SizedBox(height: 20),
+
+        // Active Tours Infinite Swiper
+        const Text('Active Tours', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+        Container(
+          height: 250,  // Adjust as needed
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: activeTourPackages.length,
+            itemBuilder: (context, index) {
+              final pkg = activeTourPackages[index];
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Card(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Image.network(pkg['imageUrl'], height: 150, width: 150, fit: BoxFit.cover),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(pkg['name'], style: const TextStyle(fontWeight: FontWeight.bold)),
+                            Text('Rating: ${pkg['average_rating']}'),
+                            Text('Price: ${pkg['price']}'),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+
+        const SizedBox(height: 20),
+
+        // Upcoming Tours Infinite Swiper
+        const Text('Upcoming Tours', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+        Container(
+          height: 250,  // Adjust as needed
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: upcomingTourPackages.length,
+            itemBuilder: (context, index) {
+              final pkg = upcomingTourPackages[index];
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Card(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Image.network(pkg['imageUrl'], height: 150, width: 150, fit: BoxFit.cover),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(pkg['name'], style: const TextStyle(fontWeight: FontWeight.bold)),
+                            Text('Rating: ${pkg['average_rating']}'),
+                            Text('Price: ${pkg['price']}'),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+
+        const SizedBox(height: 32),
+        Center(
+          child: SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                backgroundColor: Colors.blueAccent,
+                textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => TourProviderPackagesPage(companyEmail: widget.companyEmail)
+                  ),
+                );
+              },
+              child: const Text('Package Management'),
+            ),
+          ),
+        ),
+        const SizedBox(height: 32),
+        Center(
+          child: SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                backgroundColor: Colors.blueAccent,
+                textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => TourProviderGuidesPage(
+                      companyEmail: widget.companyEmail,
+                    ),
+                  ),
+                );
+              },
+              child: const Text('Guide Management'),
+            ),
+          ),
+        ),
+        const SizedBox(height: 32),
+        Center(
+          child: SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                backgroundColor: Colors.blueAccent,
+                textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => TourProviderTransportPage(
+                      companyEmail: widget.companyEmail,
+                    ),
+                  ),
+                );
+              },
+              child: const Text('Transport Management'),
+            ),
+          ),
+        ),
+      ],
+    );
+  },
+),
     );
   }
 }

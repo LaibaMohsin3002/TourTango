@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package_details_page.dart';
-import 'profile_page.dart';
+import 'customer_profile_page.dart';
 import 'booking_history.dart';
 import 'browse.dart';
 import 'my_bookings.dart';
@@ -192,8 +192,21 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
           : ListView(
               padding: const EdgeInsets.all(16),
               children: [
-                const LocationCard(),
-                const SizedBox(height: 20),
+                //const LocationCard(),
+                //const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => BrowsePage(
+                          customerEmail: widget.customerEmail,
+                        ),
+                      ),
+                    );
+                  },
+                  child: const Text('Browse Packages'),
+                ),
                 const Text(
                   'Top 5 Hot Tour Packages',
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
@@ -271,19 +284,6 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
                         ),
                       ],
                     )),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => BrowsePage(
-                          customerEmail: widget.customerEmail,
-                        ),
-                      ),
-                    );
-                  },
-                  child: const Text('Browse Packages'),
-                ),
               ],
             ),
       bottomNavigationBar: BottomNavigationBar(

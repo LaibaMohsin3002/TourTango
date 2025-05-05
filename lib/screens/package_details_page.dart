@@ -74,7 +74,7 @@ class _PackageDetailsPageState extends State<PackageDetailsPage> {
                               bottom: Radius.circular(20),
                             ),
                             image: DecorationImage(
-                              image: AssetImage(data['imageUrl']),
+                              image: NetworkImage(data['imageUrl']),
                               fit: BoxFit.cover,
                             ),
                             boxShadow: [
@@ -101,6 +101,43 @@ class _PackageDetailsPageState extends State<PackageDetailsPage> {
                               packageID: widget.packageId,
                             ),
                           ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  // Row containing the Rating (Right) and Status (Left)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        // Status Shape on the Left
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                          decoration: BoxDecoration(
+                            color: data['availability'] == 'active'
+                                ? Colors.green
+                                : data['availability'] == 'upcoming'
+                                    ? Colors.blue
+                                    : Colors.grey,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Text(
+                            data['availability'] ?? "Unknown",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                        // Rating (Star) on the Right
+                        Row(
+                          children: [
+                            Icon(Icons.star, color: Colors.yellow, size: 20),
+                            const SizedBox(width: 5),
+                            Text(
+                              data['average_rating'].toString(),
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ],
                         ),
                       ],
                     ),

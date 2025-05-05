@@ -18,7 +18,6 @@ class Package {
   final String country;
   final String imageUrl;
   final String specialOffers;
-  final double averageRating;
   //final int duration; // Duration in days
 
   Package({
@@ -41,7 +40,6 @@ class Package {
     required this.country,
     required this.imageUrl,
     required this.specialOffers,
-    required this.averageRating
     //  required this.duration, // Duration passed directly
   });
 
@@ -68,7 +66,6 @@ class Package {
       country: json['country'],
       imageUrl: json['imageUrl'],
       specialOffers: json['specialOffers'] ?? '',
-      averageRating: (json['average_rating']as num).toDouble(),
     );
   }
 }

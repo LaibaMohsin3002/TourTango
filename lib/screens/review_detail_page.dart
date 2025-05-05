@@ -27,7 +27,7 @@ class _ReviewDetailPageState extends State<ReviewDetailPage> {
   Future<void> _fetchExistingReview() async {
     try {
       final review = await fetchReview(widget.bookingID);
-      print("Fetched review response: $review");
+      //print("Fetched review response: $review");
       setState(() {
         _hasExistingReview = true;
         _existingReview = review;
@@ -35,7 +35,6 @@ class _ReviewDetailPageState extends State<ReviewDetailPage> {
         _commentController.text = review['comment'];
         _reviewID = review['reviewID'];
       });
-      print("Parsed reviewID: $_reviewID");
     } catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('No existing reviews')),

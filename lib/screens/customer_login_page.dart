@@ -46,7 +46,7 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
     final password = _passwordController.text;
 
     // Call the API login function
-    final result = await login(email, password);
+    final result = await customerLogin(email, password);
 
     if (result.containsKey('error')) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -70,6 +70,13 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
     );
   }
 
+  void _navigateToForgotPassword() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const CustomerSignupPage()),
+    );
+  }
+
   @override
   void dispose() {
     _emailController.dispose();
@@ -80,6 +87,7 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       body: Stack(
         fit: StackFit.expand,
         children: [
@@ -93,8 +101,13 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
             ),
           ),
           Center(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
+            child: SingleChildScrollView( // ✅ Scrollable form
+              padding: EdgeInsets.only(
+                left: 16.0,
+                right: 16.0,
+                bottom: MediaQuery.of(context).viewInsets.bottom + 16.0,
+                top: 16.0,
+              ),
               child: Container(
                 padding: const EdgeInsets.all(16.0),
                 decoration: BoxDecoration(
@@ -104,7 +117,7 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
                 child: Form(
                   key: _formKey,
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       const Text(
                         'Customer Login',
@@ -134,6 +147,20 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
                         validator: _passwordValidator,
                       ),
                       const SizedBox(height: 30),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: TextButton(
+                          onPressed: _navigateToForgotPassword,
+                          child: const Text(
+                            'Forgot Password?',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.teal,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
                       ElevatedButton(
                         onPressed: _login,
                         style: ElevatedButton.styleFrom(

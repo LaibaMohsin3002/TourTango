@@ -41,7 +41,7 @@ class _AddTransportPageState extends State<AddTransportPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Transport added successfully')),
       );
-      Navigator.pop(context);
+      Navigator.pop(context, true);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error adding transport: $e')),

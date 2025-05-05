@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // For date formatting
 import 'package:tourtango/api.dart';
+import '../services/cloudinary_Uploader.dart';
 
 class UpdatePackagePage extends StatefulWidget {
   final int packageId;
@@ -117,6 +118,26 @@ class _UpdatePackagePageState extends State<UpdatePackagePage> {
       controller.text = formattedDate;
     }
   }
+
+
+Future<void> handleImageUpload() async {
+  String? newImageUrl = await CloudinaryUploader().uploadImage();
+
+  if (newImageUrl != null) {
+    setState(() {
+      _imageUrlController.text = newImageUrl;
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Image uploaded successfully')),
+    );
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Image upload failed')),
+    );
+  }
+}
+
 
   Future<void> _fetchAccommodation() async {
     try {
@@ -585,8 +606,8 @@ class _UpdatePackagePageState extends State<UpdatePackagePage> {
                     style: TextStyle(fontSize: 16),
                   ),
                   RadioListTile<String>(
-                    title: const Text('Yes'),
-                    value: 'Y',
+                    title: const Text('Active'),
+                    value: 'Active',
                     groupValue: _availability,
                     onChanged: (value) {
                       setState(() {
@@ -595,8 +616,18 @@ class _UpdatePackagePageState extends State<UpdatePackagePage> {
                     },
                   ),
                   RadioListTile<String>(
-                    title: const Text('No'),
-                    value: 'N',
+                    title: const Text('Upcoming'),
+                    value: 'Upcoming',
+                    groupValue: _availability,
+                    onChanged: (value) {
+                      setState(() {
+                        _availability = value;
+                      });
+                    },
+                  ),
+                  RadioListTile<String>(
+                    title: const Text('Expired'),
+                    value: 'Expired',
                     groupValue: _availability,
                     onChanged: (value) {
                       setState(() {
@@ -643,12 +674,18 @@ class _UpdatePackagePageState extends State<UpdatePackagePage> {
                     ),
                   ),
                   SizedBox(height: 16),
-                  TextField(
-                    controller: _imageUrlController,
-                    decoration: InputDecoration(
-                      labelText: 'Upload image URL for package',
-                      border: OutlineInputBorder(),
-                    ),
+                  _imageUrlController.text.isNotEmpty
+                  ? Image.network(
+                      _imageUrlController.text,
+                      height: 150,
+                      width: 150,
+                      fit: BoxFit.cover,
+                    )
+                  : Text('No image uploaded'),
+                  SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: () => handleImageUpload(),
+                    child: Text("Upload Updated Image"),
                   ),
                   SizedBox(height: 16),
                   Text(

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:tourtango/notification.dart';
 import 'screens/start_page.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 
 
 
@@ -12,6 +14,9 @@ void main() async {
   // Initialize NotificationService
   NotificationService().initialize();
 
+  await dotenv.load(fileName: ".env");
+
+  Stripe.publishableKey =  dotenv.env['STRIPE_PUBLISHABLE_KEY']!;
   // Initialize Firebase
   await Firebase.initializeApp();
 
