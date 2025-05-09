@@ -113,6 +113,9 @@ class _PaymentPageState extends State<PaymentPage> {
         ],
       ),
     );
+
+    Navigator.pop(context);
+    Navigator.pop(context);
     
   }
 

@@ -462,7 +462,7 @@ class _TourProviderHomePageState extends State<TourProviderHomePage> {
 // }
 
 body: FutureBuilder<Map<String, dynamic>>(
-  future: companyDetails,  // Ensure this includes total bookings and active tours
+  future: companyDetails,
   builder: (context, snapshot) {
     if (snapshot.connectionState == ConnectionState.waiting) {
       return const Center(child: CircularProgressIndicator());
@@ -472,10 +472,10 @@ body: FutureBuilder<Map<String, dynamic>>(
       return const Center(child: Text('No data found'));
     }
 
-    final totalBookings = snapshot.data!['totalBookings']; // Total bookings this month
-    final activeTours = snapshot.data!['activeTours']; // Active tours count
-    final activeTourPackages = snapshot.data!['activeTourPackages']; // Active tours packages
-    final upcomingTourPackages = snapshot.data!['upcomingTourPackages']; // Upcoming tours packages
+    final totalBookings = snapshot.data!['totalBookings'];
+    final activeTours = snapshot.data!['activeTours'];
+    final activeTourPackages = snapshot.data!['activeTourPackages']; 
+    final upcomingTourPackages = snapshot.data!['upcomingTourPackages'];
 
     return ListView(
       padding: const EdgeInsets.all(16.0),
@@ -508,76 +508,114 @@ body: FutureBuilder<Map<String, dynamic>>(
         const SizedBox(height: 20),
 
         // Active Tours Infinite Swiper
-        const Text('Active Tours', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-        Container(
-          height: 250,  // Adjust as needed
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: activeTourPackages.length,
-            itemBuilder: (context, index) {
-              final pkg = activeTourPackages[index];
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Card(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Image.network(pkg['imageUrl'], height: 150, width: 150, fit: BoxFit.cover),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
+        const Text(
+          'Active Tours',
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+        activeTourPackages == null || activeTourPackages.isEmpty
+            ? const SizedBox(
+                height: 100,
+                child: Center(child: Text('No active tours available')),
+              )
+            : Container(
+                height: 250,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: activeTourPackages.length,
+                  itemBuilder: (context, index) {
+                    final pkg = activeTourPackages[index];
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Card(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(pkg['name'], style: const TextStyle(fontWeight: FontWeight.bold)),
-                            Text('Rating: ${pkg['average_rating']}'),
-                            Text('Price: ${pkg['price']}'),
+                            Image.asset(
+                              pkg['imageUrl'] ?? '',
+                              height: 150,
+                              width: 150,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) =>
+                                  const Icon(Icons.broken_image),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    pkg['name'] ?? 'Unnamed Package',
+                                    style: const TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  Text('Rating: ${pkg['average_rating'] ?? 'N/A'}'),
+                                  Text('Price: ${pkg['price'] ?? 'N/A'}'),
+                                ],
+                              ),
+                            ),
                           ],
                         ),
                       ),
-                    ],
-                  ),
+                    );
+                  },
                 ),
-              );
-            },
-          ),
-        ),
+              ),
+
 
         const SizedBox(height: 20),
 
         // Upcoming Tours Infinite Swiper
-        const Text('Upcoming Tours', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-        Container(
-          height: 250,  // Adjust as needed
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: upcomingTourPackages.length,
-            itemBuilder: (context, index) {
-              final pkg = upcomingTourPackages[index];
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Card(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Image.network(pkg['imageUrl'], height: 150, width: 150, fit: BoxFit.cover),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
+        const Text(
+          'Upcoming Tours',
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+        upcomingTourPackages == null || upcomingTourPackages.isEmpty
+            ? const SizedBox(
+                height: 100,
+                child: Center(child: Text('No upcoming tours available')),
+              )
+            : Container(
+                height: 250,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: upcomingTourPackages.length,
+                  itemBuilder: (context, index) {
+                    final pkg = upcomingTourPackages[index];
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Card(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(pkg['name'], style: const TextStyle(fontWeight: FontWeight.bold)),
-                            Text('Rating: ${pkg['average_rating']}'),
-                            Text('Price: ${pkg['price']}'),
+                            Image.asset(
+                              pkg['imageUrl'] ?? '',
+                              height: 150,
+                              width: 150,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) =>
+                                  const Icon(Icons.broken_image),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    pkg['name'] ?? 'Unnamed Package',
+                                    style: const TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  Text('Rating: ${pkg['average_rating'] ?? 'N/A'}'),
+                                  Text('Price: ${pkg['price'] ?? 'N/A'}'),
+                                ],
+                              ),
+                            ),
                           ],
                         ),
                       ),
-                    ],
-                  ),
+                    );
+                  },
                 ),
-              );
-            },
-          ),
-        ),
+              ),
+
 
         const SizedBox(height: 32),
         Center(
@@ -587,7 +625,7 @@ body: FutureBuilder<Map<String, dynamic>>(
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 20),
                 backgroundColor: Colors.blueAccent,
-                textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
               ),
               onPressed: () {
                 Navigator.push(
@@ -609,7 +647,7 @@ body: FutureBuilder<Map<String, dynamic>>(
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 20),
                 backgroundColor: Colors.blueAccent,
-                textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
               ),
               onPressed: () {
                 Navigator.push(
@@ -633,7 +671,7 @@ body: FutureBuilder<Map<String, dynamic>>(
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 20),
                 backgroundColor: Colors.blueAccent,
-                textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
               ),
               onPressed: () {
                 Navigator.push(

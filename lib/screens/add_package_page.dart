@@ -83,7 +83,6 @@ class _AddPackagePageState extends State<AddPackagePage> {
   }
 
   Future<void> _handleImageUpload() async {
-  // Call your CloudinaryUploader service
   String? newImageUrl = await CloudinaryUploader().uploadImage();
 
   if (newImageUrl != null) {

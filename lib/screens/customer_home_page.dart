@@ -6,7 +6,7 @@ import 'browse.dart';
 import 'my_bookings.dart';
 import '../widgets/carousel.dart';
 import '../models/packages.dart';
-import '../widgets/location.dart';
+import 'help_page.dart';
 import '../widgets/tourplaces.dart';
 import '../widgets/recommendations.dart';
 import '../api.dart';
@@ -300,6 +300,10 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
             icon: Icon(Icons.account_circle),
             label: 'Profile',
           ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.help_outline),
+            label: 'Help',
+    ),
         ],
         onTap: (index) {
           if (index == 0) {
@@ -317,6 +321,14 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
               MaterialPageRoute(
                   builder: (context) =>
                       ProfilePage(customerEmail: widget.customerEmail)),
+            );
+          }
+          else if (index == 3) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const HelpPage(),
+              ),
             );
           }
         },

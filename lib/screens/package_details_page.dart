@@ -74,7 +74,7 @@ class _PackageDetailsPageState extends State<PackageDetailsPage> {
                               bottom: Radius.circular(20),
                             ),
                             image: DecorationImage(
-                              image: NetworkImage(data['imageUrl']),
+                              image: AssetImage(data['imageUrl']),
                               fit: BoxFit.cover,
                             ),
                             boxShadow: [

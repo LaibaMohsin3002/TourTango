@@ -168,14 +168,15 @@ class _CustomerSignupPageState extends State<CustomerSignupPage> {
                         ),
                         child: const Text('Sign Up'),
                       ),
-                      ElevatedButton(
-                        onPressed: _login,
-                        style: ElevatedButton.styleFrom(
-                          minimumSize: const Size(double.infinity, 50),
-                          backgroundColor: Colors.teal,
-                        ),
-                        child: const Text('Login'),
-                      ),
+                      // const SizedBox(height: 30),
+                      // ElevatedButton(
+                      //   onPressed: _login,
+                      //   style: ElevatedButton.styleFrom(
+                      //     minimumSize: const Size(double.infinity, 50),
+                      //     backgroundColor: Colors.teal,
+                      //   ),
+                      //   child: const Text('Login'),
+                      // ),
                     ],
                   ),
                 ),

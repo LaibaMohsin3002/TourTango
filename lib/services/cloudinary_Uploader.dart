@@ -31,7 +31,7 @@ class CloudinaryUploader {
         if (response.statusCode == 200) {
           var responseData = await http.Response.fromStream(response);
           var jsonResponse = jsonDecode(responseData.body);
-          String? imageUrl = jsonResponse['url'];
+          String? imageUrl = jsonResponse['secure_url'];
 
           print("Image uploaded successfully: $imageUrl");
           return imageUrl;
