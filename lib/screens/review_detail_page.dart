@@ -74,31 +74,35 @@ class _ReviewDetailPageState extends State<ReviewDetailPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Leave a Review')),
-      body: Padding(
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(title: const Text('Leave a Review')),
+    body: Center(
+      child: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (_hasExistingReview)
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Already Reviewed',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 10),
+        child: Card(
+          elevation: 5,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  _hasExistingReview ? 'Your Review' : 'Rate Your Experience',
+                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 16),
+                if (_hasExistingReview) ...[
                   Text(
                     'Rating: ${_existingReview!['rating'].toStringAsFixed(1)}',
                     style: const TextStyle(fontSize: 16),
                   ),
-                  const SizedBox(height: 5),
+                  const SizedBox(height: 8),
                   Text(
-                    'Comment: ${_existingReview!['comment']}',
+                    'Comment:\n${_existingReview!['comment']}',
                     style: const TextStyle(fontSize: 16),
+                    textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 20),
                   ElevatedButton(
@@ -109,21 +113,7 @@ class _ReviewDetailPageState extends State<ReviewDetailPage> {
                     },
                     child: const Text('Modify Review'),
                   ),
-                  const SizedBox(height: 20),
-                ],
-              ),
-            if (!_hasExistingReview)
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    _hasExistingReview
-                        ? 'Modify your Review'
-                        : 'Rate your Experience',
-                    style: const TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 16),
+                ] else ...[
                   RatingBar.builder(
                     initialRating: _rating,
                     minRating: 1,
@@ -145,23 +135,117 @@ class _ReviewDetailPageState extends State<ReviewDetailPage> {
                     controller: _commentController,
                     decoration: const InputDecoration(
                       labelText: 'Leave a comment',
+                      border: OutlineInputBorder(),
                     ),
                     maxLines: 5,
                   ),
                   const SizedBox(height: 20),
-                  Center(
-                    child: ElevatedButton(
-                      onPressed: _submitReview,
-                      child: Text(_hasExistingReview
-                          ? 'Update Review'
-                          : 'Submit Review'),
-                    ),
+                  ElevatedButton(
+                    onPressed: _submitReview,
+                    child: Text(
+                        _hasExistingReview ? 'Update Review' : 'Submit Review'),
                   ),
                 ],
-              ),
-          ],
+              ],
+            ),
+          ),
         ),
       ),
-    );
-  }
+    ),
+  );
 }
+}
+
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(title: const Text('Leave a Review')),
+//       body: Padding(
+//         padding: const EdgeInsets.all(16.0),
+//         child: Column(
+//           crossAxisAlignment: CrossAxisAlignment.start,
+//           children: [
+//             if (_hasExistingReview)
+//               Column(
+//                 crossAxisAlignment: CrossAxisAlignment.start,
+//                 children: [
+//                   const Text(
+//                     'Already Reviewed',
+//                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+//                   ),
+//                   const SizedBox(height: 10),
+//                   Text(
+//                     'Rating: ${_existingReview!['rating'].toStringAsFixed(1)}',
+//                     style: const TextStyle(fontSize: 16),
+//                   ),
+//                   const SizedBox(height: 5),
+//                   Text(
+//                     'Comment: ${_existingReview!['comment']}',
+//                     style: const TextStyle(fontSize: 16),
+//                   ),
+//                   const SizedBox(height: 20),
+//                   ElevatedButton(
+//                     onPressed: () {
+//                       setState(() {
+//                         _hasExistingReview = false;
+//                       });
+//                     },
+//                     child: const Text('Modify Review'),
+//                   ),
+//                   const SizedBox(height: 20),
+//                 ],
+//               ),
+//             if (!_hasExistingReview)
+//               Column(
+//                 crossAxisAlignment: CrossAxisAlignment.start,
+//                 children: [
+//                   Text(
+//                     _hasExistingReview
+//                         ? 'Modify your Review'
+//                         : 'Rate your Experience',
+//                     style: const TextStyle(
+//                         fontSize: 18, fontWeight: FontWeight.bold),
+//                   ),
+//                   const SizedBox(height: 16),
+//                   RatingBar.builder(
+//                     initialRating: _rating,
+//                     minRating: 1,
+//                     direction: Axis.horizontal,
+//                     allowHalfRating: true,
+//                     itemCount: 5,
+//                     itemBuilder: (context, _) => const Icon(
+//                       Icons.star,
+//                       color: Colors.amber,
+//                     ),
+//                     onRatingUpdate: (rating) {
+//                       setState(() {
+//                         _rating = rating;
+//                       });
+//                     },
+//                   ),
+//                   const SizedBox(height: 16),
+//                   TextField(
+//                     controller: _commentController,
+//                     decoration: const InputDecoration(
+//                       labelText: 'Leave a comment',
+//                     ),
+//                     maxLines: 5,
+//                   ),
+//                   const SizedBox(height: 20),
+//                   Center(
+//                     child: ElevatedButton(
+//                       onPressed: _submitReview,
+//                       child: Text(_hasExistingReview
+//                           ? 'Update Review'
+//                           : 'Submit Review'),
+//                     ),
+//                   ),
+//                 ],
+//               ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }

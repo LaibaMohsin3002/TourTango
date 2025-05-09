@@ -11,10 +11,10 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   bool isEditing = false;
-  TextEditingController nameController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController primaryPhoneController = TextEditingController();
-  TextEditingController secondaryPhoneController = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController primaryPhoneController = TextEditingController();
+  final TextEditingController secondaryPhoneController = TextEditingController();
 
   String name = "";
   String email = "";
@@ -29,40 +29,73 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<void> _fetchProfileData() async {
     try {
-      var profile = await fetchProfile(widget.customerEmail);
+      final profile = await fetchProfile(widget.customerEmail);
       setState(() {
         name = profile['name'] ?? '';
         email = profile['email'] ?? '';
         primaryPhone = profile['primaryPhone'] ?? "Add Primary Phone Number";
-        secondaryPhone =
-            profile['secondaryPhone'] ?? "Add Secondary Phone Number";
+        secondaryPhone = profile['secondaryPhone'] ?? "Add Secondary Phone Number";
       });
     } catch (e) {
       print("Error fetching profile: $e");
     }
   }
 
-  // Save updated profile data to the database
   Future<void> _updateProfileData() async {
     try {
+      final sanitizedPrimaryPhone = sanitizePhone(primaryPhoneController.text);
+      final sanitizedSecondaryPhone = sanitizePhone(secondaryPhoneController.text);
+
+      if (phoneValidator(sanitizedPrimaryPhone) != null ||
+          phoneValidator(sanitizedSecondaryPhone) != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Please enter valid phone numbers (at least 11 digits).")),
+        );
+        return;
+      }
+
       await updateProfile(
         nameController.text,
         emailController.text,
-        primaryPhoneController.text,
-        secondaryPhoneController.text,
+        sanitizedPrimaryPhone,
+        sanitizedSecondaryPhone,
         widget.customerEmail,
       );
+
       setState(() {
         name = nameController.text;
         email = emailController.text;
-        primaryPhone = primaryPhoneController.text;
-        secondaryPhone = secondaryPhoneController.text;
+        primaryPhone = sanitizedPrimaryPhone;
+        secondaryPhone = sanitizedSecondaryPhone;
         isEditing = false;
       });
 
       Navigator.pop(context);
     } catch (e) {
       print("Error updating profile: $e");
+    }
+  }
+
+  String? phoneValidator(String? value) {
+    final cleaned = value?.replaceAll(RegExp(r'\D'), '') ?? '';
+    if (cleaned.length < 11) {
+      return 'Enter a valid phone number';
+    }
+    return null;
+  }
+
+  String sanitizePhone(String value) {
+    return value.replaceAll(RegExp(r'\D'), '');
+  }
+
+  String formatPhone(String value) {
+    final digits = sanitizePhone(value);
+    if (digits.length == 11) {
+      return "${digits.substring(0, 4)}-${digits.substring(4, 7)}-${digits.substring(7)}";
+    } else if (digits.length == 10) {
+      return "${digits.substring(0, 3)}-${digits.substring(3, 6)}-${digits.substring(6)}";
+    } else {
+      return value;
     }
   }
 
@@ -74,9 +107,7 @@ class _ProfilePageState extends State<ProfilePage> {
         title: const Text("Profile"),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+          onPressed: () => Navigator.pop(context),
         ),
         backgroundColor: const Color.fromARGB(255, 206, 176, 186),
       ),
@@ -87,11 +118,10 @@ class _ProfilePageState extends State<ProfilePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              CircleAvatar(
+              const CircleAvatar(
                 radius: 50,
-                backgroundColor: const Color.fromARGB(10, 233, 30, 98),
-                child: const Icon(Icons.account_circle,
-                    size: 80, color: Colors.white),
+                backgroundColor: Color.fromARGB(10, 233, 30, 98),
+                child: Icon(Icons.account_circle, size: 80, color: Colors.white),
               ),
               const SizedBox(height: 16),
 
@@ -115,7 +145,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
               _buildProfileField(
                 label: "Primary Phone",
-                value: primaryPhone,
+                value: formatPhone(primaryPhone),
                 icon: Icons.phone,
                 isEditable: isEditing,
                 controller: primaryPhoneController,
@@ -124,14 +154,13 @@ class _ProfilePageState extends State<ProfilePage> {
 
               _buildProfileField(
                 label: "Secondary Phone",
-                value: secondaryPhone,
+                value: formatPhone(secondaryPhone),
                 icon: Icons.phone,
                 isEditable: isEditing,
                 controller: secondaryPhoneController,
               ),
               const SizedBox(height: 16),
 
-              // Update or Save Button
               ElevatedButton(
                 onPressed: () {
                   if (isEditing) {
@@ -141,8 +170,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       isEditing = true;
                       nameController.text = name;
                       emailController.text = email;
-                      primaryPhoneController.text = primaryPhone;
-                      secondaryPhoneController.text = secondaryPhone;
+                      primaryPhoneController.text = sanitizePhone(primaryPhone);
+                      secondaryPhoneController.text = sanitizePhone(secondaryPhone);
                     });
                   }
                 },
@@ -193,10 +222,10 @@ class _ProfilePageState extends State<ProfilePage> {
       child: isEditable && controller != null
           ? TextField(
               controller: controller,
+              keyboardType: TextInputType.phone,
               decoration: InputDecoration(
                 labelText: label,
-                prefixIcon:
-                    Icon(icon, color: const Color.fromARGB(255, 100, 131, 156)),
+                prefixIcon: Icon(icon, color: const Color.fromARGB(255, 100, 131, 156)),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15),
                 ),

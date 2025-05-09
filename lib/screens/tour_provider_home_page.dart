@@ -6,6 +6,7 @@ import 'tour_provider_transport_page.dart';
 import 'update_package_page.dart';
 import 'package:tourtango/api.dart';
 import 'provider_profile_page.dart';
+import 'help_page.dart';
 
 class TourProviderHomePage extends StatefulWidget {
   final String companyEmail;
@@ -600,7 +601,7 @@ body: FutureBuilder<Map<String, dynamic>>(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    pkg['name'] ?? 'Unnamed Package',
+                                    pkg['packageName'] ?? 'Unnamed Package',
                                     style: const TextStyle(fontWeight: FontWeight.bold),
                                   ),
                                   Text('Rating: ${pkg['average_rating'] ?? 'N/A'}'),
@@ -625,7 +626,8 @@ body: FutureBuilder<Map<String, dynamic>>(
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 20),
                 backgroundColor: Colors.blueAccent,
-                textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                foregroundColor: Colors.white,
+                textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               onPressed: () {
                 Navigator.push(
@@ -647,6 +649,7 @@ body: FutureBuilder<Map<String, dynamic>>(
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 20),
                 backgroundColor: Colors.blueAccent,
+                foregroundColor: Colors.white,
                 textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
               ),
               onPressed: () {
@@ -671,6 +674,7 @@ body: FutureBuilder<Map<String, dynamic>>(
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 20),
                 backgroundColor: Colors.blueAccent,
+                foregroundColor: Colors.white,
                 textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
               ),
               onPressed: () {
@@ -691,6 +695,45 @@ body: FutureBuilder<Map<String, dynamic>>(
     );
   },
 ),
+bottomNavigationBar: BottomNavigationBar(
+        //backgroundColor: Colors.deepPurple,
+        //selectedItemColor: Colors.white,
+        //unselectedItemColor: Colors.white70,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.account_circle),
+            label: 'Profile',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.help_outline),
+            label: 'Help',
+          ),
+        ],
+        onTap: (index) {
+          if (index == 0) {
+            // Navigate to Home page
+          } else if (index == 1) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      ProfilePage(companyEmail: widget.companyEmail)),
+            );
+          }
+          else if (index == 2) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const HelpPage(),
+              ),
+            );
+          }
+        },
+      ),
     );
   }
 }

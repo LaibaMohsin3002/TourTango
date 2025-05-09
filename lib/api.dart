@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 
-const String baseUrl = 'http://localhost:3000';
+const String baseUrl = 'http://10.0.2.2:3000';
 
 Future<Map<String, dynamic>> customerLogin(String email, String password) async {
     final url = Uri.parse('$baseUrl/customer_login');
@@ -140,7 +140,7 @@ Future<void> updateProviderProfile(String name, String email, String website, St
   final response = await http.put(Uri.parse('$baseUrl/companyProfile/$companyEmail'),
     headers: {'Content-Type': 'application/json'},
     body: json.encode({
-      'name': name,
+      'companyName': name,
       'email': email,
       'website': website,
       'plotNo': plotNo,

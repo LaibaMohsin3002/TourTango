@@ -228,49 +228,49 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
                     },
                   ),
                 const SizedBox(height: 20),
-                const Text(
-                  "Tourist Places",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 10),
-                const TouristPlaces(),
-                const SizedBox(height: 20),
-                const Text(
-                  "Recommended Places",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 10),
-                SizedBox(
-                  height: 250,
-                  child: ListView.builder(
-                    itemCount: 10,
-                    itemBuilder: (context, index) {
-                      return const RecommendedPlaces();
-                    },
-                  ),
-                ),
-                if (showSuggestions)
-                  Positioned(
-                    top: _suggestionBoxTop,
-                    left: 16,
-                    right: 16,
-                    child: Material(
-                      elevation: 4,
-                      borderRadius: BorderRadius.circular(8),
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: filteredSuggestions.length,
-                        itemBuilder: (context, index) {
-                          final suggestion = filteredSuggestions[index];
-                          return ListTile(
-                            title: Text(suggestion.packageName),
-                            onTap: () => onSuggestionSelected(suggestion),
-                          );
-                        },
-                      ),
-                    ),
-                  ),
-                const SizedBox(height: 20),
+                // const Text(
+                //   "Tourist Places",
+                //   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                // ),
+                // const SizedBox(height: 10),
+                // const TouristPlaces(),
+                // const SizedBox(height: 20),
+                // const Text(
+                //   "Recommended Places",
+                //   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                // ),
+                // const SizedBox(height: 10),
+                // SizedBox(
+                //   height: 250,
+                //   child: ListView.builder(
+                //     itemCount: 10,
+                //     itemBuilder: (context, index) {
+                //       return const RecommendedPlaces();
+                //     },
+                //   ),
+                // ),
+                // if (showSuggestions)
+                //   Positioned(
+                //     top: _suggestionBoxTop,
+                //     left: 16,
+                //     right: 16,
+                //     child: Material(
+                //       elevation: 4,
+                //       borderRadius: BorderRadius.circular(8),
+                //       child: ListView.builder(
+                //         shrinkWrap: true,
+                //         itemCount: filteredSuggestions.length,
+                //         itemBuilder: (context, index) {
+                //           final suggestion = filteredSuggestions[index];
+                //           return ListTile(
+                //             title: Text(suggestion.packageName),
+                //             onTap: () => onSuggestionSelected(suggestion),
+                //           );
+                //         },
+                //       ),
+                //     ),
+                //   ),
+                // const SizedBox(height: 20),
                 const Text(
                   'Frequently Asked Questions',
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
@@ -287,6 +287,9 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
               ],
             ),
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.deepPurple,
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.white70,
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
@@ -303,7 +306,7 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.help_outline),
             label: 'Help',
-    ),
+          ),
         ],
         onTap: (index) {
           if (index == 0) {
@@ -312,18 +315,19 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) =>
-                      BookingsPage(customerEmail: widget.customerEmail)),
+                builder: (context) =>
+                    BookingsPage(customerEmail: widget.customerEmail),
+              ),
             );
           } else if (index == 2) {
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) =>
-                      ProfilePage(customerEmail: widget.customerEmail)),
+                builder: (context) =>
+                    ProfilePage(customerEmail: widget.customerEmail),
+              ),
             );
-          }
-          else if (index == 3) {
+          } else if (index == 3) {
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -333,6 +337,7 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
           }
         },
       ),
+
     );
   }
 }
